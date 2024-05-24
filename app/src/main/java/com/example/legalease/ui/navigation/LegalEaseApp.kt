@@ -23,6 +23,7 @@ import com.example.legalease.ui.signIn.SignInScreenViewModel
 import com.example.legalease.ui.signUp.SignUpScreen
 import com.example.legalease.ui.signUp.SignUpScreenViewModel
 import com.example.legalease.ui.viewModels.AuthViewModel
+import com.example.legalease.ui.welcome.WelcomeScreen
 import kotlinx.serialization.json.Json
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -35,7 +36,7 @@ fun LegalEaseApp(
     authViewModel: AuthViewModel,
     onBottomBarVisibilityChanged: (Boolean) -> Unit
 ) {
-    NavHost(navController = navController, startDestination = SignInScreen, modifier = modifier) {
+    NavHost(navController = navController, startDestination = WelcomeScreen, modifier = modifier) {
         composable<SignInScreen> {
             onBottomBarVisibilityChanged(false)
             SignInScreen(
@@ -60,7 +61,7 @@ fun LegalEaseApp(
                     navController.navigate(SignInScreen)
                 },
                 signUpViewModel = signUpScreenViewModel,
-                navigateToLawyerGetStartedScreen = {navController.navigate(LawyerGetStartedScreen)}
+                navigateToLawyerGetStartedScreen = { navController.navigate(LawyerGetStartedScreen) }
             )
         }
 
@@ -115,13 +116,18 @@ fun LegalEaseApp(
                 lawyerId = args.lawyerId,
                 vm = authViewModel,
             )
+
+        }
         composable<LawyerGetStartedScreen> {
             onBottomBarVisibilityChanged(false)
             LawyerGetStartedScreen(
                 viewModel = signUpScreenViewModel,
             )
         }
+        composable<WelcomeScreen> {
+            onBottomBarVisibilityChanged(false)
+            WelcomeScreen { navController.navigate(SignInScreen) }
+        }
     }
-}
 }
 

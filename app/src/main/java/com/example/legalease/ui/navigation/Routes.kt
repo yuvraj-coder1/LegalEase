@@ -36,3 +36,5 @@ data class SearchedLayerScreen(val lawyerId: String)
 @Serializable
 data object LawyerGetStartedScreen
 
+@Serializable
+data object WelcomeScreen
