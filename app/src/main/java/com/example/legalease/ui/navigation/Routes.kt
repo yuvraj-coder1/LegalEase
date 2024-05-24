@@ -1,6 +1,5 @@
 package com.example.legalease.ui.navigation
 
-import com.example.legalease.model.LawyerData
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -38,3 +37,12 @@ data object LawyerGetStartedScreen
 
 @Serializable
 data object WelcomeScreen
+
+@Serializable
+data class AddCaseScreen(val lawyerId: String)
+
+@Serializable
+data object ClientProfileScreen
+
+@Serializable
+data object CaseListScreen

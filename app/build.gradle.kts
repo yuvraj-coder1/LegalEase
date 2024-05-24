@@ -5,6 +5,7 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
     alias(libs.plugins.google.gms.google.services)
+//    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -104,4 +105,7 @@ dependencies {
 
     //gemini-ChatBot
     implementation(libs.generativeai)
+
+    //google-fonts
+    implementation(libs.androidx.ui.text.google.fonts)
 }

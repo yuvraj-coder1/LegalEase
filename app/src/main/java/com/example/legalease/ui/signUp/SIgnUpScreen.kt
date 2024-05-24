@@ -1,5 +1,6 @@
   package com.example.legalease.ui.signUp
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +19,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.outlined.CreditCard
 import androidx.compose.material.icons.outlined.Key
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Button
@@ -35,6 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -45,25 +48,41 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.legalease.R
+import com.example.legalease.ui.navigation.LawyerGetStartedScreen
 import com.example.legalease.ui.signIn.SignInScreen
 import com.example.legalease.ui.signIn.SignInScreenContent
 import com.example.legalease.ui.signIn.SignInScreenTopBar
 import com.example.legalease.ui.signIn.SignInScreenViewModel
 
-@Composable
+  @Composable
 fun SignUpScreen(
     modifier: Modifier = Modifier,
     onSignInClicked: () -> Unit = {},
     signUpViewModel: SignUpScreenViewModel = viewModel(),
-    navigateToLawyerGetStartedScreen: () -> Unit = {},
+    navController: NavController
 ) {
+
     val signUpUiState by signUpViewModel.uiState.collectAsState()
+    val context = LocalContext.current
 
     SignUpScreenContent(
         modifier = Modifier
             .padding(horizontal = 24.dp),
-        navigateToLawyerGetStartedScreen = navigateToLawyerGetStartedScreen,
+//        navigateToLawyerGetStartedScreen = navigateToLawyerGetStartedScreen,
+        navigateToLawyerGetStartedScreen = {
+            if(signUpUiState.username.isEmpty() ||
+                signUpUiState.password.isEmpty() ||
+                signUpUiState.confirmPassword.isEmpty() ||
+                signUpUiState.email.isEmpty() ||
+                signUpUiState.governmentId.isEmpty()
+            )
+                Toast.makeText(context, "Enter all fields!", Toast.LENGTH_SHORT).show()
+            else
+                navController.navigate(LawyerGetStartedScreen)
+        },
         username = signUpUiState.username,
         password = signUpUiState.password,
         isLawyer = signUpUiState.isLawyer,
@@ -76,7 +95,16 @@ fun SignUpScreen(
         onGovernmentIdChange = { signUpViewModel.updateGovernmentId(it) },
         email = signUpUiState.email,
         onEmailChange = { signUpViewModel.updateEmail(it) },
-        onSignUpClick = { signUpViewModel.signUp() },
+        onSignUpClick = {
+            if(signUpUiState.username.isEmpty() ||
+                signUpUiState.password.isEmpty() ||
+                signUpUiState.confirmPassword.isEmpty() ||
+                signUpUiState.email.isEmpty()
+            )
+                Toast.makeText(context, "Enter all fields!", Toast.LENGTH_SHORT).show()
+            else
+            signUpViewModel.signUp()
+        },
         onSignInClicked = onSignInClicked
     )
 
@@ -191,7 +219,7 @@ fun SignUpScreenContent(
                 label = { Text(text = "Government ID") },
                 leadingIcon = {
                     Icon(
-                        imageVector = Icons.Outlined.Key,
+                        imageVector = Icons.Outlined.CreditCard,
                         contentDescription = "Government ID"
                     )
                 },
@@ -227,7 +255,7 @@ fun SignUpScreenContent(
             value = confirmPassword,
             onValueChange = { onConfirmPasswordChange(it) },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-            label = { Text(text = "ConfirmPassword") },
+            label = { Text(text = "Confirm Password") },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Outlined.Key,
@@ -294,5 +322,7 @@ fun SignUpScreenContent(
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun SignUpScreenPreview(modifier: Modifier = Modifier) {
-    SignUpScreen()
+
+    val navController = rememberNavController()
+    SignUpScreen(onSignInClicked = {}, navController = navController)
 }
