@@ -2,7 +2,6 @@ package com.example.legalease.ui.signIn
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -37,7 +36,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -126,9 +124,9 @@ fun SignInScreenTopBar(modifier: Modifier = Modifier, onClick: () -> Unit) {
                 Spacer(modifier = Modifier.weight(1f))
                 IconButton(onClick = {onClick()}) {
                     Icon(
-                        painter = painterResource(id = R.drawable.chatbot_icon),
+                        imageVector = Icons.Default.Headphones,
                         contentDescription = "ChatBot",
-                        modifier = Modifier.size(36.dp)
+                        modifier = Modifier.size(24.dp)
                     )
                 }
             }
@@ -169,18 +167,12 @@ fun SignInScreenContent(
         ) {
             Button(
                 onClick = { onIsLawyerChange(true) },
-                colors =
-                if (isLawyer)
-                    ButtonDefaults.buttonColors(Color.Black)
-                else ButtonDefaults.buttonColors(
+                colors = if (isLawyer) ButtonDefaults.buttonColors(Color.Black) else ButtonDefaults.buttonColors(
                     Color.LightGray
-                )
+                ),
 //                modifier = Modifier.weight(1f)
             ) {
-                Text(
-                    text = "Lawyer",
-                    color = if (isLawyer && isSystemInDarkTheme()) Color.White else Color.Black
-                )
+                Text(text = "Lawyer", color = if (isLawyer) Color.White else Color.Black)
                 if(isLawyer) {
                     Spacer(modifier = Modifier.width(20.dp))
                     Image(
