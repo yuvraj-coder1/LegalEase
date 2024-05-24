@@ -1,5 +1,6 @@
 package com.example.legalease.ui.signIn
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -51,6 +52,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.BlendMode.Companion.Screen
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -73,6 +75,7 @@ fun SignInScreen(
     signInViewModel: SignInScreenViewModel = viewModel(),
     navigateToHome: () -> Unit = {}
 ) {
+    val context = LocalContext.current
     val signInUiState by signInViewModel.uiState.collectAsState()
     val inprogress = signInViewModel.inProcess
     LaunchedEffect(key1 = signInViewModel.isSignedIn) {
@@ -87,6 +90,13 @@ fun SignInScreen(
         password = signInUiState.password,
         isLawyer = signInUiState.isLawyer,
         onSignIn = {
+            if(signInUiState.username.isEmpty() && signInUiState.password.isNotEmpty())
+                Toast.makeText(context, "Username can't be empty!", Toast.LENGTH_SHORT).show()
+            else if(signInUiState.password.isEmpty() && signInUiState.username.isNotEmpty())
+                Toast.makeText(context, "Password can't be empty!", Toast.LENGTH_SHORT).show()
+            else if(signInUiState.username.isEmpty() && signInUiState.password.isEmpty())
+                Toast.makeText(context, "Enter your credentials!", Toast.LENGTH_SHORT).show()
+            else
             signInViewModel.signIn()
         },
         onUsernameChange = { signInViewModel.updateUsername(it) },
