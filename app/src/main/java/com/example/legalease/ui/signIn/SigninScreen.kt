@@ -102,7 +102,7 @@ fun SignInScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignInScreenTopBar(modifier: Modifier = Modifier, onClick: () -> Unit) {
+fun SignInScreenTopBar(modifier: Modifier = Modifier, onClick: () -> Unit, showIcon: Boolean) {
     TopAppBar(
         title = {
             Row(
@@ -121,13 +121,15 @@ fun SignInScreenTopBar(modifier: Modifier = Modifier, onClick: () -> Unit) {
                         ),
                     ),
                 )
-                Spacer(modifier = Modifier.weight(1f))
-                IconButton(onClick = {onClick()}) {
-                    Icon(
-                        imageVector = Icons.Default.Headphones,
-                        contentDescription = "ChatBot",
-                        modifier = Modifier.size(24.dp)
-                    )
+                if(showIcon) {
+                    Spacer(modifier = Modifier.weight(1f))
+                    IconButton(onClick = {onClick()}) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.chatbot_icon),
+                            contentDescription = "ChatBot",
+                            modifier = Modifier.size(36.dp)
+                        )
+                    }
                 }
             }
         },
