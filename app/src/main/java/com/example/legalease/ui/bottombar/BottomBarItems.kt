@@ -8,8 +8,8 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.legalease.ui.navigation.ChatListScreen
+import com.example.legalease.ui.navigation.ClientProfileScreen
 import com.example.legalease.ui.navigation.SearchScreen
-
 sealed class BottomBarItem (
     val label: String,
     val icon: ImageVector,
@@ -33,7 +33,7 @@ sealed class BottomBarItem (
     data object ProfileScreen: BottomBarItem(
         label = "Profile",
         icon = Icons.Default.Person,
-        route =com.example.legalease.ui.navigation.ProfileScreen
+        route = ClientProfileScreen
     )
 }
 

@@ -6,28 +6,31 @@ import androidx.compose.material.icons.filled.Message
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.example.legalease.ui.navigation.ChatListScreen
+import com.example.legalease.ui.navigation.SearchScreen
+import com.example.legalease.ui.navigation.HomeScreen
 
-sealed class ClientBottomBarItem (
+sealed class LawyerBottomBarItem (
     val label: String,
     val icon: ImageVector,
-    val route:String,
+    val route:Any,
 ) {
-    data object HomeScreen: ClientBottomBarItem(
+    data object HomeScreen: LawyerBottomBarItem(
         label = "Home",
         icon = Icons.Default.Home,
-        route ="clientHomeScreen"
+        route = HomeScreen
     )
-    data object ProjectScreen: ClientBottomBarItem(
+    data object ProjectScreen: LawyerBottomBarItem(
         label = "Find Projects",
         icon = Icons.Default.Search,
-        route = "clientSearchScreen"
+        route = SearchScreen
     )
-    data object MessageListScreen : ClientBottomBarItem(
+    data object MessageListScreen : LawyerBottomBarItem(
         label = "Messages",
         icon = Icons.Default.Message,
-        route ="messageListScreen"
+        route = ChatListScreen
     )
-    data object ProfileScreen: ClientBottomBarItem(
+    data object ProfileScreen: LawyerBottomBarItem(
         label = "Profile",
         icon = Icons.Default.Person,
         route ="clientProfileScreen"

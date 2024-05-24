@@ -48,7 +48,7 @@ class AuthViewModel @Inject constructor(
     var inProgress by mutableStateOf(false)
     var inProgressChats by mutableStateOf(false)
     var chats by mutableStateOf(emptyList<ChatData>())
-    var currentLawyer: LawyerData? = null
+    var currentLawyer by mutableStateOf<LawyerData?>(null)
     var currentClient: ClientData? = null
     var chatMessages by mutableStateOf(emptyList<Message>())
     var inProgressChatMessage by mutableStateOf(false)
@@ -102,8 +102,6 @@ class AuthViewModel @Inject constructor(
                 Log.d("TAG", "uploadFile: $it")
             }
     }
-
-
 
 
     @SuppressLint("DefaultLocale")
