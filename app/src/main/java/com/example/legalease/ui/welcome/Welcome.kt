@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -135,7 +136,19 @@ fun WelcomeScreen(navigateToNextScreen:() -> Unit) {
 
 @Composable
 fun Dot(isSelected: Boolean, modifier: Modifier = Modifier) {
-    val color = if (isSelected) Color.White else Color.Gray
+    val color =
+        if(isSystemInDarkTheme()) {
+            if (isSelected)
+                Color.White
+            else
+                Color.Gray
+        } else {
+            if (isSelected)
+                Color.Gray
+            else
+                Color.White
+        }
+
     Box(
         modifier = modifier
             .size(16.dp)
