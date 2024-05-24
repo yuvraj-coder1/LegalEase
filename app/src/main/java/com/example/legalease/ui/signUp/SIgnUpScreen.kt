@@ -1,4 +1,4 @@
-package com.example.legalease.ui.signUp
+  package com.example.legalease.ui.signUp
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

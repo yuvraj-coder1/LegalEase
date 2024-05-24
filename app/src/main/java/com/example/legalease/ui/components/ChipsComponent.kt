@@ -76,21 +76,21 @@ fun ChipsComponent(
     isThisIndexSelected: List<Boolean> = emptyList(),
     selectedColor: Color = MaterialTheme.colorScheme.primary,
 ) {
-    FlowRow(
-    ) {
-        skills.forEachIndexed() { index, item ->
-
-            Tag(
-                item,
-                modifier = modifier,
-                cardColor = cardColor,
-                index = index,
-                isThisIndexSelected = isThisIndexSelected[index],
-                onClick = onChipClick,
-                selectedColor = selectedColor
-            )
+    if (skills.isNotEmpty())
+        FlowRow(
+        ) {
+            skills.forEachIndexed() { index, item ->
+                Tag(
+                    item,
+                    modifier = modifier,
+                    cardColor = cardColor,
+                    index = index,
+                    isThisIndexSelected = isThisIndexSelected[index],
+                    onClick = onChipClick,
+                    selectedColor = selectedColor
+                )
+            }
         }
-    }
 }
 
 @OptIn(ExperimentalLayoutApi::class)
