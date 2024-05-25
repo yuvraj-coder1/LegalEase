@@ -13,6 +13,12 @@
     <string name="log_in_with_google">गूगल से लॉग इन करें</string>
     <string name="don_t_have_an_account">खाता नहीं है?</string>
     <string name="sign_up">साइन अप करें</string>
+    <string name="username">उपयोगकर्ता का नाम</string>
+    <string name="bar_council_number">बार काउंसिल नंबर</string>
+    <string name="confirm_password">पासवर्ड की पुष्टि करें</string>
+    <string name="sign_up_with_google">गूगल से साइन अप करें</string>
+    <string name="already_have_an_account">पहले से ही खाता है?</string>
+
 
 
 </resources>
