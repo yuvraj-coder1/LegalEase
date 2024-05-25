@@ -62,6 +62,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
@@ -72,6 +73,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.compose.LegalEaseTheme
+import com.example.legalease.R
 import com.example.legalease.ui.signIn.SignInScreenViewModel
 import java.time.LocalDate
 import java.util.Locale
@@ -100,7 +102,7 @@ fun LawyerHomeScreen(modifier: Modifier = Modifier, signedInViewModel: SignInScr
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = if (homeUiState.selectedDate == LocalDate.now()) "Today" else "${homeUiState.selectedDate.dayOfMonth} ${
+                text = if (homeUiState.selectedDate == LocalDate.now()) stringResource(R.string.today) else "${homeUiState.selectedDate.dayOfMonth} ${
                     homeUiState.selectedDate.month.toString().lowercase()
                         .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
                 }",
@@ -143,7 +145,7 @@ fun LawyerHomeScreen(modifier: Modifier = Modifier, signedInViewModel: SignInScr
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Set Appointment", modifier = Modifier.padding(10.dp))
+                Text(text = stringResource(R.string.book_appointment), modifier = Modifier.padding(10.dp))
             }
             Spacer(modifier = Modifier.height(20.dp))
         }
@@ -169,7 +171,7 @@ fun LawyerHomeScreen(modifier: Modifier = Modifier, signedInViewModel: SignInScr
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = "You have a appointment with mr lawyer on 9:00am",
+                    text = stringResource(R.string.you_have_an_appointment_with_mr_lawyer_at_9_00_am),
                     fontWeight = FontWeight.Normal,
                     fontSize = 14.sp,
                     letterSpacing = (0.1).sp
@@ -184,7 +186,7 @@ fun LawyerHomeScreen(modifier: Modifier = Modifier, signedInViewModel: SignInScr
         Spacer(modifier = Modifier.height(20.dp))
         Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
             Text(
-                text = "Cases",
+                text = stringResource(R.string.cases),
 //                style = MaterialTheme.typography.titleLarge
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 20.sp,
@@ -212,7 +214,7 @@ fun LawyerHomeScreen(modifier: Modifier = Modifier, signedInViewModel: SignInScr
 //        }
         if(homeViewModel.casesItemList.isEmpty()) {
             Text(
-                text = "No Cases Available",
+                text = stringResource(R.string.no_cases_available),
                 modifier = Modifier
                     .fillMaxSize()
                     .align(Alignment.CenterHorizontally),
@@ -244,7 +246,7 @@ fun LawyerHomeScreen(modifier: Modifier = Modifier, signedInViewModel: SignInScr
         Row(modifier = Modifier.fillMaxWidth()) {
 
             Text(
-                text = "Others",
+                text = stringResource(R.string.others),
 //            style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 20.sp,
@@ -262,12 +264,12 @@ fun LawyerHomeScreen(modifier: Modifier = Modifier, signedInViewModel: SignInScr
 
             OtherIcon(
                 icon = Icons.Default.QuestionMark,
-                text = "FAQs",
+                text = stringResource(R.string.faqs),
                 onClick = {},
             )
-            OtherIcon(icon = Icons.AutoMirrored.Filled.LibraryBooks, text = "Blogs", onClick = {})
-            OtherIcon(icon = Icons.Default.AccessTime, text = "History", onClick = {})
-            OtherIcon(icon = Icons.Default.MonetizationOn, text = "Financials", onClick = {})
+            OtherIcon(icon = Icons.AutoMirrored.Filled.LibraryBooks, text = stringResource(R.string.blogs), onClick = {})
+            OtherIcon(icon = Icons.Default.AccessTime, text = stringResource(R.string.history), onClick = {})
+            OtherIcon(icon = Icons.Default.MonetizationOn, text = stringResource(R.string.financials), onClick = {})
         }
     }
 }
@@ -359,7 +361,7 @@ fun OngoingCasesItem(
                 )
                 Spacer(modifier = Modifier.height(5.dp))
                 Text(
-                    text = "Upcoming Hearing ${upcomingHearing}",
+                    text = stringResource(R.string.upcoming_hearing) +"${upcomingHearing}",
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
