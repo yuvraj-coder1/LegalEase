@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -27,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.ui.theme.Inter
 
 @Composable
 fun Tag(
@@ -56,11 +58,14 @@ fun Tag(
         Text(
             text = tagText,
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 14.sp,
+//            style = MaterialTheme.typography.bodyLarge,
+//            fontWeight = FontWeight.SemiBold,
+            fontFamily = Inter,
+            fontWeight = FontWeight.Medium,
+            fontSize = 12.sp,
+            letterSpacing = (-0.3).sp,
             modifier = Modifier
-                .padding(vertical = 10.dp, horizontal = 15.dp)
+                .padding(vertical = 4.dp, horizontal = 15.dp)
                 .padding(textPadding)
         )
     }
@@ -79,6 +84,7 @@ fun ChipsComponent(
 ) {
     if (skills.isNotEmpty())
         FlowRow(
+            modifier = Modifier.fillMaxWidth()
         ) {
             skills.forEachIndexed() { index, item ->
                 Tag(
