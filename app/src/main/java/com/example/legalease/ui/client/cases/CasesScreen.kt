@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.RadioButtonChecked
+import androidx.compose.material.icons.filled.Update
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -38,17 +39,18 @@ fun CasesScreen(modifier: Modifier = Modifier) {
     val casesScreenViewModel: CasesScreenViewModel = viewModel()
     LazyColumn(modifier = modifier) {
         items(casesScreenViewModel.casesItemList) {
-            CaseItem(
-                title = it.caseType,
-                description = it.description,
-                upcomingHearing = it.upcomingHearing,
-                onItemClick = {},
-                modifier = modifier
-                    .padding(16.dp)
-                    .fillMaxWidth(),
-                status = it.status
-
-            )
+            it.upcomingHearing?.let { it1 ->
+                CaseItem(
+                    title = it.caseType,
+                    description = it.description,
+                    upcomingHearing = it1,
+                    onItemClick = {},
+                    modifier = modifier
+                        .padding(16.dp)
+                        .fillMaxWidth(),
+                    status = it.status
+                )
+            }
         }
     }
 }
@@ -74,32 +76,53 @@ fun CaseItem(
             horizontalAlignment = Alignment.Start,
             modifier = Modifier.padding(20.dp)
         ) {
-            Row(modifier = Modifier.fillMaxWidth(),
+            Row(
+                modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween) {
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
 
-            Text(
-                text = title,
-                fontSize = 22.sp,
-                fontFamily = Inter,
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.tertiaryContainer,
-                letterSpacing = (-0.2).sp
-            )
-                if (status == "Active")
-                    Row(
-                        modifier = Modifier.padding(start = 16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.RadioButtonChecked,
-                            contentDescription = "Point",
-                            tint = Color(52, 168, 83),
-                            modifier = Modifier.size(16.dp)
-                        )
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text(text = status, color = Color(52, 168, 83), fontSize = 16.sp)
-                    }
+                Text(
+                    text = title,
+                    fontSize = 22.sp,
+                    fontFamily = Inter,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.tertiaryContainer,
+                    letterSpacing = (-0.2).sp
+                )
+                Row(
+                    modifier = Modifier.padding(start = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = when (status) {
+                            "Active" -> Icons.Default.RadioButtonChecked
+                            "Inactive" -> Icons.Default.Update
+                            "Pending" -> Icons.Default.Update
+                            else -> Icons.Default.RadioButtonChecked
+                        },
+                        contentDescription = "Point",
+                        tint = when (status) {
+                            "Active" -> Color(52, 168, 83)
+                            "Inactive" -> Color.Red
+                            "Pending" -> Color(234, 187, 51)
+                            else -> Color.Green
+                        },
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text(
+                        text = status,
+                        color = when (status) {
+                            "Active" -> Color(52, 168, 83)
+                            "Inactive" -> Color.Red
+                            "Pending" -> Color(234, 187, 51)
+                            else -> Color.Green
+                        },
+                        fontSize = 16.sp
+                    )
+                }
+
             }
             Spacer(modifier = Modifier.height(3.dp))
             HorizontalDivider(

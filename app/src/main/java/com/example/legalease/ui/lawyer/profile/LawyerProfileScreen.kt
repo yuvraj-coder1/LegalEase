@@ -99,21 +99,7 @@ fun LawyerProfileScreen(
             fontWeight = FontWeight.Bold,
             color = Color.Gray
         )
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(
-            onClick = { /*TODO*/ },
-            modifier = Modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.medium,
-            colors = ButtonDefaults.buttonColors(Color(0xFFD3D3D3))
-        ) {
-            Text(
-                text = "Message",
-                color = Color.Black,
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.bodyLarge
-            )
-        }
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(32.dp))
         Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
             Text(
                 text = "About Me",

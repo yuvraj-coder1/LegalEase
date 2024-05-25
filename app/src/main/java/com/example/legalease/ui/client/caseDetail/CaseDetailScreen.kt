@@ -1,6 +1,7 @@
 package com.example.legalease.ui.client.caseDetail
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,6 +29,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,7 +50,8 @@ fun CasesDetailScreen(
     caseNumber: String,
     caseStatus: String,
     clientName: String,
-    isLawyerAssigned: Boolean = true,
+    isLawyerAssigned: Boolean = false,
+    upcomingHearing: String?,
     expertise: List<String>
 ) {
     Column(
@@ -105,13 +108,21 @@ fun CasesDetailScreen(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(
-                text = "Upcoming",
-                fontFamily = Inter,
-                fontWeight = FontWeight(500),
-                fontSize = 16.sp
-            )
-            Text(text = "12/06/24")
+            if (upcomingHearing != null) {
+                Text(
+                    text = "Upcoming",
+                    fontFamily = Inter,
+                    fontWeight = FontWeight(500),
+                    fontSize = 16.sp
+                )
+                Text(text = "12/06/24")
+            } else {
+                Text(
+                    text = "No appointments yet",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
         }
         Spacer(modifier = Modifier.height(16.dp))
         Text(
@@ -120,28 +131,41 @@ fun CasesDetailScreen(
             style = MaterialTheme.typography.titleLarge
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            elevation = CardDefaults.cardElevation(4.dp)
-        ) {
-            Row(
-                modifier = Modifier.padding(16.dp).fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+        if(isLawyerAssigned) {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                elevation = CardDefaults.cardElevation(4.dp)
             ) {
-                Column() {
-                    Text(text = lawyerName, fontWeight = FontWeight.SemiBold)
-                    Spacer(modifier = Modifier.padding(4.dp))
-                    Text(text = lawyerLevel)
-                    Spacer(modifier = Modifier.padding(4.dp))
+                Row(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column() {
+                        Text(text = lawyerName, fontWeight = FontWeight.SemiBold)
+                        Spacer(modifier = Modifier.padding(4.dp))
+                        Text(text = lawyerLevel)
+                        Spacer(modifier = Modifier.padding(4.dp))
+                    }
+                    AsyncImage(
+                        model = null,
+                        error = painterResource(id = R.drawable.default_profile_image),
+                        contentDescription = "Lawyer Profile Image",
+                        modifier = Modifier
+                            .size(70.dp)
+                            .clip(CircleShape)
+                    )
                 }
-                AsyncImage(
-                    model = null,
-                    error = painterResource(id = R.drawable.default_profile_image),
-                    contentDescription = "Lawyer Profile Image",
-                    modifier = Modifier.size(70.dp).clip(CircleShape)
-                )
             }
+        }
+        else {
+            Text(
+                text = "No Lawyer appointed yet",
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
         Spacer(modifier = Modifier.height(16.dp))
         Text(
@@ -270,6 +294,8 @@ fun CasesDetailScreenPreview() {
         caseNumber = "12345",
         caseStatus = "Active",
         clientName = "JohnDoe",
-        expertise = listOf("Criminal", "Civil")
+        expertise = listOf("Criminal", "Civil"),
+        isLawyerAssigned = false,
+        upcomingHearing = null
     )
 }

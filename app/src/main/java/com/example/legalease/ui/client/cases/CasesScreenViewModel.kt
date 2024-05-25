@@ -10,7 +10,31 @@ class CasesScreenViewModel : ViewModel() {
             caseType = "Divorce",
             createdAt = "23/01/2005",
             status = "Active",
-
+        ),
+        CaseData(
+            caseType = "Divorce",
+            createdAt = "23/01/2005",
+            status = "Pending",
+        ),
+        CaseData(
+            caseType = "Divorce",
+            createdAt = "23/01/2005",
+            status = "Inactive",
+        ),
+        CaseData(
+            caseType = "Divorce",
+            createdAt = "23/01/2005",
+            status = "Inactive",
+        ),
+        CaseData(
+            caseType = "Divorce",
+            createdAt = "23/01/2005",
+            status = "Pending",
+        ),
+        CaseData(
+            caseType = "Divorce",
+            createdAt = "23/01/2005",
+            status = "Closed",
         )
     )
 }
