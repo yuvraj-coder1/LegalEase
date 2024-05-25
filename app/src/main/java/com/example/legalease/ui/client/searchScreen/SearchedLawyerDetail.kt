@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.StarHalf
@@ -28,9 +29,12 @@ import androidx.compose.material.icons.outlined.ThumbDown
 import androidx.compose.material.icons.outlined.ThumbUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -49,6 +53,7 @@ import com.example.legalease.R
 import com.example.legalease.model.LawyerData
 import com.example.legalease.ui.components.ChipsComponent
 import com.example.legalease.ui.viewModels.AuthViewModel
+import com.example.ui.theme.Inter
 
 
 @Composable
@@ -71,29 +76,42 @@ fun SearchedLawyerDetailScreen(
             .verticalScroll(rememberScrollState())
     ) {
         Spacer(modifier = Modifier.height(16.dp))
-        Box {
-            AsyncImage(
-                model = lawyerData.imageUrl,
-                error = painterResource(id = R.drawable.profile_image),
-                contentDescription = "lawyer profile photo",
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(CircleShape)
-            )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Box {
+                AsyncImage(
+                    model = lawyerData.imageUrl,
+                    error = painterResource(id = R.drawable.profile_image),
+                    contentDescription = "lawyer profile photo",
+                    modifier = Modifier
+                        .size(70.dp)
+                        .clip(CircleShape)
+                )
+            }
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.Start
+            ) {
+
+                Text(
+                    text = lawyerData.name,
+                    fontFamily = Inter,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 20.sp
+                )
+                Spacer(modifier = Modifier.height(3.dp))
+                Text(
+                    text = lawyerData.lawyerType,
+                    fontSize = 16.sp,
+                    fontFamily = Inter,
+                    fontWeight = FontWeight.Medium
+                )
+            }
         }
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = lawyerData.name,
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = lawyerData.lawyerType,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.Gray
-        )
+
         Spacer(modifier = Modifier.height(8.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Text(text = "Fee: ₹${lawyerData.feesPerHour}/hr", color = Color.Gray)
@@ -118,7 +136,7 @@ fun SearchedLawyerDetailScreen(
                         imageVector = Icons.Default.StarOutline,
                         contentDescription = "Lawyer Rating",
                         modifier = Modifier.size(20.dp),
-                        tint = Color.Yellow
+                        tint = Color.Black
                     )
                 }
                 for (i in lawyerData.rating.toInt() + 2..5) {
@@ -148,35 +166,102 @@ fun SearchedLawyerDetailScreen(
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
-            Text(
-                text = "About Me",
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.headlineSmall
-            )
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            elevation = CardDefaults.cardElevation(3.dp),
+            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onPrimary)
+        ) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.Start,
+                modifier = Modifier.padding(16.dp),
+
+                ) {
+
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    Text(
+                        text = "About Me",
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 18.sp,
+                        fontFamily = Inter,
+                        letterSpacing = (-0.1).sp,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Icon(imageVector = Icons.Default.Edit,
+                        contentDescription = "edit profile Picture",
+                        modifier = Modifier
+                            .clickable { /*TODO*/ }
+                            .padding(start = 8.dp)
+                            .size(18.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = lawyerData.bio,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                    letterSpacing = (-0.2).sp
+                )
+            }
         }
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = lawyerData.bio,
-            fontSize = 18.sp,
-            color = Color.DarkGray,
-            fontWeight = FontWeight.SemiBold
-        )
         Spacer(modifier = Modifier.height(24.dp))
-        Text(
-            text = "Expertise",
-            fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.headlineSmall
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        if (lawyerData.expertise.isNotEmpty())
-//            ChipsComponent(skills = lawyerData.expertise, cardColor = Color(0xFFD3D3D3))
-            Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "Client Reviews",
-            fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.headlineSmall
-        )
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+
+            elevation = CardDefaults.cardElevation(2.dp),
+            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onPrimary)
+        ) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.Start,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+
+                ) {
+                Text(
+                    text = "Expertise",
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 18.sp,
+                    fontFamily = Inter,
+                    letterSpacing = (-0.1).sp,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                ChipsComponent(skills = lawyerData.expertise, cardColor = Color(0xFFD3D3D3))
+            }
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
+            Text(
+                text = "Client Reviews", fontWeight = FontWeight.SemiBold,
+                fontSize = 18.sp,
+                fontFamily = Inter,
+                letterSpacing = (-0.1).sp,
+                color = MaterialTheme.colorScheme.primary
+            )
+            TextButton(
+                onClick = { /*TODO*/ }
+            ) {
+                Text(
+                    text = "See more",
+                    fontFamily = Inter,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.tertiary
+                )
+            }
+        }
         Spacer(modifier = Modifier.height(16.dp))
         if (lawyerProfileScreenViewModel.reviews.isEmpty()) {
             Text(
@@ -185,9 +270,11 @@ fun SearchedLawyerDetailScreen(
                 color = Color.DarkGray,
             )
         }
-        Column {
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
             lawyerProfileScreenViewModel.reviews.forEachIndexed { index, it ->
-                Review(
+                com.example.legalease.ui.lawyer.profile.Review(
                     userName = it.userName,
                     date = it.date,
                     review = it.comment,
