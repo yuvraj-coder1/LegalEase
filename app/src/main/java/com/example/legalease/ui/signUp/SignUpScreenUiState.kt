@@ -15,4 +15,5 @@ data class SignUpScreenUiState(
     val selectedExpertise:List<String> = listOf(),
     val isThisExpertiseSelected:List<Boolean> = listOf(false,false,false,false),
     val lawyerLocation:String= "",
+    val lawyerExperience:String = "",
 )
