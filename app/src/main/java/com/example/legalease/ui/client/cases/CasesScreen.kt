@@ -1,23 +1,31 @@
 package com.example.legalease.ui.client.cases
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.RadioButtonChecked
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,13 +39,15 @@ fun CasesScreen(modifier: Modifier = Modifier) {
     LazyColumn(modifier = modifier) {
         items(casesScreenViewModel.casesItemList) {
             CaseItem(
-                title = it.title,
+                title = it.caseType,
                 description = it.description,
                 upcomingHearing = it.upcomingHearing,
                 onItemClick = {},
                 modifier = modifier
                     .padding(16.dp)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                status = it.status
+
             )
         }
     }
@@ -49,35 +59,88 @@ fun CaseItem(
     title: String,
     description: String,
     upcomingHearing: String,
-    onItemClick: () -> Unit
+    onItemClick: () -> Unit,
+    status: String
 ) {
 
     Card(
-        modifier = modifier.clickable { onItemClick() },
+        modifier = modifier
+            .clickable { onItemClick() }
+            .shadow(10.dp),
         colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onPrimary)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.Start,
+            modifier = Modifier.padding(20.dp)
+        ) {
+            Row(modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween) {
+
             Text(
                 text = title,
-                fontSize = 16.sp,
+                fontSize = 22.sp,
                 fontFamily = Inter,
                 fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.tertiaryContainer,
+                letterSpacing = (-0.2).sp
             )
-            Spacer(modifier = Modifier.height(8.dp))
+                if (status == "Active")
+                    Row(
+                        modifier = Modifier.padding(start = 16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.RadioButtonChecked,
+                            contentDescription = "Point",
+                            tint = Color(52, 168, 83),
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(text = status, color = Color(52, 168, 83), fontSize = 16.sp)
+                    }
+            }
+            Spacer(modifier = Modifier.height(3.dp))
+            HorizontalDivider(
+                modifier = Modifier.width(80.dp)
+            )
+            Spacer(modifier = Modifier.height(15.dp))
             Text(
                 text = description,
                 fontFamily = Inter,
                 color = MaterialTheme.colorScheme.primaryContainer,
                 overflow = TextOverflow.Ellipsis,
-                maxLines = 3,
-                textAlign = TextAlign.Justify,
-                style = TextStyle(
-                    letterSpacing = 0.18.sp
-                )
+                maxLines = 2,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium,
+                letterSpacing = (-0.1).sp
             )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "Upcoming Hearing: $upcomingHearing", color = Color.Blue)
+            Spacer(modifier = Modifier.height(10.dp))
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text(
+                    text = "Upcoming Hearing",
+                    fontFamily = Inter,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.tertiaryContainer
+                )
+                Spacer(modifier = Modifier.height(3.dp))
+                HorizontalDivider(
+                    modifier = Modifier.width(150.dp)
+                )
+                Spacer(modifier = Modifier.height(5.dp))
+                Text(
+                    upcomingHearing,
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                    fontFamily = Inter,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            }
         }
     }
 }
