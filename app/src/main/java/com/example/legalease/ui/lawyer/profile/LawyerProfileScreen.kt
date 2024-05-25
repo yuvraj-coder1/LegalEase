@@ -61,6 +61,7 @@ import com.example.ui.theme.Inter
 fun LawyerProfileScreen(
     modifier: Modifier = Modifier,
     lawyerId: String = "",
+    logOut: () -> Unit = {},
 ) {
     val lawyerProfileScreenViewModel: LawyerProfileScreenViewModel = hiltViewModel()
     val lawyer = lawyerProfileScreenViewModel.lawyer.collectAsState()
@@ -269,7 +270,7 @@ fun LawyerProfileScreen(
             }
         }
         Button(
-            onClick = { /*TODO*/ },
+            onClick = logOut,
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(5.dp)
         ) {

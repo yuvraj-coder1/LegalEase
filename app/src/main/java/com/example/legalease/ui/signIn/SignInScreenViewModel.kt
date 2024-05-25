@@ -55,7 +55,6 @@ class SignInScreenViewModel @Inject constructor(
                 if (_uiState.value.isLawyer) {
                     db.collection(LAWYER_NODE).document(currentUser!!.uid).get()
                         .addOnSuccessListener {
-                            Log.d("TAG", "signIn: $it")
                             val lawyerData = it.toObject(LawyerData::class.java)
                             Log.d("TAG", "signIn: $lawyerData")
                             if (lawyerData == null) {
@@ -63,7 +62,7 @@ class SignInScreenViewModel @Inject constructor(
                                 onFailure(Exception("Lawyer not found"))
                                 return@addOnSuccessListener
                             }
-                            if (lawyerData.isVerified) {
+                            if (lawyerData.verified) {
                                 isSignedIn = true
                                 inProcess = false
                                 onSuccess()

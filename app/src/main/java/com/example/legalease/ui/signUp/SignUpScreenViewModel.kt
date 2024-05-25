@@ -142,7 +142,8 @@ class SignUpScreenViewModel @Inject constructor(
                                 feesPerHour = uiState.value.fee,
                                 lawyerType = uiState.value.lawyerType,
                                 lawyerLocation = uiState.value.lawyerLocation,
-                                experience = uiState.value.lawyerExperience
+                                experience = uiState.value.lawyerExperience,
+                                verified = false
                             )
                             db.collection(LAWYER_NODE).document(user.uid).set(lawyer)
                         } else {

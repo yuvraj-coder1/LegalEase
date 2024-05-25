@@ -37,7 +37,7 @@ import com.example.legalease.ui.viewModels.AuthViewModel
 import com.example.ui.theme.Inter
 
 @Composable
-fun ClientProfile(modifier: Modifier = Modifier, viewModel: AuthViewModel) {
+fun ClientProfile(modifier: Modifier = Modifier, viewModel: AuthViewModel, logOut: () -> Unit) {
     val client = viewModel.currentClient
     Column(
         modifier = modifier
@@ -121,7 +121,7 @@ fun ClientProfile(modifier: Modifier = Modifier, viewModel: AuthViewModel) {
                 .fillMaxWidth()
                 .padding(12.dp),
             shape = RoundedCornerShape(7.dp),
-            onClick = { /*TODO*/ }) {
+            onClick =logOut) {
             Text(
                 text = stringResource(R.string.log_out),
                 fontSize = 16.sp,

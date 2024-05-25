@@ -143,7 +143,15 @@ fun LegalEaseApp(
         composable<ProfileScreen> {
             showIncomingCases(false)
             onBottomBarVisibilityChanged(true)
-            LawyerProfileScreen()
+            LawyerProfileScreen(logOut = {
+                signInScreenViewModel.isSignedIn=false
+                authViewModel.signOut()
+                navController.navigate(LanguageSelectionScreen) {
+                    popUpTo(LanguageSelectionScreen) {
+                        inclusive = false
+                    }
+                }
+            })
         }
         composable<HomeScreen> {
             onBottomBarVisibilityChanged(true)
@@ -155,7 +163,7 @@ fun LegalEaseApp(
                 signedInViewModel = signInScreenViewModel,
                 onSeeAllClick = { navController.navigate(CaseListScreen) },
                 navigateToAddAppointment = { navController.navigate(AppointmentCaseSelectionScreen) },
-                onDocumentClick = {navController.navigate(DocumentListScreen)}
+                onDocumentClick = { navController.navigate(DocumentListScreen) }
             )
         }
         composable<SearchedLayerScreen> {
@@ -198,7 +206,15 @@ fun LegalEaseApp(
         composable<ClientProfileScreen> {
             showIncomingCases(false)
             onBottomBarVisibilityChanged(true)
-            ClientProfile(viewModel = authViewModel)
+            ClientProfile(viewModel = authViewModel, logOut = {
+                signInScreenViewModel.isSignedIn=false
+                authViewModel.signOut()
+                navController.navigate(LanguageSelectionScreen) {
+                    popUpTo(LanguageSelectionScreen) {
+                        inclusive = false
+                    }
+                }
+            })
         }
         composable<CaseListScreen> {
             showIncomingCases(false)
@@ -273,7 +289,7 @@ fun LegalEaseApp(
         composable<DocumentListScreen> {
             showIncomingCases(false)
             onBottomBarVisibilityChanged(false)
-            DocumentListScreen(onClick = {navController.navigate(ComposePdfViewerScreen(it))})
+            DocumentListScreen(onClick = { navController.navigate(ComposePdfViewerScreen(it)) })
         }
 
         composable<AppointmentCaseSelectionScreen> {
@@ -290,6 +306,7 @@ fun LegalEaseApp(
             BookAppointment(
                 caseId = args.caseId,
                 clientId = args.clientId,
+
                 navigateBack = { navController.navigateUp() })
         }
     }
