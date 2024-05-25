@@ -73,7 +73,7 @@ fun ChipsComponent(
     modifier: Modifier = Modifier,
     cardColor: Color = MaterialTheme.colorScheme.primary,
     onChipClick: (Int) -> Unit = {},
-    isThisIndexSelected: List<Boolean> = emptyList(),
+    isThisIndexSelected: List<Boolean> = List(skills.size) { false },
     selectedColor: Color = MaterialTheme.colorScheme.primary,
 ) {
     if (skills.isNotEmpty())
@@ -126,5 +126,5 @@ fun ChipsComponentPreview() {
     val skillsList =
         listOf("Web Development", "JavaScript", "UI/UX Design", "Machine Learning", "Data Science")
 
-//    ChipsComponent(skillsList)
+    ChipsComponent(skillsList)
 }
