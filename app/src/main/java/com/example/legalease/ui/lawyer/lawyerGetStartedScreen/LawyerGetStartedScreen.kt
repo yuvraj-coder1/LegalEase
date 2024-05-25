@@ -30,6 +30,7 @@ import com.example.compose.LegalEaseTheme
 fun LawyerGetStartedScreen(
     modifier: Modifier = Modifier,
     viewModel: SignUpScreenViewModel,
+    navigateToSignIn: () -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsState()
     Column(
@@ -50,7 +51,7 @@ fun LawyerGetStartedScreen(
             skills = uiState.expertise,
             onChipClick = { viewModel.selectExpertise(it) },
             isThisIndexSelected = uiState.isThisExpertiseSelected,
-            selectedColor = Color(207,118,54),
+            selectedColor = Color(207, 118, 54),
         )
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
@@ -72,7 +73,10 @@ fun LawyerGetStartedScreen(
         )
         Spacer(modifier = Modifier.height(24.dp))
         Button(
-            onClick = { viewModel.signUp() },
+            onClick = {
+                viewModel.signUp()
+                navigateToSignIn()
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .align(alignment = Alignment.End)

@@ -23,6 +23,7 @@ import com.example.compose.LegalEaseTheme
 import com.example.legalease.ui.bottombar.BottomBar
 import com.example.legalease.ui.navigation.ChatBotScreen
 import com.example.legalease.ui.navigation.LegalEaseApp
+import com.example.legalease.ui.navigation.ReceivedCaseListScreen
 import com.example.legalease.ui.signIn.SignInScreenTopBar
 import com.example.legalease.ui.signIn.SignInScreenViewModel
 import com.example.legalease.ui.signUp.SignUpScreenViewModel
@@ -48,6 +49,7 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             var buttonsVisible by remember { mutableStateOf(false) }
             var showChatbot by remember { mutableStateOf(false) }
+            var showIncomingCase by remember { mutableStateOf(false) }
             LegalEaseTheme {
                 Scaffold(
                     bottomBar = {
@@ -66,7 +68,9 @@ class MainActivity : ComponentActivity() {
                         SignInScreenTopBar(
                             modifier = Modifier,
                             onClick = { navController.navigate(ChatBotScreen) },
-                            showIcon = showChatbot
+                            showIcon = showChatbot,
+                            showIncomingCase = showIncomingCase,
+                            onIncomingCaseClick = { navController.navigate(ReceivedCaseListScreen) }
                         )
                     }
                 ) { innerPadding ->
@@ -81,7 +85,8 @@ class MainActivity : ComponentActivity() {
                         signUpScreenViewModel = signUpViewModel,
                         authViewModel = authViewModel,
                         onBottomBarVisibilityChanged = { buttonsVisible = it },
-                        showChatbotIcon = {showChatbot = it}
+                        showChatbotIcon = { showChatbot = it },
+                        showIncomingCases = { showIncomingCase = it }
                     )
                 }
             }

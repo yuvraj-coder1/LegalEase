@@ -46,3 +46,9 @@ data object ClientProfileScreen
 
 @Serializable
 data object CaseListScreen
+
+@Serializable
+data object ReceivedCaseListScreen
+
+@Serializable
+data class CaseDetailScreen(val caseId: String)

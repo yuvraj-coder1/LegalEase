@@ -10,6 +10,7 @@ data class CaseData(
     val createdAt: String = "23/01/24",
     val status: String = "pending",
     val clientId: String = "",
+    val clientName: String = "",
     val lawyerId: String? = null,
     val preferredLanguage: String = "",
 )

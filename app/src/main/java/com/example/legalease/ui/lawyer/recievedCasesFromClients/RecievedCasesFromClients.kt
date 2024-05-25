@@ -2,6 +2,7 @@ package com.example.legalease.ui.lawyer.recievedCasesFromClients
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,6 +23,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -40,11 +42,17 @@ import com.example.legalease.R
 import com.example.compose.LegalEaseTheme
 
 @Composable
-fun ReceivedCasesFromClients(modifier: Modifier = Modifier) {
+fun ReceivedCasesFromClients(
+    modifier: Modifier = Modifier,
+    navigateToDetailScreen: (String) -> Unit = {},
+) {
     val viewModel: ReceivedCasesFromClientsViewModel =
         hiltViewModel<ReceivedCasesFromClientsViewModel>()
+    LaunchedEffect(Unit) {
+        viewModel.getCasesFromClients()
+    }
     val uiState by viewModel.uiState.collectAsState()
-    LazyColumn {
+    LazyColumn(modifier = modifier) {
         itemsIndexed(uiState.cases) { index, case ->
             CaseItem(
                 caseTitle = case.caseType,
@@ -52,6 +60,16 @@ fun ReceivedCasesFromClients(modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
+                    .clickable {
+                        navigateToDetailScreen(case.id)
+                    },
+                onLawyerDecision = {
+                    viewModel.updateCaseStatus(
+                        caseId = case.id,
+                        status = it,
+                        lawyerId = viewModel.getCurrentLawyerId()
+                    )
+                }
             )
         }
     }
@@ -62,6 +80,7 @@ fun CaseItem(
     modifier: Modifier = Modifier,
     caseTitle: String,
     caseDescription: String,
+    onLawyerDecision: (String) -> Unit = {}
 ) {
     Column(modifier = modifier) {
         Row(
@@ -85,7 +104,7 @@ fun CaseItem(
         Spacer(modifier = Modifier.height(16.dp))
         Row {
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { onLawyerDecision("rejected") },
                 modifier = Modifier.weight(1f),
                 shape = MaterialTheme.shapes.extraSmall,
                 colors = ButtonDefaults.buttonColors(Color.White),
@@ -98,7 +117,7 @@ fun CaseItem(
             }
             Spacer(modifier = Modifier.width(8.dp))
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { onLawyerDecision("accepted") },
                 modifier = Modifier.weight(1f),
                 shape = MaterialTheme.shapes.extraSmall,
                 colors = ButtonDefaults.buttonColors(Color.Black)

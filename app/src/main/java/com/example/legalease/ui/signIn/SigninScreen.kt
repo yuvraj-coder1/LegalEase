@@ -20,12 +20,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Headphones
 import androidx.compose.material.icons.filled.Key
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.RemoveRedEye
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.Key
+import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material.icons.outlined.NotificationsNone
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -90,22 +93,24 @@ fun SignInScreen(
         password = signInUiState.password,
         isLawyer = signInUiState.isLawyer,
         onSignIn = {
-            if(signInUiState.username.isEmpty() && signInUiState.password.isNotEmpty())
+            if (signInUiState.username.isEmpty() && signInUiState.password.isNotEmpty())
                 Toast.makeText(context, "Username can't be empty!", Toast.LENGTH_SHORT).show()
-            else if(signInUiState.password.isEmpty() && signInUiState.username.isNotEmpty())
+            else if (signInUiState.password.isEmpty() && signInUiState.username.isNotEmpty())
                 Toast.makeText(context, "Password can't be empty!", Toast.LENGTH_SHORT).show()
-            else if(signInUiState.username.isEmpty() && signInUiState.password.isEmpty())
+            else if (signInUiState.username.isEmpty() && signInUiState.password.isEmpty())
                 Toast.makeText(context, "Enter your credentials!", Toast.LENGTH_SHORT).show()
             else
-            signInViewModel.signIn(
-                onSuccess = {
-                    Toast.makeText(context, "Signed in successfully!", Toast.LENGTH_SHORT).show()
-                    navigateToHome()
-                },
-                onFailure = {
-                    Toast.makeText(context, "Enter correct credentials!", Toast.LENGTH_SHORT).show()
-                }
-            )
+                signInViewModel.signIn(
+                    onSuccess = {
+                        Toast.makeText(context, "Signed in successfully!", Toast.LENGTH_SHORT)
+                            .show()
+                        navigateToHome()
+                    },
+                    onFailure = {
+                        Toast.makeText(context, "Enter correct credentials!", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                )
         },
         onUsernameChange = { signInViewModel.updateUsername(it) },
         onPasswordChange = { signInViewModel.updatePassword(it) },
@@ -120,7 +125,13 @@ fun SignInScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignInScreenTopBar(modifier: Modifier = Modifier, onClick: () -> Unit, showIcon: Boolean) {
+fun SignInScreenTopBar(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    onIncomingCaseClick: () -> Unit,
+    showIcon: Boolean,
+    showIncomingCase: Boolean = false
+) {
     TopAppBar(
         title = {
             Row(
@@ -139,9 +150,18 @@ fun SignInScreenTopBar(modifier: Modifier = Modifier, onClick: () -> Unit, showI
                         ),
                     ),
                 )
-                if(showIcon) {
-                    Spacer(modifier = Modifier.weight(1f))
-                    IconButton(onClick = {onClick()}) {
+                Spacer(modifier = Modifier.weight(1f))
+                if (showIncomingCase) {
+                    IconButton(onClick = onIncomingCaseClick) {
+                        Icon(
+                            imageVector = Icons.Outlined.NotificationsNone,
+                            contentDescription = "ChatBot",
+                            modifier = Modifier.size(30.dp)
+                        )
+                    }
+                }
+                if (showIcon) {
+                    IconButton(onClick = { onClick() }) {
                         Icon(
                             painter = painterResource(id = R.drawable.chatbot_icon),
                             contentDescription = "ChatBot",
@@ -193,7 +213,7 @@ fun SignInScreenContent(
 //                modifier = Modifier.weight(1f)
             ) {
                 Text(text = "Lawyer", color = if (isLawyer) Color.White else Color.Black)
-                if(isLawyer) {
+                if (isLawyer) {
                     Spacer(modifier = Modifier.width(20.dp))
                     Image(
                         painter = painterResource(id = R.drawable.lawyer_icon),
@@ -210,7 +230,7 @@ fun SignInScreenContent(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(text = "Client", color = if (!isLawyer) Color.White else Color.Black)
-                if(!isLawyer) {
+                if (!isLawyer) {
                     Spacer(modifier = Modifier.weight(1f))
                     Image(
                         painter = painterResource(id = R.drawable.client_icon),
