@@ -61,3 +61,6 @@ data class SendCaseScreen(val lawyerId: String)
 
 @Serializable
 data object SpeechToTextScreen
+
+@Serializable
+data object FilterScreen
