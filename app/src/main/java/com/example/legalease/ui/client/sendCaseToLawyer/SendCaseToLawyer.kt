@@ -32,7 +32,11 @@ import com.example.legalease.model.CaseData
 import com.example.ui.theme.Inter
 
 @Composable
-fun SendCaseToLawyerScreen(modifier: Modifier = Modifier, lawyerId: String = "") {
+fun SendCaseToLawyerScreen(
+    modifier: Modifier = Modifier,
+    lawyerId: String = "",
+    navigateUp: () -> Unit = {}
+) {
     val viewModel: SendCaseToLawyerViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
     LazyColumn(modifier = Modifier.padding(16.dp)) {
@@ -44,7 +48,10 @@ fun SendCaseToLawyerScreen(modifier: Modifier = Modifier, lawyerId: String = "")
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
-                onSendCase = { viewModel.updateCase(caseId = case.id, lawyerId = lawyerId) }
+                onSendCase = {
+                    viewModel.updateCase(caseId = case.id, lawyerId = lawyerId)
+                    navigateUp()
+                }
             )
         }
     }

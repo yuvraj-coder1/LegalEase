@@ -69,7 +69,7 @@ fun SearchedLawyerDetailScreen(
     }
     val lawyerData = vm.currentLawyer ?: LawyerData()
     Log.d(TAG, "SearchedLawyerDetailScreen: ${lawyerData.expertise}")
-    val lawyerProfileScreenViewModel: LawyerProfileScreenViewModel = viewModel()
+    val lawyerProfileScreenViewModel: LawyerProfileScreenViewModel = hiltViewModel()
     Column(
         modifier = modifier
             .padding(16.dp)
