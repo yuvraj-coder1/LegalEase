@@ -13,4 +13,5 @@ data class CaseData(
     val clientName: String = "",
     val lawyerId: String? = null,
     val preferredLanguage: String = "",
+    val upcomingHearing:String="23/06/24"
 )
