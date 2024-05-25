@@ -16,6 +16,7 @@ import com.example.legalease.ui.client.cases.CasesScreen
 import com.example.legalease.ui.client.profile.ClientProfile
 import com.example.legalease.ui.client.searchScreen.SearchScreen
 import com.example.legalease.ui.client.searchScreen.SearchedLawyerDetailScreen
+import com.example.legalease.ui.client.sendCaseToLawyer.SendCaseToLawyerScreen
 import com.example.legalease.ui.lawyer.home.LawyerHomeScreen
 import com.example.legalease.ui.lawyer.lawyerGetStartedScreen.LawyerGetStartedScreen
 import com.example.legalease.ui.lawyer.profile.LawyerProfileScreen
@@ -126,7 +127,9 @@ fun LegalEaseApp(
             }
             LawyerHomeScreen(
                 signedInViewModel = signInScreenViewModel,
-                onSeeAllClick = { navController.navigate(CaseListScreen) })
+                onSeeAllClick = { navController.navigate(CaseListScreen) },
+                navigateToAddCase = { navController.navigate(AddCaseScreen) }
+            )
         }
         composable<SearchedLayerScreen> {
             showIncomingCases(false)
@@ -135,7 +138,7 @@ fun LegalEaseApp(
             SearchedLawyerDetailScreen(
                 lawyerId = args.lawyerId,
                 navigateToAddCaseScreen = { lawyerId ->
-                    navController.navigate(AddCaseScreen(lawyerId))
+                    navController.navigate(SendCaseScreen(lawyerId))
                 },
                 vm = authViewModel,
             )
@@ -162,9 +165,8 @@ fun LegalEaseApp(
         }
         composable<AddCaseScreen> {
             showIncomingCases(false)
-            val args = it.toRoute<AddCaseScreen>()
             onBottomBarVisibilityChanged(false)
-            AddCaseScreen(lawyerId = args.lawyerId)
+            AddCaseScreen(navigateToHome = { navController.navigate(HomeScreen) })
         }
         composable<ClientProfileScreen> {
             showIncomingCases(false)
@@ -202,7 +204,7 @@ fun LegalEaseApp(
                         )
                     }
                 },
-                onDocumentClick = {navController.navigate(ComposePdfViewerScreen(it))}
+                onDocumentClick = { navController.navigate(ComposePdfViewerScreen(it)) }
             )
         }
 
@@ -211,6 +213,12 @@ fun LegalEaseApp(
             val args = it.toRoute<ComposePdfViewerScreen>()
             onBottomBarVisibilityChanged(false)
             ComposePDFViewer(pdfLink = args.pdfLink)
+        }
+        composable<SendCaseScreen> {
+            showIncomingCases(false)
+            onBottomBarVisibilityChanged(false)
+            val args = it.toRoute<SendCaseScreen>()
+            SendCaseToLawyerScreen(lawyerId = args.lawyerId)
         }
     }
 }

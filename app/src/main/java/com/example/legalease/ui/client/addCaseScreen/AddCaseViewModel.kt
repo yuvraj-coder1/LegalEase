@@ -50,7 +50,7 @@ class AddCaseViewModel @Inject constructor(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun sendCase(lawyerId: String) {
+    fun sendCase() {
         val id = db.collection(CASE_NODE).document().id
         val case = CaseData(
             id = id,
@@ -60,7 +60,7 @@ class AddCaseViewModel @Inject constructor(
             documentLinks = pdfUrlList,
             clientId = auth.currentUser?.uid ?: "test",
             createdAt = LocalDate.now().toString(),
-            lawyerId = lawyerId
+            lawyerId = null
         )
         db.collection(CASE_NODE).document(id).set(case)
     }

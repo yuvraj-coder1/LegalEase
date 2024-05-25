@@ -51,7 +51,7 @@ class ReceivedCasesFromClientsViewModel @Inject constructor(
             db.collection(CASE_NODE).document(caseId).update("lawyerId", null)
         }
         else {
-            db.collection(CASE_NODE).document(caseId).update("status", status)
+            db.collection(CASE_NODE).document(caseId).update("status", "active")
             db.collection(CASE_NODE).document(caseId).update("lawyerId", lawyerId)
         }
 

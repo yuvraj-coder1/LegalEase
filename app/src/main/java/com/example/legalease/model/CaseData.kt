@@ -8,7 +8,7 @@ data class CaseData(
             "Cum sociis natoque penatibus et magnis dis parturient montes, nascetur\n",
     val documentLinks: List<String> = emptyList(),
     val createdAt: String = "23/01/24",
-    val status: String = "Inactive",
+    val status: String = "inactive",
     val clientId: String = "",
     val clientName: String = "",
     val lawyerId: String? = null,
