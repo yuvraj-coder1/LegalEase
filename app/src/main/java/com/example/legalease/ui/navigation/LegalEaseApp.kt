@@ -110,18 +110,19 @@ fun LegalEaseApp(
         composable<SearchScreen> {
             showIncomingCases(false)
             onBottomBarVisibilityChanged(true)
-            SearchScreen(onLawyerClicked = {
-                navController.navigate(
-                    SearchedLayerScreen(
-                        it.id
+            SearchScreen(
+                onLawyerClicked = {
+                    navController.navigate(
+                        SearchedLayerScreen(
+                            it.id
+                        )
                     )
-                )
-            },
+                },
                 onFilterClicked = {
                     navController.navigate(FilterScreen)
                 },
                 searchScreenViewModel = searchScreenViewModel
-                )
+            )
         }
         composable<ProfileScreen> {
             showIncomingCases(false)
@@ -227,9 +228,11 @@ fun LegalEaseApp(
             showIncomingCases(false)
             onBottomBarVisibilityChanged(false)
             val args = it.toRoute<SendCaseScreen>()
-            SendCaseToLawyerScreen(lawyerId = args.lawyerId)
+            SendCaseToLawyerScreen(
+                lawyerId = args.lawyerId,
+                navigateUp = { navController.navigateUp() })
         }
-        composable<SpeechToTextScreen>{
+        composable<SpeechToTextScreen> {
             SpeechToTextScreen()
         }
         composable<FilterScreen> {
