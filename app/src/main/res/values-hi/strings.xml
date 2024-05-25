@@ -70,5 +70,8 @@
     <string name="affidavit">Affidavit</string>
     <string name="case_timeline">Case Timeline</string>
     <string name="event_description_1">Event Description 1</string>
-
+    <string name="fee_in_rupee">Fee: ₹</string>
+    <string name="per_hour">/hr</string>
+    <string name="send_case">Send Case</string>
+    <string name="ratings_closed">" ratings)"</string>
 </resources>
