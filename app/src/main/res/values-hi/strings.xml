@@ -19,16 +19,22 @@
     <string name="sign_up_with_google">गूगल से साइन अप करें</string>
     <string name="already_have_an_account">पहले से ही खाता है?</string>
     <string name="today">आज का दिन</string>
-    <string name="book_appointment">Book Appointment</string>
-    <string name="you_have_an_appointment_with_mr_lawyer_at_9_00_am">You have an appointment with Mr Lawyer at 9:00 AM</string>
-    <string name="cases">Cases</string>
-    <string name="no_cases_available">No Cases Available</string>
-    <string name="others">Others</string>
-    <string name="faqs">FAQs</string>
-    <string name="blogs">Blogs</string>
-    <string name="history">History</string>
-    <string name="financials">Financials</string>
-    <string name="upcoming_hearing">"Upcoming Hearing "</string>
-
-
+    <string name="book_appointment">नियुक्ति बुक करें</string>
+    <string name="you_have_an_appointment_with_mr_lawyer_at_9_00_am">आपका वकील के साथ सुबह 9:00 बजे की नियुक्ति है</string>
+    <string name="cases">मुकदमा</string>
+    <string name="no_cases_available">कोई मुकदमा उपलब्ध नहीं हैं!</string>
+    <string name="others">अन्य</string>
+    <string name="faqs">प्रश्न</string>
+    <string name="blogs">ब्लॉग</string>
+    <string name="history">इतिहास</string>
+    <string name="financials">वित्तीय</string>
+    <string name="upcoming_hearing">आगामी सुनवाई</string>
+    <string name="documents">दस्तावेज़</string>
+    <string name="search">खोजें</string>
+    <string name="filter">फ़िल्टर</string>
+    <string name="sort">छांटें</string>
+    <string name="oops_no_lawyer_found">ओह! कोई वकील नहीं मिला</string>
+    <string name="profile">प्रोफ़ाइल</string>
+    <string name="log_out">लॉग आउट</string>
+    <string name="type_a_prompt">कुछ लिखें</string>
 </resources>

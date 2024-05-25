@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,7 +49,7 @@ fun ClientProfile(modifier: Modifier = Modifier, viewModel: AuthViewModel) {
     ) {
 //        Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Profile",
+            text = stringResource(R.string.profile),
             fontSize = 32.sp,
             fontFamily = Inter,
             fontWeight = FontWeight.Bold,
@@ -116,11 +117,13 @@ fun ClientProfile(modifier: Modifier = Modifier, viewModel: AuthViewModel) {
 
         Spacer(modifier = Modifier.height(16.dp))
         Button(
-            modifier = Modifier.fillMaxWidth().padding(12.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
             shape = RoundedCornerShape(7.dp),
             onClick = { /*TODO*/ }) {
             Text(
-                text = "Log Out",
+                text = stringResource(R.string.log_out),
                 fontSize = 16.sp,
                 fontFamily = Inter,
                 fontWeight = FontWeight.Medium,

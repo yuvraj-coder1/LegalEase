@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -37,6 +39,7 @@ fun LawyerGetStartedScreen(
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp)
+            .verticalScroll(rememberScrollState())
     ) {
         OutlinedTextField(
             value = uiState.lawyerType,
@@ -60,15 +63,15 @@ fun LawyerGetStartedScreen(
             label = { Text("About Lawyer") },
             placeholder = { Text("Enter about lawyer", color = Color.Gray) },
             modifier = Modifier.fillMaxWidth(),
-            minLines = 10,
-            maxLines = 10
+            minLines = 7,
+            maxLines = 7
         )
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
             value = uiState.lawyerExperience,
-            onValueChange = { viewModel.updateLocation(it) },
-            label = { Text("Lawyer Preferred Location") },
-            placeholder = { Text("Location", color = Color.Gray) },
+            onValueChange = { viewModel.updateExperience(it) },
+            label = { Text("Lawyer Experience") },
+            placeholder = { Text("Lawyer Experience", color = Color.Gray) },
             modifier = Modifier.fillMaxWidth(),
         )
         Spacer(modifier = Modifier.height(16.dp))
