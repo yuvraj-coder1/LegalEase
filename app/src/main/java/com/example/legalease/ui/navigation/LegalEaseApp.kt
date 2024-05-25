@@ -24,6 +24,7 @@ import com.example.legalease.ui.lawyer.recievedCasesFromClients.CaseDetailOfTheR
 import com.example.legalease.ui.lawyer.recievedCasesFromClients.ReceivedCasesFromClients
 import com.example.legalease.ui.message.ChatListScreen
 import com.example.legalease.ui.message.SingleChatScreen
+import com.example.legalease.ui.message.audioToText.SpeechToTextScreen
 import com.example.legalease.ui.pdfViewer.ComposePDFViewer
 import com.example.legalease.ui.signIn.SignInScreen
 import com.example.legalease.ui.signIn.SignInScreenViewModel
@@ -219,6 +220,9 @@ fun LegalEaseApp(
             onBottomBarVisibilityChanged(false)
             val args = it.toRoute<SendCaseScreen>()
             SendCaseToLawyerScreen(lawyerId = args.lawyerId)
+        }
+        composable<SpeechToTextScreen>{
+            SpeechToTextScreen()
         }
     }
 }

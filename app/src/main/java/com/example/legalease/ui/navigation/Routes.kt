@@ -58,3 +58,6 @@ data class ComposePdfViewerScreen(val pdfLink: String)
 
 @Serializable
 data class SendCaseScreen(val lawyerId: String)
+
+@Serializable
+data object SpeechToTextScreen
