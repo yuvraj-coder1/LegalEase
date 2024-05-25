@@ -74,4 +74,15 @@
     <string name="per_hour">/hr</string>
     <string name="send_case">Send Case</string>
     <string name="ratings_closed">" ratings)"</string>
+    <string name="view">View</string>
+    <string name="send">Send</string>
+    <string name="message">Message</string>
+    <string name="appointment_date">Appointment Date</string>
+    <string name="pick_time">Pick Time</string>
+    <string name="book">Book</string>
+    <string name="case_created">Case Created</string>
+    <string name="language">Language</string>
+    <string name="decline">Decline</string>
+    <string name="accept">Accept</string>
+    <string name="end_case">End Case</string>
 </resources>

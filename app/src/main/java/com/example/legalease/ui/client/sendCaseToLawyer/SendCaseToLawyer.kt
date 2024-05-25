@@ -23,11 +23,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.compose.LegalEaseTheme
+import com.example.legalease.R
 import com.example.legalease.model.CaseData
 import com.example.ui.theme.Inter
 
@@ -108,7 +110,7 @@ fun CaseToSendToLawyerItem(
                         color = Color(51, 101, 198)
                     )
                 ) {
-                    Text(text = "View", color = Color.Black)
+                    Text(text = stringResource(R.string.view), color = Color.Black)
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 Button(
@@ -117,7 +119,7 @@ fun CaseToSendToLawyerItem(
                     shape = MaterialTheme.shapes.extraSmall,
                     colors = ButtonDefaults.buttonColors(Color(51, 101, 198))
                 ) {
-                    Text(text = "Send")
+                    Text(text = stringResource(R.string.send))
                 }
             }
         }

@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -97,7 +98,7 @@ fun CaseDetailOfTheReceivedCase(
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            text = "Case Created",
+                            text = stringResource(R.string.case_created),
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight(500)
                         )
@@ -111,7 +112,7 @@ fun CaseDetailOfTheReceivedCase(
                     VerticalDivider(modifier = Modifier.height(50.dp))
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            text = "Language",
+                            text = stringResource(R.string.language),
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight(500)
                         )
@@ -132,7 +133,7 @@ fun CaseDetailOfTheReceivedCase(
         HorizontalDivider()
         Spacer(modifier = Modifier.height(24.dp))
         Text(
-            text = "Case Description",
+            text = stringResource(id = R.string.case_description),
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold
         )
@@ -182,7 +183,7 @@ fun CaseDetailOfTheReceivedCase(
                         color = Color.Black
                     )
                 ) {
-                    Text(text = "Decline", color = Color.Black)
+                    Text(text = stringResource(id = R.string.decline), color = Color.Black)
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 Button(
@@ -199,7 +200,7 @@ fun CaseDetailOfTheReceivedCase(
                     shape = MaterialTheme.shapes.extraSmall,
                     colors = ButtonDefaults.buttonColors(Color.Black)
                 ) {
-                    Text(text = "Accept")
+                    Text(text = stringResource(id = R.string.accept))
                 }
             }
         }
@@ -210,7 +211,7 @@ fun CaseDetailOfTheReceivedCase(
                 shape = MaterialTheme.shapes.extraSmall,
                 colors = ButtonDefaults.buttonColors(Color.Black)
             ) {
-                Text(text = "End Case")
+                Text(text = stringResource(id = R.string.end_case))
             }
         }
     }
