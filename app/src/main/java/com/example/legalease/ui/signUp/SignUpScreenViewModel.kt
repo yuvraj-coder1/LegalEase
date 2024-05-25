@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
+import kotlin.math.exp
 
 @HiltViewModel
 class SignUpScreenViewModel @Inject constructor(
@@ -35,6 +36,11 @@ class SignUpScreenViewModel @Inject constructor(
         }
     }
 
+    fun updateExperience(experience: String) {
+        _uiState.update {
+            it.copy(lawyerExperience = experience)
+        }
+    }
     fun updatePassword(password: String) {
         _uiState.update {
             it.copy(password = password)
