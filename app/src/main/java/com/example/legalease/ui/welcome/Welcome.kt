@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.consumeAllChanges
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -104,13 +105,13 @@ fun WelcomeScreen(navigateToNextScreen:() -> Unit) {
         ) {
             if (currentIndex == 0) {
                 Text(
-                    text = "Easily look for lawyers",
+                    text = stringResource(id = R.string.easily_look_for_lawyers),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
             } else {
                 Text(
-                    text = "Easily look for cases",
+                    text = stringResource(id = R.string.easily_look_for_cases),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -129,7 +130,7 @@ fun WelcomeScreen(navigateToNextScreen:() -> Unit) {
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp)
         ) {
-            Text(text = "Get Started")
+            Text(text = stringResource(id = R.string.get_started))
         }
     }
 }
