@@ -140,7 +140,7 @@ fun LawyerProfileScreen(
             style = MaterialTheme.typography.headlineSmall
         )
         Spacer(modifier = Modifier.height(8.dp))
-//        ChipsComponent(skills = expertise, cardColor = Color(0xFFD3D3D3))
+        ChipsComponent(skills = expertise, cardColor = Color(0xFFD3D3D3))
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "Client Reviews",
