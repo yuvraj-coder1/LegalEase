@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -46,10 +47,12 @@ fun ChatListScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    Text(text = "No chats available")
+                    Text(text = stringResource(R.string.no_chats_available))
                 }
             } else {
-                LazyColumn(modifier = Modifier.weight(1f).padding(16.dp)) {
+                LazyColumn(modifier = Modifier
+                    .weight(1f)
+                    .padding(16.dp)) {
                     items(chats) { chat ->
                         val chatPartner =
                             if (vm.currentLawyer != null) chat.client else chat.lawyer

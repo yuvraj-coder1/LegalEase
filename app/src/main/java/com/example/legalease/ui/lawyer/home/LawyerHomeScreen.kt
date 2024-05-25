@@ -179,7 +179,7 @@ fun LawyerHomeScreen(
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Set Appointment", modifier = Modifier.padding(10.dp))
+                Text(text = stringResource(id = R.string.book_appointment), modifier = Modifier.padding(10.dp))
             }
             Spacer(modifier = Modifier.height(20.dp))
         }

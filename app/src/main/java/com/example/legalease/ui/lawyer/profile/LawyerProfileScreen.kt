@@ -44,6 +44,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
@@ -164,7 +165,7 @@ fun LawyerProfileScreen(
                         .fillMaxWidth()
                 ) {
                     Text(
-                        text = "About Me",
+                        text = stringResource(id = R.string.about_me),
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 18.sp,
                         fontFamily = Inter,
@@ -205,7 +206,7 @@ fun LawyerProfileScreen(
 
                 ) {
                 Text(
-                    text = "Expertise",
+                    text = stringResource(R.string.expertise),
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 18.sp,
                     fontFamily = Inter,
@@ -226,7 +227,7 @@ fun LawyerProfileScreen(
         ) {
 
             Text(
-                text = "Client Reviews", fontWeight = FontWeight.SemiBold,
+                text = stringResource(R.string.client_reviews), fontWeight = FontWeight.SemiBold,
                 fontSize = 18.sp,
                 fontFamily = Inter,
                 letterSpacing = (-0.1).sp,
@@ -236,7 +237,7 @@ fun LawyerProfileScreen(
                 onClick = { /*TODO*/ }
             ) {
                 Text(
-                    text = "See more",
+                    text = stringResource(R.string.see_more),
                     fontFamily = Inter,
                     fontWeight = FontWeight.Normal,
                     fontSize = 12.sp,
@@ -247,7 +248,7 @@ fun LawyerProfileScreen(
         Spacer(modifier = Modifier.height(16.dp))
         if (lawyerProfileScreenViewModel.reviews.isEmpty()) {
             Text(
-                text = "No reviews yet",
+                text = stringResource(R.string.no_reviews_yet),
                 fontSize = 18.sp,
                 color = Color.DarkGray,
             )
@@ -277,7 +278,7 @@ fun LawyerProfileScreen(
             Text(
                 fontFamily = Inter,
                 fontSize = 15.sp,
-                text = "Log Out"
+                text = stringResource(R.string.log_out),
             )
         }
     }
