@@ -85,4 +85,5 @@
     <string name="decline">Decline</string>
     <string name="accept">Accept</string>
     <string name="end_case">End Case</string>
+    <string name="your_verification_has_not_been_done_yet">Your verification has not been done yet :(</string>
 </resources>
