@@ -15,9 +15,14 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.storage
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -32,37 +37,48 @@ class AddCaseViewModel @Inject constructor(
 
     var pdfUriList: List<Uri> = emptyList()
     var pdfUrlList = emptyList<String>()
-    fun uploadPdfToDataBase() {
+    suspend fun uploadPdfToDataBase(): List<String> {
         val storageRef = Firebase.storage.reference
-        val pdfRef = storageRef.child("documents/case_pdf.pdf")
-        pdfUriList.forEach {
-            pdfRef.putFile(it)
-                .addOnSuccessListener {
-                    pdfRef.downloadUrl.addOnSuccessListener { uri ->
-                        pdfUrlList += uri.toString()
-                    }
+        val pdfUrlList = mutableListOf<String>()
+
+        withContext(Dispatchers.IO) {
+            pdfUriList.forEach { uri ->
+                val pdfRef = storageRef.child("documents/${uri.lastPathSegment}")
+                try {
+                    pdfRef.putFile(uri).await()
+                    val downloadUrl = pdfRef.downloadUrl.await()
+                    pdfUrlList += downloadUrl.toString()
                     Log.d("PDF", "PDF uploaded")
+                } catch (e: Exception) {
+                    Log.d("PDF", "$e PDF not uploaded")
                 }
-                .addOnFailureListener {
-                    Log.d("PDF", "$it PDF not uploaded")
-                }
+            }
         }
+        return pdfUrlList
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun sendCase() {
         val id = db.collection(CASE_NODE).document().id
-        val case = CaseData(
-            id = id,
-            caseType = _addCaseUiState.value.caseType,
-            description = _addCaseUiState.value.description,
-            preferredLanguage = _addCaseUiState.value.languagePreference,
-            documentLinks = pdfUrlList,
-            clientId = auth.currentUser?.uid ?: "test",
-            createdAt = LocalDate.now().toString(),
-            lawyerId = null
-        )
-        db.collection(CASE_NODE).document(id).set(case)
+
+        // Launch a coroutine scope to handle asynchronous operations
+        CoroutineScope(Dispatchers.Main).launch {
+            // Await the completion of PDF uploads
+            val pdfUrlList = uploadPdfToDataBase()
+
+            val case = CaseData(
+                id = id,
+                caseType = _addCaseUiState.value.caseType,
+                description = _addCaseUiState.value.description,
+                preferredLanguage = _addCaseUiState.value.languagePreference,
+                documentLinks = pdfUrlList,
+                clientId = auth.currentUser?.uid ?: "test",
+                createdAt = LocalDate.now().toString(),
+                lawyerId = null
+            )
+
+            db.collection(CASE_NODE).document(id).set(case)
+        }
     }
 
     fun updateTitle(title: String) {
