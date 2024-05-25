@@ -37,6 +37,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.LibraryBooks
 import androidx.compose.material.icons.filled.MonetizationOn
 import androidx.compose.material.icons.filled.QuestionMark
@@ -82,7 +83,13 @@ import java.util.Locale
 @SuppressLint("StateFlowValueCalledInComposition")
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun LawyerHomeScreen(modifier: Modifier = Modifier, signedInViewModel: SignInScreenViewModel, onSeeAllClick:()->Unit,navigateToAddCase:()->Unit) {
+fun LawyerHomeScreen(
+    modifier: Modifier = Modifier,
+    signedInViewModel: SignInScreenViewModel,
+    onSeeAllClick: () -> Unit,
+    navigateToAddCase: () -> Unit,
+    onDocumentClick: () -> Unit
+) {
     val homeViewModel: HomeViewModel = viewModel()
     val homeUiState by homeViewModel.uiState.collectAsState()
     val uiState = signedInViewModel.uiState.collectAsState()
@@ -268,8 +275,8 @@ fun LawyerHomeScreen(modifier: Modifier = Modifier, signedInViewModel: SignInScr
                 onClick = {},
             )
             OtherIcon(icon = Icons.AutoMirrored.Filled.LibraryBooks, text = stringResource(R.string.blogs), onClick = {})
+            OtherIcon(icon = Icons.Default.Description, text = stringResource(R.string.documents), onClick = onDocumentClick)
             OtherIcon(icon = Icons.Default.AccessTime, text = stringResource(R.string.history), onClick = {})
-            OtherIcon(icon = Icons.Default.MonetizationOn, text = stringResource(R.string.financials), onClick = {})
         }
     }
 }
@@ -282,7 +289,7 @@ fun OtherIcon(modifier: Modifier = Modifier, icon: ImageVector, text: String, on
         verticalArrangement = Arrangement.Center
     ) {
         Card(modifier = Modifier
-            .clickable { /*TODO*/ }
+            .clickable { onClick() }
             .clip(CircleShape),
             colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer)
         ) {

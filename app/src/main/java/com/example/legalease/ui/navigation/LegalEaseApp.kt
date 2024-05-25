@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.legalease.ui.chatbot.presentation.ChatBotScreen
 import com.example.legalease.ui.client.addCaseScreen.AddCaseScreen
+import com.example.legalease.ui.client.caseDetail.DocumentListScreen
 import com.example.legalease.ui.client.cases.CasesScreen
 import com.example.legalease.ui.client.profile.ClientProfile
 import com.example.legalease.ui.client.searchScreen.FilterScreen
@@ -147,7 +148,9 @@ fun LegalEaseApp(
             LawyerHomeScreen(
                 signedInViewModel = signInScreenViewModel,
                 onSeeAllClick = { navController.navigate(CaseListScreen) },
-                navigateToAddCase = { navController.navigate(AddCaseScreen) }
+                navigateToAddCase = { navController.navigate(AddCaseScreen)
+                },
+                onDocumentClick = {navController.navigate(DocumentListScreen)}
             )
         }
         composable<SearchedLayerScreen> {
@@ -259,6 +262,11 @@ fun LegalEaseApp(
                 navController = navController,
                 onClicked = {navController.navigate(WelcomeScreen)}
             )
+        }
+        composable<DocumentListScreen> {
+            showIncomingCases(false)
+            onBottomBarVisibilityChanged(false)
+            DocumentListScreen(onClick = {navController.navigate(ComposePdfViewerScreen(it))})
         }
     }
 }

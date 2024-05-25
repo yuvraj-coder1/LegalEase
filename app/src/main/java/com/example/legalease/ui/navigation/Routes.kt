@@ -69,3 +69,6 @@ data object LanguageSelectionScreen
 
 @Serializable
 data object BlockedScreen
+
+@Serializable
+data object DocumentListScreen
