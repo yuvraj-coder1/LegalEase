@@ -1,15 +1,13 @@
 package com.example.legalease.ui.lawyer.home
 
 import android.annotation.SuppressLint
-import android.icu.util.Calendar.WeekData
+import android.content.ContentValues.TAG
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -25,33 +23,22 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material.icons.automirrored.filled.LibraryBooks
 import androidx.compose.material.icons.automirrored.rounded.ArrowForwardIos
 import androidx.compose.material.icons.filled.AccessTime
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBackIosNew
-import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Description
-import androidx.compose.material.icons.filled.LibraryBooks
-import androidx.compose.material.icons.filled.MonetizationOn
 import androidx.compose.material.icons.filled.QuestionMark
-import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.ArrowBackIosNew
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -60,23 +47,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.capitalize
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.compose.LegalEaseTheme
+import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
 import com.example.legalease.R
 import com.example.legalease.ui.signIn.SignInScreenViewModel
 import java.time.LocalDate
+import java.util.Date
 import java.util.Locale
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -87,10 +71,10 @@ fun LawyerHomeScreen(
     modifier: Modifier = Modifier,
     signedInViewModel: SignInScreenViewModel,
     onSeeAllClick: () -> Unit,
-    navigateToAddCase: () -> Unit,
+    navigateToAddAppointment: () -> Unit,
     onDocumentClick: () -> Unit
 ) {
-    val homeViewModel: HomeViewModel = viewModel()
+    val homeViewModel: HomeViewModel = hiltViewModel()
     val homeUiState by homeViewModel.uiState.collectAsState()
     val uiState = signedInViewModel.uiState.collectAsState()
     val isUserLawyer = uiState.value.isLawyer
@@ -146,52 +130,68 @@ fun LawyerHomeScreen(
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
+        if (homeUiState.appointments.isNotEmpty()) {
+            homeUiState.appointments.filter {
+                Log.d(
+                    TAG,
+                    "LawyerHomeScreen: ${it.date} && ${homeUiState.selectedDate}"
+                )
+                it.date == homeUiState.selectedDate.toString()
+            }
+                .forEach { appointment ->
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+//                .padding(5.dp)
+                            .shadow(10.dp, RoundedCornerShape(10.dp)),
+                        shape = MaterialTheme.shapes.medium,
+                        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background),
+                        border = BorderStroke(
+                            1.dp,
+                            color = MaterialTheme.colorScheme.onPrimary
+                        )
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(16.dp)
+                        ) {
+                            Text(
+                                text = "${homeUiState.selectedDate.dayOfWeek}, ${homeUiState.selectedDate.month} ${homeUiState.selectedDate.dayOfMonth}",
+                                fontWeight = FontWeight.SemiBold,
+                                color = MaterialTheme.colorScheme.tertiaryContainer,
+                                fontSize = 17.sp
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text(
+                                text = "You have a appointment with mr lawyer on ${appointment.time}",
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 14.sp,
+                                letterSpacing = (0.1).sp
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
+        }
+
         if (isUserLawyer) {
             Button(
-                onClick = { /*TODO*/ },
+                onClick = navigateToAddAppointment,
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = stringResource(R.string.book_appointment), modifier = Modifier.padding(10.dp))
+                Text(text = "Set Appointment", modifier = Modifier.padding(10.dp))
             }
             Spacer(modifier = Modifier.height(20.dp))
         }
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-//                .padding(5.dp)
-                .shadow(10.dp, RoundedCornerShape(10.dp)),
-            shape = MaterialTheme.shapes.medium,
-            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background),
-            border = BorderStroke(1.dp, color = MaterialTheme.colorScheme.onPrimary)
-
-
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp)
-            ) {
-                Text(
-                    text = "${homeUiState.selectedDate.dayOfWeek}, ${homeUiState.selectedDate.month} ${homeUiState.selectedDate.dayOfMonth}",
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.tertiaryContainer,
-                    fontSize = 17.sp
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = stringResource(R.string.you_have_an_appointment_with_mr_lawyer_at_9_00_am),
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 14.sp,
-                    letterSpacing = (0.1).sp
-                )
-            }
-        }
-        Spacer(modifier = Modifier.height(24.dp))
         HorizontalDivider(
             modifier = Modifier.fillMaxWidth(0.9f),
             color = MaterialTheme.colorScheme.outlineVariant
         )
         Spacer(modifier = Modifier.height(20.dp))
-        Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth()
+        ) {
             Text(
                 text = stringResource(R.string.cases),
 //                style = MaterialTheme.typography.titleLarge
@@ -219,31 +219,31 @@ fun LawyerHomeScreen(
 //        ) {
 //
 //        }
-        if(homeViewModel.casesItemList.isEmpty()) {
+        if (homeUiState.cases.isEmpty()) {
             Text(
                 text = stringResource(R.string.no_cases_available),
                 modifier = Modifier
-                    .fillMaxSize()
-                    .align(Alignment.CenterHorizontally),
+                    .fillMaxSize(),
+//                            .align(Alignment.CenterHorizontally),
                 fontWeight = FontWeight.SemiBold,
                 textAlign = TextAlign.Center,
             )
-        }
-        else {
+        } else {
             LazyRow {
-                itemsIndexed(homeViewModel.casesItemList) { index, item ->
+                itemsIndexed(homeUiState.cases) { index, item ->
                     OngoingCasesItem(
-                        caseTitle = item.title,
+                        caseTitle = item.caseType,
                         caseDescription = item.description,
-                        upcomingHearing = item.upcomingHearing,
-                        lawyerName = "Gautam Shorewala",
-                        lawyerProfile = item.profileImage,
+                        upcomingHearing = item.upcomingHearing ?: "",
+                        lawyerName = "",
+                        lawyerProfile = 0,
 //                    modifier = Modifier.padding(10.dp)
                     )
                 }
             }
-        }
 
+
+        }
         Spacer(modifier = Modifier.height(24.dp))
         HorizontalDivider(
             modifier = Modifier.fillMaxWidth(0.9f),
@@ -274,15 +274,31 @@ fun LawyerHomeScreen(
                 text = stringResource(R.string.faqs),
                 onClick = {},
             )
-            OtherIcon(icon = Icons.AutoMirrored.Filled.LibraryBooks, text = stringResource(R.string.blogs), onClick = {})
-            OtherIcon(icon = Icons.Default.Description, text = stringResource(R.string.documents), onClick = onDocumentClick)
-            OtherIcon(icon = Icons.Default.AccessTime, text = stringResource(R.string.history), onClick = {})
+            OtherIcon(
+                icon = Icons.AutoMirrored.Filled.LibraryBooks,
+                text = stringResource(R.string.blogs),
+                onClick = {})
+            OtherIcon(
+                icon = Icons.Default.Description,
+                text = stringResource(R.string.documents),
+                onClick = onDocumentClick
+            )
+            OtherIcon(
+                icon = Icons.Default.AccessTime,
+                text = stringResource(R.string.history),
+                onClick = {})
         }
     }
 }
 
+
 @Composable
-fun OtherIcon(modifier: Modifier = Modifier, icon: ImageVector, text: String, onClick: () -> Unit) {
+fun OtherIcon(
+    modifier: Modifier = Modifier,
+    icon: ImageVector,
+    text: String,
+    onClick: () -> Unit
+) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -331,8 +347,9 @@ fun OngoingCasesItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Image(
-                    painter = painterResource(id = lawyerProfile),
+                AsyncImage(
+                    model = lawyerProfile,
+                    error = painterResource(id = R.drawable.default_profile_image),
                     contentDescription = "lawyer profile photo",
                     modifier = Modifier
                         .clip(CircleShape)
@@ -368,7 +385,7 @@ fun OngoingCasesItem(
                 )
                 Spacer(modifier = Modifier.height(5.dp))
                 Text(
-                    text = stringResource(R.string.upcoming_hearing) +"${upcomingHearing}",
+                    text = stringResource(R.string.upcoming_hearing) + "${upcomingHearing}",
                     style = MaterialTheme.typography.bodyMedium
                 )
             }

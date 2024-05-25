@@ -41,19 +41,26 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import java.util.Calendar
 import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BookAppointment(modifier: Modifier = Modifier) {
+fun BookAppointment(
+    modifier: Modifier = Modifier,
+    caseId: String = "",
+    clientId: String = "",
+    navigateBack: () -> Unit = {}
+) {
+    val bookAppointmentViewModel: BookAppointmentViewModel = hiltViewModel()
     var reasonOfAppointment by rememberSaveable { mutableStateOf("") }
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         val date = MyContent()
-        TimePickerDemo()
+        val time = TimePickerDemo()
         OutlinedTextField(
             value = reasonOfAppointment,
             onValueChange = { reasonOfAppointment = it },
@@ -61,13 +68,25 @@ fun BookAppointment(modifier: Modifier = Modifier) {
             label = { Text(text = "Reason of Appointment") },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
         )
+        Button(onClick = {
+            bookAppointmentViewModel.addAppointment(
+                reason = reasonOfAppointment,
+                caseId = caseId,
+                date = date,
+                time = time,
+                clientId = clientId
+            )
+            navigateBack()
+        }) {
+            Text(text = "Submit")
+        }
     }
 }
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyContent(): Pair<String, MutableState<Offset>> {
+fun MyContent(): String {
 
     // Fetching the Local Context
     val mContext = LocalContext.current
@@ -99,7 +118,8 @@ fun MyContent(): Pair<String, MutableState<Offset>> {
         mContext,
         { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
             //          mDate.value = "$mDayOfMonth/${mMonth+1}/$mYear"
-            mDate.value = "$mDayOfMonth/$mMonth/$mYear"
+            // year-month-day
+            mDate.value = "$mYear-${String.format("%02d", mMonth + 1)}-$mDayOfMonth"
         }, mYear, mMonth, mDay
     )
 // correct code
@@ -183,12 +203,12 @@ fun MyContent(): Pair<String, MutableState<Offset>> {
 //            textAlign = TextAlign.Center
 //        )
     }
-    return Pair(mDate.value, globalPosition)
+    return mDate.value
 }
 
 @SuppressLint("DefaultLocale")
 @Composable
-fun TimePickerDemo() {
+fun TimePickerDemo(): String {
     var time by remember { mutableStateOf("") }
     val context = LocalContext.current
 
@@ -214,9 +234,10 @@ fun TimePickerDemo() {
         }
         Text(text = "Selected Time: $time", modifier = Modifier.padding(top = 16.dp))
     }
+    return time
 }
 
-@Preview()
+@Preview(showBackground = true)
 @Composable
 fun BookAppointmentPreview() {
     BookAppointment()

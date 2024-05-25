@@ -64,6 +64,7 @@ data object SpeechToTextScreen
 
 @Serializable
 data object FilterScreen
+
 @Serializable
 data object LanguageSelectionScreen
 
@@ -72,3 +73,9 @@ data object BlockedScreen
 
 @Serializable
 data object DocumentListScreen
+
+@Serializable
+data object AppointmentCaseSelectionScreen
+
+@Serializable
+data class BookAppointmentScreen(val caseId: String,val clientId:String)

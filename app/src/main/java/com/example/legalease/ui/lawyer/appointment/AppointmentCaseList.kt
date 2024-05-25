@@ -3,6 +3,7 @@ package com.example.legalease.ui.lawyer.appointment
 import com.example.legalease.ui.client.sendCaseToLawyer.SendCaseToLawyerViewModel
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,7 +34,11 @@ import com.example.compose.LegalEaseTheme
 import com.example.ui.theme.Inter
 
 @Composable
-fun AppointmentCaseListScreen(modifier: Modifier = Modifier, lawyerId: String = "") {
+fun AppointmentCaseListScreen(
+    modifier: Modifier = Modifier,
+    lawyerId: String = "",
+    navigateToBookAppointment: (String, String) -> Unit = {_,_->}
+) {
     val viewModel: AppointmentCaseListViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
     LazyColumn(modifier = Modifier.padding(16.dp)) {
@@ -44,8 +49,8 @@ fun AppointmentCaseListScreen(modifier: Modifier = Modifier, lawyerId: String = 
                 caseDate = case.createdAt,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp),
-
+                    .padding(8.dp)
+                    .clickable { navigateToBookAppointment(case.id, case.clientId) },
             )
         }
     }
