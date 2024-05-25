@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.material.icons.outlined.ThumbDown
@@ -117,6 +118,17 @@ fun LawyerProfileScreen(
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
+        Row {
+            Icon(imageVector = Icons.Default.LocationOn, contentDescription = "Lawyer location")
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+                text = lawyerData.lawyerLocation,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Medium,
+                letterSpacing = (-0.2).sp
+            )
+        }
+
 //        Button(
 //            onClick = { /*TODO*/ },
 //            modifier = Modifier.fillMaxWidth(),

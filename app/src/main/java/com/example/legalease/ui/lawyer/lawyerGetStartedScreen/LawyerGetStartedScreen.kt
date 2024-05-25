@@ -65,6 +65,15 @@ fun LawyerGetStartedScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
+            value = uiState.lawyerLocation,
+            onValueChange = { viewModel.updateLocation(it) },
+            label = { Text("Lawyer Preferred Location") },
+            placeholder = { Text("Location", color = Color.Gray) },
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+        OutlinedTextField(
             value = uiState.fee,
             onValueChange = { viewModel.updateFee(it) },
             label = { Text("Enter fee") },

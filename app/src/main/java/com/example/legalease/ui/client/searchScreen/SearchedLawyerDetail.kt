@@ -22,6 +22,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.StarHalf
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarOutline
 import androidx.compose.material.icons.outlined.StarBorder
@@ -113,6 +114,17 @@ fun SearchedLawyerDetailScreen(
         }
 
         Spacer(modifier = Modifier.height(8.dp))
+        Row {
+            Icon(imageVector = Icons.Default.LocationOn, contentDescription = "Lawyer location")
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+                text = lawyerData.lawyerLocation,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Medium,
+                letterSpacing = (-0.2).sp
+            )
+        }
+        Spacer(modifier = Modifier.height(16.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Text(text = "Fee: ₹${lawyerData.feesPerHour}/hr", color = Color.Gray)
             Row {
@@ -143,7 +155,7 @@ fun SearchedLawyerDetailScreen(
                     Icon(
                         imageVector = Icons.Default.StarOutline,
                         contentDescription = "Lawyer Rating",
-                        tint = Color.Yellow,
+                        tint = Color.Black,
                         modifier = Modifier.size(20.dp)
                     )
                 }

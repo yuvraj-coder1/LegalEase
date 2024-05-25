@@ -13,5 +13,6 @@ data class SignUpScreenUiState(
     val expertise:List<String> = listOf("Real Estate","Property","Business","Family matters"),
     val fee:String = "",
     val selectedExpertise:List<String> = listOf(),
-    val isThisExpertiseSelected:List<Boolean> = listOf(false,false,false,false)
+    val isThisExpertiseSelected:List<Boolean> = listOf(false,false,false,false),
+    val lawyerLocation:String= "",
 )
