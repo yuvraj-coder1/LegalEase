@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.RadioButtonChecked
 import androidx.compose.material.icons.filled.Update
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -22,6 +23,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -37,8 +42,38 @@ import com.example.ui.theme.Inter
 @Composable
 fun CasesScreen(modifier: Modifier = Modifier) {
     val casesScreenViewModel: CasesScreenViewModel = viewModel()
-    LazyColumn(modifier = modifier) {
-        items(casesScreenViewModel.casesItemList) {
+    var currentFilter by rememberSaveable {
+        mutableStateOf("All")
+    }
+    Column(modifier = modifier.padding(16.dp)) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Button(onClick = { currentFilter = "All" }) {
+                Text(text = "All")
+            }
+            Button(onClick = { currentFilter = "Active" }) {
+                Text(text = "Active")
+            }
+            Button(onClick = { currentFilter = "Inactive" }) {
+                Text(text = "Inactive")
+            }
+            Button(onClick = { currentFilter = "Pending" }) {
+                Text(text = "Pending")
+            }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            items(casesScreenViewModel.casesItemList.filter {
+                if (currentFilter != "All") {
+                    it.status == currentFilter
+                }  else { it.caseType != "null" }
+            }) {
             it.upcomingHearing?.let { it1 ->
                 CaseItem(
                     title = it.caseType,
@@ -51,6 +86,7 @@ fun CasesScreen(modifier: Modifier = Modifier) {
                     status = it.status
                 )
             }
+        }
         }
     }
 }

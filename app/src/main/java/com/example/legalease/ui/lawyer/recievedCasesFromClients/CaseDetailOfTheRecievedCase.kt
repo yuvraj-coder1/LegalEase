@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -162,42 +163,54 @@ fun CaseDetailOfTheReceivedCase(
 
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Row {
-            Button(
-                onClick = {
-                    vm.updateCaseStatus(
-                        caseId = caseId,
-                        status = "rejected",
-                        lawyerId = vm.getCurrentLawyerId()
+        if(case.status == "pending") {
+            Row {
+                Button(
+                    onClick = {
+                        vm.updateCaseStatus(
+                            caseId = caseId,
+                            status = "rejected",
+                            lawyerId = vm.getCurrentLawyerId()
+                        )
+                        navigateToHome()
+                    },
+                    modifier = Modifier.weight(1f),
+                    shape = MaterialTheme.shapes.extraSmall,
+                    colors = ButtonDefaults.buttonColors(Color.White),
+                    border = BorderStroke(
+                        width = 1.dp,
+                        color = Color.Black
                     )
-                    navigateToHome()
-                },
-                modifier = Modifier.weight(1f),
-                shape = MaterialTheme.shapes.extraSmall,
-                colors = ButtonDefaults.buttonColors(Color.White),
-                border = BorderStroke(
-                    width = 1.dp,
-                    color = Color.Black
-                )
-            ) {
-                Text(text = "Decline", color = Color.Black)
+                ) {
+                    Text(text = "Decline", color = Color.Black)
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                Button(
+                    onClick = {
+                        vm.updateCaseStatus(
+                            caseId = caseId,
+                            status = "accepted",
+                            lawyerId = vm.getCurrentLawyerId()
+                        )
+                        addToChatList(case.clientId, case.lawyerId ?: "")
+                        navigateToHome()
+                    },
+                    modifier = Modifier.weight(1f),
+                    shape = MaterialTheme.shapes.extraSmall,
+                    colors = ButtonDefaults.buttonColors(Color.Black)
+                ) {
+                    Text(text = "Accept")
+                }
             }
-            Spacer(modifier = Modifier.width(8.dp))
+        }
+        else {
             Button(
-                onClick = {
-                    vm.updateCaseStatus(
-                        caseId = caseId,
-                        status = "accepted",
-                        lawyerId = vm.getCurrentLawyerId()
-                    )
-                    addToChatList(case.clientId, case.lawyerId ?: "")
-                    navigateToHome()
-                },
-                modifier = Modifier.weight(1f),
+                onClick = {},
+                modifier = Modifier.fillMaxWidth(),
                 shape = MaterialTheme.shapes.extraSmall,
                 colors = ButtonDefaults.buttonColors(Color.Black)
             ) {
-                Text(text = "Accept")
+                Text(text = "End Case")
             }
         }
     }

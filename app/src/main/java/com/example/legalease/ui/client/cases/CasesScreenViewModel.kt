@@ -5,7 +5,7 @@ import com.example.legalease.model.CaseData
 import com.example.legalease.model.CaseItemData
 
 class CasesScreenViewModel : ViewModel() {
-    val casesItemList: MutableList<CaseData> = mutableListOf(
+    val casesItemList: List<CaseData> = listOf(
         CaseData(
             caseType = "Divorce",
             createdAt = "23/01/2005",
