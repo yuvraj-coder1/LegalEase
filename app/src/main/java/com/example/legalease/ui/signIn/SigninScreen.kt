@@ -56,6 +56,7 @@ import androidx.compose.ui.graphics.BlendMode.Companion.Screen
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -191,6 +192,7 @@ fun SignInScreenContent(
     var hidePassWord by rememberSaveable {
         mutableStateOf(true)
     }
+    val focusManager = LocalFocusManager.current
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -279,7 +281,10 @@ fun SignInScreenContent(
         )
         Spacer(modifier = Modifier.height(20.dp))
         Button(
-            onClick = onSignIn,
+            onClick = {
+                onSignIn()
+                focusManager.clearFocus()
+            },
             colors = ButtonDefaults.buttonColors(
                 Color.Black
             ),
