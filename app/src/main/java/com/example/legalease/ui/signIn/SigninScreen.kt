@@ -58,6 +58,7 @@ import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -203,7 +204,7 @@ fun SignInScreenContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(36.dp))
-        Text(text = "Log in", style = TextStyle(fontSize = 30.sp), fontWeight = FontWeight.Black)
+        Text(text = stringResource(R.string.log_in), style = TextStyle(fontSize = 30.sp), fontWeight = FontWeight.Black)
         Spacer(modifier = Modifier.size(24.dp))
 
         Row(
@@ -217,7 +218,7 @@ fun SignInScreenContent(
                 ),
 //                modifier = Modifier.weight(1f)
             ) {
-                Text(text = "Lawyer", color = if (isLawyer) Color.White else Color.Black)
+                Text(text = stringResource(R.string.lawyer), color = if (isLawyer) Color.White else Color.Black)
                 if (isLawyer) {
                     Spacer(modifier = Modifier.width(20.dp))
                     Image(
@@ -234,7 +235,7 @@ fun SignInScreenContent(
                 ),
                 modifier = Modifier.weight(1f)
             ) {
-                Text(text = "Client", color = if (!isLawyer) Color.White else Color.Black)
+                Text(text = stringResource(R.string.client), color = if (!isLawyer) Color.White else Color.Black)
                 if (!isLawyer) {
                     Spacer(modifier = Modifier.weight(1f))
                     Image(
@@ -249,7 +250,7 @@ fun SignInScreenContent(
         OutlinedTextField(
             value = username,
             onValueChange = { onUsernameChange(it) },
-            label = { Text(text = "Username") },
+            label = { Text(text = stringResource(R.string.email)) },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Outlined.Person,
@@ -264,7 +265,7 @@ fun SignInScreenContent(
         OutlinedTextField(
             value = password,
             onValueChange = { onPasswordChange(it) },
-            label = { Text(text = "Password") },
+            label = { Text(text = stringResource(R.string.password)) },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Outlined.Key,
@@ -294,7 +295,7 @@ fun SignInScreenContent(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(8.dp)
         ) {
-            Text(text = "Log in", fontSize = 16.sp, modifier = Modifier.padding(4.dp))
+            Text(text = stringResource(R.string.log_in), fontSize = 16.sp, modifier = Modifier.padding(4.dp))
         }
         Spacer(modifier = Modifier.height(16.dp))
         Button(
@@ -313,7 +314,7 @@ fun SignInScreenContent(
             )
             Spacer(modifier = Modifier.width(10.dp))
             Text(
-                text = "Log in with Google",
+                text = stringResource(R.string.log_in_with_google),
                 fontSize = 16.sp,
                 modifier = Modifier
                     .padding(4.dp)
@@ -321,7 +322,7 @@ fun SignInScreenContent(
         }
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Don't have an account?",
+            text = stringResource(R.string.don_t_have_an_account),
             modifier = Modifier.align(alignment = Alignment.Start)
         )
         Spacer(modifier = Modifier.height(20.dp))
@@ -333,7 +334,7 @@ fun SignInScreenContent(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(8.dp)
         ) {
-            Text(text = "Sign Up", fontSize = 16.sp, modifier = Modifier.padding(4.dp))
+            Text(text = stringResource(R.string.sign_up), fontSize = 16.sp, modifier = Modifier.padding(4.dp))
         }
     }
 }
