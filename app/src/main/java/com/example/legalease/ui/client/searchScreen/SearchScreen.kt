@@ -53,6 +53,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
@@ -61,6 +62,7 @@ import com.example.legalease.model.LawyerData
 import com.example.legalease.ui.navigation.SearchScreen
 //import com.example.legalease.ui.theme.LegalEaseTheme
 import com.example.compose.LegalEaseTheme
+import com.example.ui.theme.Inter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -75,7 +77,7 @@ fun SearchScreen(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(16.dp)
     ) {
         SearchBar(
             modifier = Modifier.fillMaxWidth(),
@@ -87,8 +89,8 @@ fun SearchScreen(
             },
             active = searchScreenUiState.active,
             onActiveChange = { searchScreenViewModel.updateActive(it) },
-            placeholder = { Text(text = "Search ", modifier = Modifier.padding(start = 16.dp)) },
-            trailingIcon = {
+            placeholder = { Text(text = "Search ") },
+            leadingIcon = {
                 if (searchScreenUiState.active && searchScreenUiState.searchQuery.isNotBlank()) {
                     Icon(
                         imageVector = Icons.Default.Close,
@@ -105,43 +107,49 @@ fun SearchScreen(
                     Icon(
                         imageVector = Icons.Default.Search,
                         contentDescription = null,
-                        modifier = Modifier.padding(end = 16.dp)
+                        modifier = Modifier.padding(start = 16.dp)
                     )
                 }
             }
-        ) {}
+        ) {
+
+        }
         Spacer(
             modifier = Modifier
-                .height(16.dp)
+                .height(20.dp)
         )
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = 10.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
 
             Button(onClick = onFilterClicked, elevation = ButtonDefaults.buttonElevation(5.dp)) {
-                Icon(imageVector = Icons.Default.FilterAlt, contentDescription = "Filter")
-                Spacer(modifier = Modifier.width(8.dp))
                 Text(text = "Filter")
+                Spacer(modifier = Modifier.width(8.dp))
+                Icon(imageVector = Icons.Default.FilterAlt, contentDescription = "Filter")
             }
             Button(
                 onClick = { /*TODO*/ },
                 elevation = ButtonDefaults.buttonElevation(5.dp),
             ) {
-                Icon(imageVector = Icons.Default.Sort, contentDescription = "Sort")
-                Spacer(modifier = Modifier.width(8.dp))
                 Text(text = "Sort")
+                Spacer(modifier = Modifier.width(8.dp))
+                Icon(imageVector = Icons.Default.Sort, contentDescription = "Sort")
             }
+
         }
+        Spacer(modifier = Modifier.height(10.dp))
         if (lawyerList.isNotEmpty()) {
             LazyColumn {
                 items(lawyerList.filter {
-                    it.rating >= (searchScreenUiState.ratingFilter.subSequence(0,1).toString().toDouble())
+                    it.rating >= (searchScreenUiState.ratingFilter.subSequence(0, 1).toString()
+                        .toDouble())
                             && searchScreenUiState.expertiseFilter.all { ind -> ind in it.expertise }
-                            && searchScreenUiState.experienceFilter.toInt().toString()>=it.experience
+                            && searchScreenUiState.experienceFilter.toInt()
+                        .toString() >= it.experience
                 }
                 ) {
                     LawyerItemFromList(
@@ -160,10 +168,15 @@ fun SearchScreen(
                 }
             }
         } else {
+            Spacer(modifier = Modifier.height(200.dp))
             Text(
-                text = "No Lawyer Found",
+                text = "Oops! No Lawyer Found",
                 modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                letterSpacing = (-0.1).sp,
+                fontSize = 16.sp,
+                fontFamily = Inter,
+                fontWeight = FontWeight.Medium
             )
 
         }
@@ -183,36 +196,65 @@ fun LawyerItemFromList(
     lawyerImage: String,
     lawyerTags: List<String>
 ) {
-    Card(modifier = modifier, elevation = CardDefaults.cardElevation(5.dp)) {
+    Card(
+        modifier = modifier,
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onPrimary),
+        elevation = CardDefaults.cardElevation(5.dp)
+    ) {
         Row(
             modifier = Modifier
                 .padding(16.dp)
-                .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column {
-                Text(text = lawyerName, fontWeight = FontWeight.Bold)
+                Text(
+                    text = lawyerName,
+                    fontFamily = Inter,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 18.sp,
+                    color = MaterialTheme.colorScheme.primary
+                )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = lawyerType, style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = lawyerType,
+                    fontFamily = Inter,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 16.sp,
+                    letterSpacing = (-0.1).sp,
+                    color = MaterialTheme.colorScheme.primaryContainer
+                )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "Fee: ₹$fees/hr", style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = "Fee: ₹$fees/hr",
+                    fontFamily = Inter,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.primaryContainer
+                )
                 Spacer(modifier = Modifier.height(8.dp))
                 if (lawyerTags.isNotEmpty())
                     Row(modifier = Modifier) {
-                        Card(colors = CardDefaults.cardColors(Color(207, 118, 54))) {
+                        Card(
+                            colors = CardDefaults.cardColors(Color(207, 118, 54))) {
                             Text(
                                 text = lawyerTags[0],
-                                modifier = Modifier.padding(8.dp),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = Color.White
+                                modifier = Modifier.padding(vertical = 2.dp, horizontal = 8.dp),
+                                fontFamily = Inter,
+                                fontSize = 12.sp,
+                                color = Color.White,
+                                letterSpacing = (-0.1).sp
                             )
                         }
                         Spacer(modifier = Modifier.width(4.dp))
                         Card(colors = CardDefaults.cardColors(Color(207, 118, 54))) {
                             Text(
                                 text = lawyerTags[1],
-                                modifier = Modifier.padding(8.dp),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = Color.White
+                                modifier = Modifier.padding(vertical = 2.dp, horizontal = 8.dp),
+                                fontFamily = Inter,
+                                fontSize = 12.sp,
+                                color = Color.White,
+                                letterSpacing = (-0.1).sp
                             )
                         }
                     }
@@ -224,7 +266,7 @@ fun LawyerItemFromList(
                     error = painterResource(id = R.drawable.default_profile_image),
                     contentDescription = "Lawyer Image",
                     modifier = Modifier
-                        .width(70.dp)
+                        .width(50.dp)
                         .clip(CircleShape)
 
                 )
