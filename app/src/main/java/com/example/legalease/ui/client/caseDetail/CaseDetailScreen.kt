@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -89,7 +90,7 @@ fun CasesDetailScreen(
         }
         Spacer(modifier = Modifier.height(32.dp))
         Text(
-            text = "Case Description",
+            text = stringResource(R.string.case_description),
             fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.titleLarge
         )
@@ -99,7 +100,7 @@ fun CasesDetailScreen(
         RectangularChipsComponent(skills = expertise, tagShape = 1)
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Appointments",
+            text = stringResource(R.string.appointments),
             fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.titleLarge
         )
@@ -111,7 +112,7 @@ fun CasesDetailScreen(
         ) {
             if (upcomingHearing != null) {
                 Text(
-                    text = "Upcoming",
+                    text = stringResource(R.string.upcoming),
                     fontFamily = Inter,
                     fontWeight = FontWeight(500),
                     fontSize = 16.sp
@@ -119,7 +120,7 @@ fun CasesDetailScreen(
                 Text(text = "12/06/24")
             } else {
                 Text(
-                    text = "No appointments yet",
+                    text = stringResource(R.string.no_appointments_yet),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -127,7 +128,7 @@ fun CasesDetailScreen(
         }
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Lawyer",
+            text = stringResource(id = R.string.lawyer),
             fontWeight = FontWeight.SemiBold,
             style = MaterialTheme.typography.titleLarge
         )
@@ -163,39 +164,39 @@ fun CasesDetailScreen(
         }
         else {
             Text(
-                text = "No Lawyer appointed yet",
+                text = stringResource(R.string.no_lawyer_appointed_yet),
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Documents",
+            text = stringResource(id = R.string.documents),
             fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.titleLarge
         )
         Spacer(modifier = Modifier.height(16.dp))
         Column(modifier = Modifier.fillMaxWidth()) {
             DocumentItem(
-                documentName = "Affidavit",
+                documentName = stringResource(R.string.affidavit),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
             )
             DocumentItem(
-                documentName = "Affidavit",
+                documentName = stringResource(R.string.affidavit),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
             )
             DocumentItem(
-                documentName = "Affidavit",
+                documentName = stringResource(R.string.affidavit),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
             )
             DocumentItem(
-                documentName = "Affidavit",
+                documentName = stringResource(R.string.affidavit),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
@@ -203,7 +204,7 @@ fun CasesDetailScreen(
         }
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Case Timeline",
+            text = stringResource(R.string.case_timeline),
             fontWeight = FontWeight.Bold,
             fontSize = 24.sp,
         )
@@ -214,17 +215,17 @@ fun CasesDetailScreen(
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 CaseTimeLineItem(
-                    eventDescription = "Event Description 1",
+                    eventDescription = stringResource(R.string.event_description_1),
                     caseDate = "2023-09-01",
                     modifier = Modifier.padding(8.dp)
                 )
                 CaseTimeLineItem(
-                    eventDescription = "Event Description 1",
+                    eventDescription = stringResource(R.string.event_description_1),
                     caseDate = "2023-09-01",
                     modifier = Modifier.padding(8.dp)
                 )
                 CaseTimeLineItem(
-                    eventDescription = "Event Description 1",
+                    eventDescription = stringResource(R.string.event_description_1),
                     caseDate = "2023-09-01",
                     modifier = Modifier.padding(8.dp)
                 )
@@ -247,7 +248,6 @@ fun CaseTimeLineItem(
         )
         Spacer(modifier = Modifier.height(6.dp))
         Text(text = eventDescription, style = MaterialTheme.typography.bodyLarge)
-
     }
 }
 

@@ -43,6 +43,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -126,7 +127,7 @@ fun SearchedLawyerDetailScreen(
         }
         Spacer(modifier = Modifier.height(16.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(text = "Fee: ₹${lawyerData.feesPerHour}/hr", color = Color.Gray)
+            Text(text = stringResource(id = R.string.fee_in_rupee)+" ${lawyerData.feesPerHour} "+stringResource(id = R.string.per_hour), color = Color.Gray)
             Row {
                 for (i in 1..lawyerData.rating.toInt()) {
                     Icon(
@@ -171,7 +172,7 @@ fun SearchedLawyerDetailScreen(
             colors = ButtonDefaults.buttonColors(Color(0xFFD3D3D3))
         ) {
             Text(
-                text = "Send Case",
+                text = stringResource(R.string.send_case),
                 color = Color.Black,
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.bodyLarge
@@ -197,7 +198,7 @@ fun SearchedLawyerDetailScreen(
                         .fillMaxWidth()
                 ) {
                     Text(
-                        text = "About Me",
+                        text = stringResource(id = R.string.about_me),
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 18.sp,
                         fontFamily = Inter,
@@ -237,7 +238,7 @@ fun SearchedLawyerDetailScreen(
 
                 ) {
                 Text(
-                    text = "Expertise",
+                    text = stringResource(id = R.string.expertise),
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 18.sp,
                     fontFamily = Inter,
@@ -256,7 +257,7 @@ fun SearchedLawyerDetailScreen(
         ) {
 
             Text(
-                text = "Client Reviews", fontWeight = FontWeight.SemiBold,
+                text = stringResource(id = R.string.client_reviews), fontWeight = FontWeight.SemiBold,
                 fontSize = 18.sp,
                 fontFamily = Inter,
                 letterSpacing = (-0.1).sp,
@@ -266,7 +267,7 @@ fun SearchedLawyerDetailScreen(
                 onClick = { /*TODO*/ }
             ) {
                 Text(
-                    text = "See more",
+                    text = stringResource(id = R.string.see_more),
                     fontFamily = Inter,
                     fontWeight = FontWeight.Normal,
                     fontSize = 12.sp,
@@ -277,7 +278,7 @@ fun SearchedLawyerDetailScreen(
         Spacer(modifier = Modifier.height(16.dp))
         if (lawyerProfileScreenViewModel.reviews.isEmpty()) {
             Text(
-                text = "No reviews yet",
+                text = stringResource(id = R.string.no_reviews_yet),
                 fontSize = 18.sp,
                 color = Color.DarkGray,
             )

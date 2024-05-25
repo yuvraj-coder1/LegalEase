@@ -308,7 +308,7 @@ fun LawyerItemFromList(
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "$lawyerRating ($ratingCount ratings)",
+                    text = "$lawyerRating ("+"$ratingCount"+ stringResource(R.string.ratings_closed),
                     modifier = Modifier.align(Alignment.End),
                     style = MaterialTheme.typography.bodySmall
                 )

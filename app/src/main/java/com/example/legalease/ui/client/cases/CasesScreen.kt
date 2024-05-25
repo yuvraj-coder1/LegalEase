@@ -34,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.legalease.R
 import com.example.ui.theme.Inter
 
 @Composable
@@ -58,16 +60,16 @@ fun CasesScreen(modifier: Modifier = Modifier) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Button(onClick = { currentFilter = "All" }, modifier = Modifier.padding(horizontal = 8.dp)) {
-                Text(text = "All")
+                Text(text = stringResource(R.string.all))
             }
             Button(onClick = { currentFilter = "active" },modifier = Modifier.padding(end = 8.dp)) {
-                Text(text = "Active")
+                Text(text = stringResource(R.string.active))
             }
             Button(onClick = { currentFilter = "inactive" },modifier = Modifier.padding(end = 8.dp)) {
-                Text(text = "Inactive")
+                Text(text = stringResource(R.string.inactive))
             }
             Button(onClick = { currentFilter = "pending" },modifier = Modifier.padding(end = 8.dp)) {
-                Text(text = "Pending")
+                Text(text = stringResource(R.string.pending))
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
@@ -189,7 +191,7 @@ fun CaseItem(
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    text = "Upcoming Hearing",
+                    text = stringResource(id = R.string.upcoming_hearing),
                     fontFamily = Inter,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,

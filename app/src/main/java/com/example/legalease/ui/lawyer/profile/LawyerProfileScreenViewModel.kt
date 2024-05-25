@@ -36,28 +36,28 @@ class LawyerProfileScreenViewModel @Inject constructor(
 
     val reviews: List<LawyerUserRating> = listOf(
         LawyerUserRating(
-            userName = "liam jiang",
+            userName = "Liam Jiang",
             rating = 4.0,
             date = "Dec 2022",
-            comment = "This is a good lawyer",
+            comment = "He is a good lawyer",
             userPhoto = R.drawable.profile_image,
             likes = 10,
             dislikes = 5
         ),
         LawyerUserRating(
-            userName = "liam jiang",
+            userName = "Liam Jiang",
             rating = 4.0,
             date = "Dec 2022",
-            comment = "This is a good lawyer",
+            comment = "He is a good lawyer",
             userPhoto = R.drawable.profile_image,
             likes = 10,
             dislikes = 5
         ),
         LawyerUserRating(
-            userName = "liam jiang",
+            userName = "Liam Jiang",
             rating = 4.0,
             date = "Dec 2022",
-            comment = "This is a good lawyer",
+            comment = "He is a good lawyer",
             userPhoto = R.drawable.profile_image,
             likes = 10,
             dislikes = 5

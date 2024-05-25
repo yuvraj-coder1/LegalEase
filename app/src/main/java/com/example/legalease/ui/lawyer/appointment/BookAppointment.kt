@@ -40,12 +40,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.legalease.R
 import com.example.ui.theme.Inter
 import java.util.Calendar
 import java.util.Date
@@ -92,7 +94,7 @@ fun BookAppointment(
             shape = RoundedCornerShape(7.dp),
         ) {
 
-            Text(text = "Submit", fontSize = 16.sp)
+            Text(text = stringResource(id = R.string.submit), fontSize = 16.sp)
         }
     }
 }
@@ -164,7 +166,7 @@ fun MyContent(): String {
 
         // Creating a TextField with an icon
         TextField(
-            value = "Appointment Date" + " ${mDate.value}",
+            value = stringResource(R.string.appointment_date) + " ${mDate.value}",
             onValueChange = { /* Handle text changes if needed */ },
             colors = TextFieldDefaults.textFieldColors(
                 focusedTextColor = Color.Black,
@@ -258,7 +260,7 @@ fun TimePickerDemo(): String {
             shape = RoundedCornerShape(5.dp)
 
         ) {
-            Text(text = "Pick Time")
+            Text(text = stringResource(R.string.pick_time))
         }
     }
     return time
