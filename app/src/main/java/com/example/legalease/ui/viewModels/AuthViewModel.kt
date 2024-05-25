@@ -280,4 +280,8 @@ class AuthViewModel @Inject constructor(
 
     }
 
+    fun signOut() {
+        auth.signOut()
+    }
+
 }
