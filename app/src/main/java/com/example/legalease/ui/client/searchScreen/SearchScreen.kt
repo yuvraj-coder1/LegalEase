@@ -150,6 +150,7 @@ fun SearchScreen(
                             && searchScreenUiState.expertiseFilter.all { ind -> ind in it.expertise }
                             && searchScreenUiState.experienceFilter.toInt()
                         .toString() >= it.experience
+                            && searchScreenUiState.location == it.lawyerLocation
                 }
                 ) {
                     LawyerItemFromList(
