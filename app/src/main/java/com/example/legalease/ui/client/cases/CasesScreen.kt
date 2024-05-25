@@ -23,6 +23,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -36,15 +37,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ui.theme.Inter
 
 @Composable
 fun CasesScreen(modifier: Modifier = Modifier) {
-    val casesScreenViewModel: CasesScreenViewModel = viewModel()
+    val casesScreenViewModel: CasesScreenViewModel = hiltViewModel()
     var currentFilter by rememberSaveable {
         mutableStateOf("All")
     }
+    val casesItemList = casesScreenViewModel.casesItemList.collectAsState()
     Column(modifier = modifier.padding(16.dp)) {
         Row(
             modifier = Modifier
@@ -54,13 +57,13 @@ fun CasesScreen(modifier: Modifier = Modifier) {
             Button(onClick = { currentFilter = "All" }) {
                 Text(text = "All")
             }
-            Button(onClick = { currentFilter = "Active" }) {
+            Button(onClick = { currentFilter = "active" }) {
                 Text(text = "Active")
             }
-            Button(onClick = { currentFilter = "Inactive" }) {
+            Button(onClick = { currentFilter = "inactive" }) {
                 Text(text = "Inactive")
             }
-            Button(onClick = { currentFilter = "Pending" }) {
+            Button(onClick = { currentFilter = "pending" }) {
                 Text(text = "Pending")
             }
         }
@@ -69,24 +72,26 @@ fun CasesScreen(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            items(casesScreenViewModel.casesItemList.filter {
+            items(casesItemList.value.casesItemList.filter {
                 if (currentFilter != "All") {
                     it.status == currentFilter
-                }  else { it.caseType != "null" }
+                } else {
+                    it.caseType != "null"
+                }
             }) {
-            it.upcomingHearing?.let { it1 ->
-                CaseItem(
-                    title = it.caseType,
-                    description = it.description,
-                    upcomingHearing = it1,
-                    onItemClick = {},
-                    modifier = modifier
-                        .padding(16.dp)
-                        .fillMaxWidth(),
-                    status = it.status
-                )
+                it.upcomingHearing?.let { it1 ->
+                    CaseItem(
+                        title = it.caseType,
+                        description = it.description,
+                        upcomingHearing = it1,
+                        onItemClick = {},
+                        modifier = modifier
+                            .padding(16.dp)
+                            .fillMaxWidth(),
+                        status = it.status
+                    )
+                }
             }
-        }
         }
     }
 }
@@ -132,16 +137,16 @@ fun CaseItem(
                 ) {
                     Icon(
                         imageVector = when (status) {
-                            "Active" -> Icons.Default.RadioButtonChecked
-                            "Inactive" -> Icons.Default.Update
-                            "Pending" -> Icons.Default.Update
+                            "active" -> Icons.Default.RadioButtonChecked
+                            "inactive" -> Icons.Default.Update
+                            "pending" -> Icons.Default.Update
                             else -> Icons.Default.RadioButtonChecked
                         },
                         contentDescription = "Point",
                         tint = when (status) {
-                            "Active" -> Color(52, 168, 83)
-                            "Inactive" -> Color.Red
-                            "Pending" -> Color(234, 187, 51)
+                            "active" -> Color(52, 168, 83)
+                            "inactive" -> Color.Red
+                            "pending" -> Color(234, 187, 51)
                             else -> Color.Green
                         },
                         modifier = Modifier.size(16.dp)
@@ -150,9 +155,9 @@ fun CaseItem(
                     Text(
                         text = status,
                         color = when (status) {
-                            "Active" -> Color(52, 168, 83)
-                            "Inactive" -> Color.Red
-                            "Pending" -> Color(234, 187, 51)
+                            "active" -> Color(52, 168, 83)
+                            "inactive" -> Color.Red
+                            "pending" -> Color(234, 187, 51)
                             else -> Color.Green
                         },
                         fontSize = 16.sp

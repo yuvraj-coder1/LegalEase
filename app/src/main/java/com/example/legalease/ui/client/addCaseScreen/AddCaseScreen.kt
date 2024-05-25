@@ -66,7 +66,7 @@ import kotlin.math.sqrt
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun AddCaseScreen(modifier: Modifier = Modifier,navigateToHome:()->Unit={}) {
+fun AddCaseScreen(modifier: Modifier = Modifier, navigateToHome: () -> Unit = {}) {
     val vm: AuthViewModel = hiltViewModel()
     val addCaseViewModel: AddCaseViewModel = hiltViewModel()
     val addCaseUiState by addCaseViewModel.addCaseUiState.collectAsState()
@@ -137,7 +137,6 @@ fun AddCaseScreen(modifier: Modifier = Modifier,navigateToHome:()->Unit={}) {
         }
 
         Button(onClick = {
-            addCaseViewModel.uploadPdfToDataBase()
             addCaseViewModel.sendCase()
             navigateToHome()
         }, modifier = Modifier.fillMaxWidth()) {

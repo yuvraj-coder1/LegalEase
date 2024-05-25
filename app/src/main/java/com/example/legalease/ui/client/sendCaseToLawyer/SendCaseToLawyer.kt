@@ -36,7 +36,7 @@ fun SendCaseToLawyerScreen(modifier: Modifier = Modifier, lawyerId: String = "")
     val viewModel: SendCaseToLawyerViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
     LazyColumn(modifier = Modifier.padding(16.dp)) {
-        itemsIndexed(uiState.caseList.filter { it.status == "Inactive" }) { index, case ->
+        itemsIndexed(uiState.caseList.filter { it.status == "inactive" }) { index, case ->
             CaseToSendToLawyerItem(
                 caseType = case.caseType,
                 caseDescription = case.description,
