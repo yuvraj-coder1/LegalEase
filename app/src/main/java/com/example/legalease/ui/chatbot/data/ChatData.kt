@@ -1,6 +1,7 @@
 package com.example.legalease.ui.chatbot.data
 
 import android.graphics.Bitmap
+import com.example.legalease.data.API_KEY
 import com.google.ai.client.generativeai.GenerativeModel
 import com.google.ai.client.generativeai.type.content
 import kotlinx.coroutines.Dispatchers
@@ -10,7 +11,7 @@ object ChatData {
 
     suspend fun getResponse(prompt: String): Chat {
         val generativeModel = GenerativeModel(
-            modelName = "gemini-pro", apiKey = "API_KEY"
+            modelName = "gemini-pro", apiKey = API_KEY
         )
 
         try {
@@ -36,7 +37,7 @@ object ChatData {
 
     suspend fun getResponseWithImage(prompt: String, bitmap: Bitmap): Chat {
         val generativeModel = GenerativeModel(
-            modelName = "gemini-pro-vision", apiKey = "API_KEY"
+            modelName = "gemini-pro-vision", apiKey = API_KEY
         )
 
         try {

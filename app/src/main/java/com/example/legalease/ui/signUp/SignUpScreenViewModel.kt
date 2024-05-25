@@ -140,7 +140,9 @@ class SignUpScreenViewModel @Inject constructor(
                                 expertise = uiState.value.selectedExpertise,
                                 bio = uiState.value.aboutLawyer,
                                 feesPerHour = uiState.value.fee,
-                                lawyerType = uiState.value.lawyerType
+                                lawyerType = uiState.value.lawyerType,
+                                lawyerLocation = uiState.value.lawyerLocation,
+                                experience = uiState.value.lawyerExperience
                             )
                             db.collection(LAWYER_NODE).document(user.uid).set(lawyer)
                         } else {

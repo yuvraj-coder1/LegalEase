@@ -77,7 +77,8 @@ fun SignInScreen(
     modifier: Modifier = Modifier,
     onSignUpClicked: () -> Unit = {},
     signInViewModel: SignInScreenViewModel = viewModel(),
-    navigateToHome: () -> Unit = {}
+    navigateToHome: () -> Unit = {},
+    navigateToBlockedScreen: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val signInUiState by signInViewModel.uiState.collectAsState()
@@ -108,8 +109,10 @@ fun SignInScreen(
                         navigateToHome()
                     },
                     onFailure = {
-                        Toast.makeText(context, "Enter correct credentials!", Toast.LENGTH_SHORT)
+                        Toast.makeText(context, it.message, Toast.LENGTH_SHORT)
                             .show()
+                        if (it.message == "Lawyer is not verified")
+                            navigateToBlockedScreen()
                     }
                 )
         },

@@ -66,3 +66,6 @@ data object SpeechToTextScreen
 data object FilterScreen
 @Serializable
 data object LanguageSelectionScreen
+
+@Serializable
+data object BlockedScreen

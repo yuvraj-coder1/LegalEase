@@ -5,6 +5,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.legalease.data.CLIENT_NODE
+import com.example.legalease.data.LAWYER_NODE
+import com.example.legalease.model.ClientData
+import com.example.legalease.model.LawyerData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
@@ -47,10 +51,49 @@ class SignInScreenViewModel @Inject constructor(
         inProcess = true
         auth.signInWithEmailAndPassword(_uiState.value.username, _uiState.value.password)
             .addOnSuccessListener {
-                isSignedIn = true
-                inProcess = false
                 currentUser = auth.currentUser
-                onSuccess()
+                if (_uiState.value.isLawyer) {
+                    db.collection(LAWYER_NODE).document(currentUser!!.uid).get()
+                        .addOnSuccessListener {
+                            Log.d("TAG", "signIn: $it")
+                            val lawyerData = it.toObject(LawyerData::class.java)
+                            Log.d("TAG", "signIn: $lawyerData")
+                            if (lawyerData == null) {
+                                inProcess = false
+                                onFailure(Exception("Lawyer not found"))
+                                return@addOnSuccessListener
+                            }
+                            if (lawyerData.isVerified) {
+                                isSignedIn = true
+                                inProcess = false
+                                onSuccess()
+                            } else {
+                                inProcess = false
+                                onFailure(Exception("Lawyer is not verified"))
+                            }
+                        }
+                        .addOnFailureListener {
+                            inProcess = false
+                            onFailure(Exception("Lawyer not found"))
+                        }
+                } else {
+                    db.collection(CLIENT_NODE).document(currentUser!!.uid).get()
+                        .addOnSuccessListener {
+                            val clientData = it.toObject(ClientData::class.java)
+                            if (clientData == null) {
+                                inProcess = false
+                                onFailure(Exception("Client not found"))
+                                return@addOnSuccessListener
+                            }
+                            isSignedIn = true
+                            inProcess = false
+                            onSuccess()
+                        }
+                        .addOnFailureListener {
+                            inProcess = false
+                            onFailure(Exception("Client not found"))
+                        }
+                }
                 Log.d("TAG", "signIn: signed in successfully")
             }
             .addOnFailureListener {

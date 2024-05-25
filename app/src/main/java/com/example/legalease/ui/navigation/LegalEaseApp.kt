@@ -20,6 +20,7 @@ import com.example.legalease.ui.client.searchScreen.SearchScreenViewModel
 import com.example.legalease.ui.client.searchScreen.SearchedLawyerDetailScreen
 import com.example.legalease.ui.client.sendCaseToLawyer.SendCaseToLawyerScreen
 import com.example.legalease.ui.languageSelection.LanguageSelectionScreen
+import com.example.legalease.ui.lawyer.blocked.BlockedLawyerScreen
 import com.example.legalease.ui.lawyer.home.LawyerHomeScreen
 import com.example.legalease.ui.lawyer.lawyerGetStartedScreen.LawyerGetStartedScreen
 import com.example.legalease.ui.lawyer.profile.LawyerProfileScreen
@@ -67,6 +68,9 @@ fun LegalEaseApp(
                         authViewModel.getClient(signInScreenViewModel.currentUser?.uid ?: "")
                     }
                     navController.navigate(HomeScreen)
+                },
+                navigateToBlockedScreen = {
+                    navController.navigate(BlockedScreen)
                 }
             )
         }
@@ -103,9 +107,13 @@ fun LegalEaseApp(
             showIncomingCases(false)
             onBottomBarVisibilityChanged(false)
             val args = it.toRoute<SingleChatScreen>()
-            SingleChatScreen(vm = authViewModel, chatId = args.id, onBack = {
-                navController.popBackStack()
-            }
+            SingleChatScreen(
+                vm = authViewModel,
+                isLawyer = signInScreenViewModel.uiState.value.isLawyer,
+                chatId = args.id,
+                onBack = {
+                    navController.popBackStack()
+                }
             )
         }
         composable<SearchScreen> {
@@ -239,7 +247,12 @@ fun LegalEaseApp(
         composable<FilterScreen> {
             showIncomingCases(false)
             onBottomBarVisibilityChanged(false)
-            com.example.legalease.ui.client.searchScreen.FilterScreen(viewModel = searchScreenViewModel)
+            FilterScreen(viewModel = searchScreenViewModel)
+        }
+        composable<BlockedScreen> {
+            showIncomingCases(false)
+            onBottomBarVisibilityChanged(false)
+            BlockedLawyerScreen()
         }
         composable<LanguageSelectionScreen> {
             LanguageSelectionScreen(
