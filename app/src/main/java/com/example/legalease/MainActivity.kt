@@ -18,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -58,6 +59,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val viewModel: SignInScreenViewModel by viewModels()
+            val signInUiState by viewModel.uiState.collectAsState()
             val navController = rememberNavController()
             var buttonsVisible by remember { mutableStateOf(false) }
             var showChatbot by remember { mutableStateOf(false) }
@@ -67,7 +69,7 @@ class MainActivity : ComponentActivity() {
             LegalEaseTheme {
                 Scaffold(
                     floatingActionButton = {
-                        if (navBackStackEntry?.destination?.route == "com.example.legalease.ui.navigation.HomeScreen")
+                        if (navBackStackEntry?.destination?.route == "com.example.legalease.ui.navigation.HomeScreen" && !signInUiState.isLawyer)
                             FloatingActionButton(
                                 modifier = Modifier.padding(16.dp),
 
@@ -105,7 +107,7 @@ class MainActivity : ComponentActivity() {
 
                     val signInViewModel: SignInScreenViewModel by viewModels()
                     val signUpViewModel: SignUpScreenViewModel by viewModels()
-                    val searchScreenViewModel : SearchScreenViewModel by viewModels()
+                    val searchScreenViewModel: SearchScreenViewModel by viewModels()
                     val authViewModel: AuthViewModel by viewModels()
                     LegalEaseApp(
                         modifier = Modifier.padding(innerPadding),

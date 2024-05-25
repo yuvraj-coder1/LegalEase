@@ -32,6 +32,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,7 +48,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import com.example.legalease.R
 import com.example.legalease.ui.components.ChipsComponent
 import com.example.ui.theme.Inter
@@ -55,19 +59,14 @@ import com.example.ui.theme.Inter
 @Composable
 fun LawyerProfileScreen(
     modifier: Modifier = Modifier,
-    lawyerProfilePhoto: Int = R.drawable.profile_image,
-    lawyerName: String = "Gautam Shorewala",
-    lawyerProfession: String = "Corporate law",
-    aboutLawyer: String = "Hey i am a lawyer",
-    expertise: List<String> = listOf(
-        "mergers",
-        "Corporate Governance",
-        "Securities Law",
-        "Venture Capital",
-        "Startups"
-    ),
+    lawyerId: String = "",
 ) {
-    val lawyerProfileScreenViewModel: LawyerProfileScreenViewModel = viewModel()
+    val lawyerProfileScreenViewModel: LawyerProfileScreenViewModel = hiltViewModel()
+    val lawyer = lawyerProfileScreenViewModel.lawyer.collectAsState()
+    LaunchedEffect(Unit) {
+        lawyerProfileScreenViewModel.getLawyer()
+    }
+    val lawyerData = lawyer.value
     Column(
         modifier = modifier
             .padding(16.dp)
@@ -80,8 +79,9 @@ fun LawyerProfileScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Box {
-                Image(
-                    painter = painterResource(id = lawyerProfilePhoto),
+                AsyncImage(
+                    model = "",
+                    error = painterResource(id = R.drawable.default_profile_image),
                     contentDescription = "lawyer profile photo",
                     modifier = Modifier
                         .size(70.dp)
@@ -102,14 +102,14 @@ fun LawyerProfileScreen(
             ) {
 
                 Text(
-                    text = lawyerName,
+                    text = lawyerData.name,
                     fontFamily = Inter,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 20.sp
                 )
                 Spacer(modifier = Modifier.height(3.dp))
                 Text(
-                    text = lawyerProfession,
+                    text = lawyerData.lawyerType,
                     fontSize = 16.sp,
                     fontFamily = Inter,
                     fontWeight = FontWeight.Medium
@@ -168,7 +168,7 @@ fun LawyerProfileScreen(
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = aboutLawyer,
+                    text = lawyerData.bio,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium,
                     letterSpacing = (-0.2).sp
@@ -200,7 +200,7 @@ fun LawyerProfileScreen(
                     color = MaterialTheme.colorScheme.primary
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                ChipsComponent(skills = expertise, cardColor = Color(0xFFD3D3D3))
+                ChipsComponent(skills = lawyerData.expertise, cardColor = Color(0xFFD3D3D3))
             }
         }
 
