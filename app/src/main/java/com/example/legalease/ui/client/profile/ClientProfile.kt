@@ -1,10 +1,12 @@
 package com.example.legalease.ui.client.profile
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -14,6 +16,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Mail
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -36,16 +39,22 @@ fun ClientProfile(modifier: Modifier = Modifier,viewModel: AuthViewModel) {
             .verticalScroll(rememberScrollState())
     ) {
         Spacer(modifier = Modifier.height(16.dp))
-        Box {
-            AsyncImage(
-                model = null,
-                error = painterResource(id = R.drawable.default_profile_image),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(70.dp)
-                    .clip(CircleShape)
-            )
+        Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
+            Box {
+                AsyncImage(
+                    model = null,
+                    error = painterResource(id = R.drawable.default_profile_image),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(70.dp)
+                        .clip(CircleShape)
+                )
+            }
+            Button(onClick = { /*TODO*/ }) {
+                Text(text = "Log Out")
+            }
         }
+
         Spacer(modifier = Modifier.height(16.dp))
         if (client != null) {
             Text(
