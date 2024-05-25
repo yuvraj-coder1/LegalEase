@@ -5,6 +5,14 @@
     <string name="easily_look_for_lawyers">Easily look for lawyers</string>
     <string name="easily_look_for_cases">Easily look for cases</string>
     <string name="get_started">Get Started</string>
+    <string name="log_in">Log in</string>
+    <string name="lawyer">Lawyer</string>
+    <string name="client">Client</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="log_in_with_google">Log in with Google</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign Up</string>
 
 
 </resources>

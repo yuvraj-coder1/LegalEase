@@ -5,4 +5,14 @@
     <string name="easily_look_for_lawyers">वकीलों को आसानी से खोजें</string>
     <string name="easily_look_for_cases">मामलों को आसानी से खोजें</string>
     <string name="get_started">शुरू करें</string>
+    <string name="log_in">लॉग इन करें</string>
+    <string name="lawyer">वकील</string>
+    <string name="client">मुवक्किल</string>
+    <string name="email">ईमेल</string>
+    <string name="password">पासवर्ड</string>
+    <string name="log_in_with_google">गूगल से लॉग इन करें</string>
+    <string name="don_t_have_an_account">खाता नहीं है?</string>
+    <string name="sign_up">साइन अप करें</string>
+
+
 </resources>
