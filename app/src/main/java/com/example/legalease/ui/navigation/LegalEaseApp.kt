@@ -21,6 +21,8 @@ import com.example.legalease.ui.client.searchScreen.SearchScreenViewModel
 import com.example.legalease.ui.client.searchScreen.SearchedLawyerDetailScreen
 import com.example.legalease.ui.client.sendCaseToLawyer.SendCaseToLawyerScreen
 import com.example.legalease.ui.languageSelection.LanguageSelectionScreen
+import com.example.legalease.ui.lawyer.appointment.AppointmentCaseListScreen
+import com.example.legalease.ui.lawyer.appointment.BookAppointment
 import com.example.legalease.ui.lawyer.blocked.BlockedLawyerScreen
 import com.example.legalease.ui.lawyer.home.LawyerHomeScreen
 import com.example.legalease.ui.lawyer.lawyerGetStartedScreen.LawyerGetStartedScreen
@@ -53,7 +55,11 @@ fun LegalEaseApp(
     showIncomingCases: (Boolean) -> Unit
 ) {
     val scope = rememberCoroutineScope()
-    NavHost(navController = navController, startDestination = LanguageSelectionScreen, modifier = modifier) {
+    NavHost(
+        navController = navController,
+        startDestination = LanguageSelectionScreen,
+        modifier = modifier
+    ) {
         composable<SignInScreen> {
             showIncomingCases(false)
             onBottomBarVisibilityChanged(false)
@@ -148,8 +154,7 @@ fun LegalEaseApp(
             LawyerHomeScreen(
                 signedInViewModel = signInScreenViewModel,
                 onSeeAllClick = { navController.navigate(CaseListScreen) },
-                navigateToAddCase = { navController.navigate(AddCaseScreen)
-                },
+                navigateToAddAppointment = { navController.navigate(AppointmentCaseSelectionScreen) },
                 onDocumentClick = {navController.navigate(DocumentListScreen)}
             )
         }
@@ -260,13 +265,30 @@ fun LegalEaseApp(
         composable<LanguageSelectionScreen> {
             LanguageSelectionScreen(
                 navController = navController,
-                onClicked = {navController.navigate(WelcomeScreen)}
+                onClicked = { navController.navigate(WelcomeScreen) }
             )
         }
         composable<DocumentListScreen> {
             showIncomingCases(false)
             onBottomBarVisibilityChanged(false)
             DocumentListScreen(onClick = {navController.navigate(ComposePdfViewerScreen(it))})
+        }
+
+        composable<AppointmentCaseSelectionScreen> {
+            onBottomBarVisibilityChanged(false)
+            showIncomingCases(false)
+            AppointmentCaseListScreen(navigateToBookAppointment = { caseId, clientId ->
+                navController.navigate(BookAppointmentScreen(caseId, clientId))
+            })
+        }
+        composable<BookAppointmentScreen> {
+            onBottomBarVisibilityChanged(false)
+            showIncomingCases(false)
+            val args = it.toRoute<BookAppointmentScreen>()
+            BookAppointment(
+                caseId = args.caseId,
+                clientId = args.clientId,
+                navigateBack = { navController.navigateUp() })
         }
     }
 }

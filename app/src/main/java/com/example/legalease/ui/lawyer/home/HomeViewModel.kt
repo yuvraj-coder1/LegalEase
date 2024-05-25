@@ -5,16 +5,28 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
+import com.example.legalease.data.APPOINTMENT
+import com.example.legalease.data.CASE_NODE
+import com.example.legalease.model.AppointmentData
+import com.example.legalease.model.CaseData
 import com.example.legalease.model.CaseItemData
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import java.time.LocalDate
+import javax.inject.Inject
 import kotlin.reflect.KProperty
 
+@HiltViewModel
 @RequiresApi(Build.VERSION_CODES.O)
-class HomeViewModel : ViewModel() {
+class HomeViewModel @Inject constructor(
+    private val db: FirebaseFirestore,
+    private val auth: FirebaseAuth
+) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
     val casesItemList: MutableList<CaseItemData> = mutableListOf(
@@ -59,6 +71,7 @@ class HomeViewModel : ViewModel() {
             upcomingHearing = "22-10-2024"
         )
     )
+
     init {
         val date = LocalDate.now()
         val dayOfWeek = date.dayOfWeek.value
@@ -74,6 +87,46 @@ class HomeViewModel : ViewModel() {
         _uiState.update {
             it.copy(dateList = dateList)
         }
+        getAppointments()
+        getCases()
+    }
+
+    private fun getCases() {
+        db.collection(CASE_NODE).whereEqualTo("clientId", auth.currentUser?.uid).get()
+            .addOnSuccessListener {
+                val cases = it.toObjects(CaseData::class.java)
+                if (cases.isNotEmpty())
+                    _uiState.update {
+                        it.copy(cases = cases)
+                    }
+            }
+        db.collection(CASE_NODE).whereEqualTo("lawyerId", auth.currentUser?.uid).get()
+            .addOnSuccessListener {
+                val cases = it.toObjects(CaseData::class.java)
+                if (cases.isNotEmpty())
+                    _uiState.update {
+                        it.copy(cases = cases)
+                    }
+            }
+    }
+
+    private fun getAppointments() {
+        db.collection(APPOINTMENT).whereEqualTo("clientId", auth.currentUser?.uid).get()
+            .addOnSuccessListener {
+                val appointments = it.toObjects(AppointmentData::class.java)
+                if (appointments.isNotEmpty())
+                    _uiState.update {
+                        it.copy(appointments = appointments)
+                    }
+            }
+        db.collection(APPOINTMENT).whereEqualTo("lawyerId", auth.currentUser?.uid).get()
+            .addOnSuccessListener {
+                val appointments = it.toObjects(AppointmentData::class.java)
+                if (appointments.isNotEmpty())
+                    _uiState.update {
+                        it.copy(appointments = appointments)
+                    }
+            }
     }
 
     fun selectDate(index: Int) {
