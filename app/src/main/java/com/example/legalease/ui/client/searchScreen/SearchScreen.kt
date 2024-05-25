@@ -49,6 +49,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -89,7 +90,7 @@ fun SearchScreen(
             },
             active = searchScreenUiState.active,
             onActiveChange = { searchScreenViewModel.updateActive(it) },
-            placeholder = { Text(text = "Search ") },
+            placeholder = { Text(stringResource(id = R.string.search)) },
             leadingIcon = {
                 if (searchScreenUiState.active && searchScreenUiState.searchQuery.isNotBlank()) {
                     Icon(
@@ -127,7 +128,7 @@ fun SearchScreen(
         ) {
 
             Button(onClick = onFilterClicked, elevation = ButtonDefaults.buttonElevation(5.dp)) {
-                Text(text = "Filter")
+                Text(text = stringResource(id = R.string.filter))
                 Spacer(modifier = Modifier.width(8.dp))
                 Icon(imageVector = Icons.Default.FilterAlt, contentDescription = "Filter")
             }
@@ -135,7 +136,7 @@ fun SearchScreen(
                 onClick = { /*TODO*/ },
                 elevation = ButtonDefaults.buttonElevation(5.dp),
             ) {
-                Text(text = "Sort")
+                Text(text = stringResource(id = R.string.sort))
                 Spacer(modifier = Modifier.width(8.dp))
                 Icon(imageVector = Icons.Default.Sort, contentDescription = "Sort")
             }
@@ -171,7 +172,7 @@ fun SearchScreen(
         } else {
             Spacer(modifier = Modifier.height(200.dp))
             Text(
-                text = "Oops! No Lawyer Found",
+                text = stringResource(id = R.string.oops_no_lawyer_found),
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
                 letterSpacing = (-0.1).sp,

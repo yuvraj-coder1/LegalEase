@@ -30,6 +30,11 @@
     <string name="financials">Financials</string>
     <string name="upcoming_hearing">"Upcoming Hearing "</string>
     <string name="documents">Documents</string>
-
-
+    <string name="search">Search </string>
+    <string name="filter">Filter</string>
+    <string name="sort">Sort</string>
+    <string name="oops_no_lawyer_found">Oops! No Lawyer Found</string>
+    <string name="profile">Profile</string>
+    <string name="log_out">Log Out</string>
+    <string name="type_a_prompt">Type a prompt</string>
 </resources>

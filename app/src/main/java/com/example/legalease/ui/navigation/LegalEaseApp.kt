@@ -263,6 +263,8 @@ fun LegalEaseApp(
             BlockedLawyerScreen()
         }
         composable<LanguageSelectionScreen> {
+            showIncomingCases(false)
+            onBottomBarVisibilityChanged(false)
             LanguageSelectionScreen(
                 navController = navController,
                 onClicked = { navController.navigate(WelcomeScreen) }
