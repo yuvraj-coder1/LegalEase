@@ -1,6 +1,7 @@
 package com.example.legalease.ui.client.cases
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.RadioButtonChecked
 import androidx.compose.material.icons.filled.Update
@@ -51,19 +53,20 @@ fun CasesScreen(modifier: Modifier = Modifier) {
     Column(modifier = modifier.padding(16.dp)) {
         Row(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Button(onClick = { currentFilter = "All" }) {
+            Button(onClick = { currentFilter = "All" }, modifier = Modifier.padding(horizontal = 8.dp)) {
                 Text(text = "All")
             }
-            Button(onClick = { currentFilter = "active" }) {
+            Button(onClick = { currentFilter = "active" },modifier = Modifier.padding(end = 8.dp)) {
                 Text(text = "Active")
             }
-            Button(onClick = { currentFilter = "inactive" }) {
+            Button(onClick = { currentFilter = "inactive" },modifier = Modifier.padding(end = 8.dp)) {
                 Text(text = "Inactive")
             }
-            Button(onClick = { currentFilter = "pending" }) {
+            Button(onClick = { currentFilter = "pending" },modifier = Modifier.padding(end = 8.dp)) {
                 Text(text = "Pending")
             }
         }

@@ -29,6 +29,7 @@
     <string name="history">History</string>
     <string name="financials">Financials</string>
     <string name="upcoming_hearing">"Upcoming Hearing "</string>
+    <string name="documents">Documents</string>
 
 
 </resources>
