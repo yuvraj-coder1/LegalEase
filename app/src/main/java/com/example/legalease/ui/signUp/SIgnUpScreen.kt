@@ -39,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -146,7 +147,7 @@ fun SignUpScreenContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(36.dp))
-        Text(text = "Sign Up", style = TextStyle(fontSize = 30.sp), fontWeight = FontWeight.Black)
+        Text(text = stringResource(R.string.sign_up), style = TextStyle(fontSize = 30.sp), fontWeight = FontWeight.Black)
         Spacer(modifier = Modifier.size(24.dp))
 
         Row(
@@ -160,7 +161,7 @@ fun SignUpScreenContent(
                 ),
 //                modifier = Modifier.weight(1f)
             ) {
-                Text(text = "Lawyer", color = if (isLawyer) Color.White else Color.Black)
+                Text(text = stringResource(id = R.string.lawyer), color = if (isLawyer) Color.White else Color.Black)
                 if (isLawyer) {
                     Spacer(modifier = Modifier.width(20.dp))
                     Image(
@@ -177,7 +178,7 @@ fun SignUpScreenContent(
                 ),
                 modifier = Modifier.weight(1f)
             ) {
-                Text(text = "Client", color = if (!isLawyer) Color.White else Color.Black)
+                Text(text = stringResource(id = R.string.client), color = if (!isLawyer) Color.White else Color.Black)
                 if (!isLawyer) {
                     Spacer(modifier = Modifier.weight(1f))
                     Image(
@@ -192,7 +193,7 @@ fun SignUpScreenContent(
         OutlinedTextField(
             value = username,
             onValueChange = { onUsernameChange(it) },
-            label = { Text(text = "Username") },
+            label = { Text(text = stringResource(id = R.string.username)) },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Outlined.Person,
@@ -208,7 +209,7 @@ fun SignUpScreenContent(
             value = email,
             onValueChange = { onEmailChange(it) },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-            label = { Text(text = "Email") },
+            label = { Text(text = stringResource(id = R.string.email)) },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Outlined.Person,
@@ -223,7 +224,7 @@ fun SignUpScreenContent(
             OutlinedTextField(
                 value = governmentId,
                 onValueChange = { onGovernmentIdChange(it) },
-                label = { Text(text = "Government ID") },
+                label = { Text(text = stringResource(id = R.string.bar_council_number)) },
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Outlined.CreditCard,
@@ -240,7 +241,7 @@ fun SignUpScreenContent(
             value = password,
             onValueChange = { onPasswordChange(it) },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-            label = { Text(text = "Password") },
+            label = { Text(text = stringResource(id = R.string.password)) },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Outlined.Key,
@@ -262,7 +263,7 @@ fun SignUpScreenContent(
             value = confirmPassword,
             onValueChange = { onConfirmPasswordChange(it) },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-            label = { Text(text = "Confirm Password") },
+            label = { Text(text = stringResource(R.string.confirm_password)) },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Outlined.Key,
@@ -282,7 +283,7 @@ fun SignUpScreenContent(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(8.dp)
         ) {
-            Text(text = "Sign Up", fontSize = 16.sp, modifier = Modifier.padding(4.dp))
+            Text(text = stringResource(id = R.string.sign_up), fontSize = 16.sp, modifier = Modifier.padding(4.dp))
         }
         Spacer(modifier = Modifier.height(16.dp))
         Button(
@@ -301,7 +302,7 @@ fun SignUpScreenContent(
             )
             Spacer(modifier = Modifier.width(10.dp))
             Text(
-                text = "Sign Up with Google",
+                text = stringResource(R.string.sign_up_with_google),
                 fontSize = 16.sp,
                 modifier = Modifier
                     .padding(4.dp)
@@ -309,7 +310,7 @@ fun SignUpScreenContent(
         }
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Already have an account?",
+            text = stringResource(id = R.string.already_have_an_account),
             modifier = Modifier.align(alignment = Alignment.Start)
         )
         Spacer(modifier = Modifier.height(20.dp))
@@ -321,7 +322,7 @@ fun SignUpScreenContent(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(8.dp)
         ) {
-            Text(text = "Log in", fontSize = 16.sp, modifier = Modifier.padding(4.dp))
+            Text(text = stringResource(id = R.string.log_in), fontSize = 16.sp, modifier = Modifier.padding(4.dp))
         }
     }
 }
