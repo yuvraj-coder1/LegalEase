@@ -1,15 +1,15 @@
 package com.example.legalease.ui.navigation
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.example.legalease.model.LawyerData
-import com.example.legalease.model.toJsonObject
 import com.example.legalease.ui.chatbot.presentation.ChatBotScreen
 import com.example.legalease.ui.client.addCaseScreen.AddCaseScreen
 import com.example.legalease.ui.client.cases.CasesScreen
@@ -19,6 +19,8 @@ import com.example.legalease.ui.client.searchScreen.SearchedLawyerDetailScreen
 import com.example.legalease.ui.lawyer.home.LawyerHomeScreen
 import com.example.legalease.ui.lawyer.lawyerGetStartedScreen.LawyerGetStartedScreen
 import com.example.legalease.ui.lawyer.profile.LawyerProfileScreen
+import com.example.legalease.ui.lawyer.recievedCasesFromClients.CaseDetailOfTheReceivedCase
+import com.example.legalease.ui.lawyer.recievedCasesFromClients.ReceivedCasesFromClients
 import com.example.legalease.ui.message.ChatListScreen
 import com.example.legalease.ui.message.SingleChatScreen
 import com.example.legalease.ui.signIn.SignInScreen
@@ -27,7 +29,7 @@ import com.example.legalease.ui.signUp.SignUpScreen
 import com.example.legalease.ui.signUp.SignUpScreenViewModel
 import com.example.legalease.ui.viewModels.AuthViewModel
 import com.example.legalease.ui.welcome.WelcomeScreen
-import kotlinx.serialization.json.Json
+import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -38,10 +40,13 @@ fun LegalEaseApp(
     signUpScreenViewModel: SignUpScreenViewModel,
     authViewModel: AuthViewModel,
     onBottomBarVisibilityChanged: (Boolean) -> Unit,
-    showChatbotIcon: (Boolean) -> Unit
+    showChatbotIcon: (Boolean) -> Unit,
+    showIncomingCases: (Boolean) -> Unit
 ) {
+    val scope = rememberCoroutineScope()
     NavHost(navController = navController, startDestination = WelcomeScreen, modifier = modifier) {
         composable<SignInScreen> {
+            showIncomingCases(false)
             onBottomBarVisibilityChanged(false)
             SignInScreen(
                 onSignUpClicked = {
@@ -59,6 +64,7 @@ fun LegalEaseApp(
             )
         }
         composable<SignUpScreen> {
+            showIncomingCases(false)
             onBottomBarVisibilityChanged(false)
             SignUpScreen(
                 onSignInClicked = {
@@ -70,14 +76,13 @@ fun LegalEaseApp(
         }
 
         composable<ChatBotScreen> {
+            showChatbotIcon(false)
+            showIncomingCases(false)
             onBottomBarVisibilityChanged(false)
             ChatBotScreen()
         }
-
-        composable<HomeScreen> {
-            onBottomBarVisibilityChanged(true)
-        }
         composable<ChatListScreen> {
+            showIncomingCases(false)
             onBottomBarVisibilityChanged(true)
             ChatListScreen(
                 vm = authViewModel,
@@ -88,6 +93,7 @@ fun LegalEaseApp(
 
         }
         composable<SingleChatScreen> {
+            showIncomingCases(false)
             onBottomBarVisibilityChanged(false)
             val args = it.toRoute<SingleChatScreen>()
             SingleChatScreen(vm = authViewModel, chatId = args.id, onBack = {
@@ -96,6 +102,7 @@ fun LegalEaseApp(
             )
         }
         composable<SearchScreen> {
+            showIncomingCases(false)
             onBottomBarVisibilityChanged(true)
             SearchScreen(onLawyerClicked = {
                 navController.navigate(
@@ -106,15 +113,22 @@ fun LegalEaseApp(
             })
         }
         composable<ProfileScreen> {
+            showIncomingCases(false)
             onBottomBarVisibilityChanged(true)
             LawyerProfileScreen()
         }
         composable<HomeScreen> {
             onBottomBarVisibilityChanged(true)
             showChatbotIcon(true)
-            LawyerHomeScreen(signedInViewModel = signInScreenViewModel, onSeeAllClick = { navController.navigate(CaseListScreen) })
+            if (signInScreenViewModel.uiState.value.isLawyer) {
+                showIncomingCases(true)
+            }
+            LawyerHomeScreen(
+                signedInViewModel = signInScreenViewModel,
+                onSeeAllClick = { navController.navigate(CaseListScreen) })
         }
         composable<SearchedLayerScreen> {
+            showIncomingCases(false)
             val args = it.toRoute<SearchedLayerScreen>()
             onBottomBarVisibilityChanged(false)
             SearchedLawyerDetailScreen(
@@ -126,28 +140,67 @@ fun LegalEaseApp(
             )
         }
         composable<LawyerGetStartedScreen> {
+            showIncomingCases(false)
             onBottomBarVisibilityChanged(false)
             LawyerGetStartedScreen(
                 viewModel = signUpScreenViewModel,
+                navigateToSignIn = {
+                    navController.navigate(SignInScreen) {
+                        popUpTo(SignInScreen) {
+                            inclusive = false
+                        }
+                    }
+                }
             )
         }
         composable<WelcomeScreen> {
+            showIncomingCases(false)
             onBottomBarVisibilityChanged(false)
             showChatbotIcon(false)
             WelcomeScreen { navController.navigate(SignInScreen) }
         }
         composable<AddCaseScreen> {
+            showIncomingCases(false)
             val args = it.toRoute<AddCaseScreen>()
             onBottomBarVisibilityChanged(false)
             AddCaseScreen(lawyerId = args.lawyerId)
         }
         composable<ClientProfileScreen> {
+            showIncomingCases(false)
             onBottomBarVisibilityChanged(true)
             ClientProfile(viewModel = authViewModel)
         }
         composable<CaseListScreen> {
+            showIncomingCases(false)
             onBottomBarVisibilityChanged(true)
             CasesScreen()
+        }
+        composable<ReceivedCaseListScreen> {
+            showIncomingCases(false)
+            onBottomBarVisibilityChanged(false)
+            ReceivedCasesFromClients(
+                navigateToDetailScreen = {
+                    navController.navigate(
+                        CaseDetailScreen(it)
+                    )
+                }
+            )
+        }
+        composable<CaseDetailScreen> {
+            showIncomingCases(false)
+            onBottomBarVisibilityChanged(false)
+            val args = it.toRoute<CaseDetailScreen>()
+            CaseDetailOfTheReceivedCase(
+                caseId = args.caseId,
+                navigateToHome = { navController.navigate(HomeScreen) },
+                addToChatList = { clientId, lawyerId ->
+                    scope.launch {
+                        authViewModel.addClientToChat(
+                            clientId,
+                            lawyerId
+                        )
+                    }
+                })
         }
     }
 }

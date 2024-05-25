@@ -31,6 +31,7 @@ import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.Calendar
@@ -236,34 +237,29 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun addClientToChat(clientId: String) {
-        db.collection(CLIENT_NODE).whereEqualTo("id", clientId).get()
-            .addOnSuccessListener {
-                if (it.documents.isNotEmpty()) {
-                    val client = it.documents[0].toObject(ClientData::class.java)!!
-                    val id = db.collection(CHATS).document().id
-                    val chat = ChatData(
-                        chatId = id,
-                        client = ChatUser(
-                            userId = client.id,
-                            name = client.name,
-                            imageUrl = null
-                        ),
-                        lawyer = ChatUser(
-                            userId = currentLawyer?.id ?: "",
-                            name = currentLawyer?.name ?: "",
-                            imageUrl = null
-                        )
+    suspend fun addClientToChat(clientId: String, lawyerId: String) {
+        Log.d(TAG, "addClientToChat: $clientId")
+        getClient(clientId)
+        getLawyer(lawyerId)
+        delay(1000)
+        val id = db.collection(CHATS).document().id
+        val chat = ChatData(
+            chatId = id,
+            client = ChatUser(
+                userId = currentClient?.id ?: "",
+                name = currentClient?.name ?: "",
+                imageUrl = null
+            ),
+            lawyer = ChatUser(
+                userId = currentLawyer?.id ?: "",
+                name = currentLawyer?.name ?: "",
+                imageUrl = null
+            )
 
-                    )
-                    db.collection(CHATS).document(id).set(chat)
-                }
-            }
-            .addOnFailureListener {
-                Log.d("TAG", "addClientToChat: could not add chat $it ")
-            }
-
+        )
+        db.collection(CHATS).document(id).set(chat)
     }
+
 
     fun onSendMessages(
         chatId: String,

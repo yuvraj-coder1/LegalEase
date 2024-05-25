@@ -1,4 +1,4 @@
-  package com.example.legalease.ui.signUp
+package com.example.legalease.ui.signUp
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -52,12 +52,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.legalease.R
 import com.example.legalease.ui.navigation.LawyerGetStartedScreen
+import com.example.legalease.ui.navigation.SignInScreen
 import com.example.legalease.ui.signIn.SignInScreen
 import com.example.legalease.ui.signIn.SignInScreenContent
 import com.example.legalease.ui.signIn.SignInScreenTopBar
 import com.example.legalease.ui.signIn.SignInScreenViewModel
 
-  @Composable
+@Composable
 fun SignUpScreen(
     modifier: Modifier = Modifier,
     onSignInClicked: () -> Unit = {},
@@ -73,7 +74,7 @@ fun SignUpScreen(
             .padding(horizontal = 24.dp),
 //        navigateToLawyerGetStartedScreen = navigateToLawyerGetStartedScreen,
         navigateToLawyerGetStartedScreen = {
-            if(signUpUiState.username.isEmpty() ||
+            if (signUpUiState.username.isEmpty() ||
                 signUpUiState.password.isEmpty() ||
                 signUpUiState.confirmPassword.isEmpty() ||
                 signUpUiState.email.isEmpty() ||
@@ -96,14 +97,20 @@ fun SignUpScreen(
         email = signUpUiState.email,
         onEmailChange = { signUpViewModel.updateEmail(it) },
         onSignUpClick = {
-            if(signUpUiState.username.isEmpty() ||
+            if (signUpUiState.username.isEmpty() ||
                 signUpUiState.password.isEmpty() ||
                 signUpUiState.confirmPassword.isEmpty() ||
                 signUpUiState.email.isEmpty()
             )
                 Toast.makeText(context, "Enter all fields!", Toast.LENGTH_SHORT).show()
-            else
-            signUpViewModel.signUp()
+            else {
+                signUpViewModel.signUp()
+                navController.navigate(SignInScreen) {
+                    popUpTo(SignInScreen) {
+                        inclusive = false
+                    }
+                }
+            }
         },
         onSignInClicked = onSignInClicked
     )
@@ -154,7 +161,7 @@ fun SignUpScreenContent(
 //                modifier = Modifier.weight(1f)
             ) {
                 Text(text = "Lawyer", color = if (isLawyer) Color.White else Color.Black)
-                if(isLawyer) {
+                if (isLawyer) {
                     Spacer(modifier = Modifier.width(20.dp))
                     Image(
                         painter = painterResource(id = R.drawable.lawyer_icon),
@@ -171,7 +178,7 @@ fun SignUpScreenContent(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(text = "Client", color = if (!isLawyer) Color.White else Color.Black)
-                if(!isLawyer) {
+                if (!isLawyer) {
                     Spacer(modifier = Modifier.weight(1f))
                     Image(
                         painter = painterResource(id = R.drawable.client_icon),
@@ -268,7 +275,7 @@ fun SignUpScreenContent(
         )
         Spacer(modifier = Modifier.height(20.dp))
         Button(
-            onClick = if(isLawyer) navigateToLawyerGetStartedScreen else onSignUpClick,
+            onClick = if (isLawyer) navigateToLawyerGetStartedScreen else onSignUpClick,
             colors = ButtonDefaults.buttonColors(
                 Color.Black
             ),

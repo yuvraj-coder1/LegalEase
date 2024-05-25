@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -21,7 +20,6 @@ import androidx.compose.material.icons.filled.PictureAsPdf
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -29,30 +27,33 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.legalease.R
-import com.example.legalease.model.CaseDetailSentToLawyer
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.compose.LegalEaseTheme
+import com.example.legalease.R
+import com.example.legalease.model.CaseData
 
 @Composable
 fun CaseDetailOfTheReceivedCase(
     modifier: Modifier = Modifier,
-    caseTitle: String,
-    caseDescription: String,
-    clientName: String,
-    caseDate: String,
-    language: String
+    caseId: String = "",
+    navigateToHome: () -> Unit = {},
+    addToChatList: (String, String) -> Unit
 ) {
+    val vm: ReceivedCasesFromClientsViewModel = hiltViewModel()
+    LaunchedEffect(Unit) {
+        vm.getCaseById(caseId)
+    }
+    val case = vm.case ?: CaseData()
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -61,7 +62,7 @@ fun CaseDetailOfTheReceivedCase(
     ) {
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = caseTitle,
+            text = case.caseType,
             fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.titleLarge
         )
@@ -84,7 +85,7 @@ fun CaseDetailOfTheReceivedCase(
                     .fillMaxWidth()
                     .padding(end = 16.dp)
             ) {
-                Text(text = clientName, fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
+                Text(text = case.clientName, fontWeight = FontWeight.SemiBold, fontSize = 18.sp)
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -99,7 +100,7 @@ fun CaseDetailOfTheReceivedCase(
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            text = caseDate,
+                            text = case.createdAt,
                             style = MaterialTheme.typography.bodySmall.copy(color = Color.Gray),
                             fontWeight = FontWeight(500)
                         )
@@ -113,7 +114,7 @@ fun CaseDetailOfTheReceivedCase(
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            text = language,
+                            text = case.preferredLanguage,
                             style = MaterialTheme.typography.bodySmall.copy(
                                 color = Color.Gray,
                                 fontWeight = FontWeight(500)
@@ -134,7 +135,7 @@ fun CaseDetailOfTheReceivedCase(
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = caseDescription,
+            text = case.description,
             style = MaterialTheme.typography.bodyMedium,
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -147,36 +148,27 @@ fun CaseDetailOfTheReceivedCase(
         )
         Spacer(modifier = Modifier.height(16.dp))
         Column(modifier = Modifier.fillMaxWidth()) {
-            DocumentItem(
-                documentName = "Affidavit",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-            )
-            DocumentItem(
-                documentName = "Affidavit",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-            )
-            DocumentItem(
-                documentName = "Affidavit",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-            )
-            DocumentItem(
-                documentName = "Affidavit",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-            )
+            case.documentLinks.forEach {
+                DocumentItem(
+                    documentName = it.substring(0, 10),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp)
+                )
+            }
 
         }
         Spacer(modifier = Modifier.height(16.dp))
         Row {
             Button(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    vm.updateCaseStatus(
+                        caseId = caseId,
+                        status = "rejected",
+                        lawyerId = vm.getCurrentLawyerId()
+                    )
+                    navigateToHome()
+                },
                 modifier = Modifier.weight(1f),
                 shape = MaterialTheme.shapes.extraSmall,
                 colors = ButtonDefaults.buttonColors(Color.White),
@@ -189,7 +181,15 @@ fun CaseDetailOfTheReceivedCase(
             }
             Spacer(modifier = Modifier.width(8.dp))
             Button(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    vm.updateCaseStatus(
+                        caseId = caseId,
+                        status = "accepted",
+                        lawyerId = vm.getCurrentLawyerId()
+                    )
+                    addToChatList(case.clientId, case.lawyerId ?: "")
+                    navigateToHome()
+                },
                 modifier = Modifier.weight(1f),
                 shape = MaterialTheme.shapes.extraSmall,
                 colors = ButtonDefaults.buttonColors(Color.Black)
@@ -224,21 +224,6 @@ fun DocumentItem(modifier: Modifier = Modifier, documentName: String, onClick: (
 @Composable
 fun CaseDetailOfTheReceivedCasePreview(modifier: Modifier = Modifier) {
     LegalEaseTheme {
-        CaseDetailOfTheReceivedCase(
-            caseTitle = "Divorce Case",
-            caseDescription = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit." +
-                    " Aenean commodo ligula eget dolor. Aenean massa. Cum sociis " +
-                    "natoque penatibus et magnis dis parturient montes, nascetur ridiculus " +
-                    "mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. " +
-                    "Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec," +
-                    " vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae," +
-                    " justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus." +
-                    " Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula," +
-                    " porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in," +
-                    " viverra quis, feugiat a,",
-            clientName = "Pratham Singh",
-            caseDate = "23/12/2024",
-            language = "English"
-        )
+        CaseDetailOfTheReceivedCase(addToChatList = { _, _ -> })
     }
 }

@@ -124,7 +124,11 @@ class SignUpScreenViewModel @Inject constructor(
                                 name = uiState.value.username,
                                 officialId = uiState.value.governmentId,
                                 email = uiState.value.email,
-                                password = uiState.value.password
+                                password = uiState.value.password,
+                                expertise = uiState.value.selectedExpertise,
+                                bio = uiState.value.aboutLawyer,
+                                feesPerHour = uiState.value.fee,
+                                lawyerType = uiState.value.lawyerType
                             )
                             db.collection(LAWYER_NODE).document(user.uid).set(lawyer)
                         } else {
