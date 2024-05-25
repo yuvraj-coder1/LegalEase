@@ -108,4 +108,7 @@ dependencies {
 
     //google-fonts
     implementation(libs.androidx.ui.text.google.fonts)
+
+    //ok-http
+        implementation ("com.squareup.okhttp3:okhttp:4.9.2")
 }

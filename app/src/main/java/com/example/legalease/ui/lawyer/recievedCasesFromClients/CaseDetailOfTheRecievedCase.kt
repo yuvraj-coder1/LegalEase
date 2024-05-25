@@ -41,13 +41,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.compose.LegalEaseTheme
 import com.example.legalease.R
 import com.example.legalease.model.CaseData
+import com.example.legalease.ui.pdfViewer.ComposePDFViewer
 
 @Composable
 fun CaseDetailOfTheReceivedCase(
     modifier: Modifier = Modifier,
     caseId: String = "",
     navigateToHome: () -> Unit = {},
-    addToChatList: (String, String) -> Unit
+    addToChatList: (String, String) -> Unit,
+    onDocumentClick: (String) -> Unit
 ) {
     val vm: ReceivedCasesFromClientsViewModel = hiltViewModel()
     LaunchedEffect(Unit) {
@@ -153,7 +155,8 @@ fun CaseDetailOfTheReceivedCase(
                     documentName = it.substring(0, 10),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 8.dp)
+                        .padding(vertical = 8.dp),
+                    onClick = { onDocumentClick(it) }
                 )
             }
 
@@ -203,7 +206,7 @@ fun CaseDetailOfTheReceivedCase(
 @Composable
 fun DocumentItem(modifier: Modifier = Modifier, documentName: String, onClick: () -> Unit = {}) {
     Card(
-        modifier = modifier.clickable { onClick() },
+        modifier = modifier,
         elevation = CardDefaults.elevatedCardElevation(3.dp),
         colors = CardDefaults.cardColors(Color.White)
     ) {
@@ -215,7 +218,13 @@ fun DocumentItem(modifier: Modifier = Modifier, documentName: String, onClick: (
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(text = documentName)
-            Icon(imageVector = Icons.Default.PictureAsPdf, contentDescription = "View pdf")
+            Icon(
+                imageVector = Icons.Default.PictureAsPdf,
+                contentDescription = "View pdf",
+                modifier = Modifier.clickable {
+                    onClick()
+                }
+            )
         }
     }
 }
@@ -224,6 +233,6 @@ fun DocumentItem(modifier: Modifier = Modifier, documentName: String, onClick: (
 @Composable
 fun CaseDetailOfTheReceivedCasePreview(modifier: Modifier = Modifier) {
     LegalEaseTheme {
-        CaseDetailOfTheReceivedCase(addToChatList = { _, _ -> })
+        CaseDetailOfTheReceivedCase(addToChatList = { _, _ -> }, onDocumentClick = {})
     }
 }

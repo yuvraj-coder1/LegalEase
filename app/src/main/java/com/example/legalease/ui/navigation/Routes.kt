@@ -52,3 +52,6 @@ data object ReceivedCaseListScreen
 
 @Serializable
 data class CaseDetailScreen(val caseId: String)
+
+@Serializable
+data class ComposePdfViewerScreen(val pdfLink: String)
