@@ -29,6 +29,12 @@ class SignUpScreenViewModel @Inject constructor(
         }
     }
 
+    fun updateLocation(location: String){
+        _uiState.update {
+            it.copy(lawyerLocation = location)
+        }
+    }
+
     fun updatePassword(password: String) {
         _uiState.update {
             it.copy(password = password)

@@ -18,6 +18,7 @@ data class LawyerData(
     val lawyerType: String = "",
     val bio: String = "",
     val experience: String = "",
+    val lawyerLocation: String = "Bangalore",
 )
 
 fun LawyerData.toJsonObject(): JSONObject {
