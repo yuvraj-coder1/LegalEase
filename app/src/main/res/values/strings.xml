@@ -18,6 +18,17 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="sign_up_with_google">Sign Up with Google</string>
     <string name="already_have_an_account">Already have an account?</string>
+    <string name="today">Today</string>
+    <string name="book_appointment">Book Appointment</string>
+    <string name="you_have_an_appointment_with_mr_lawyer_at_9_00_am">You have an appointment with Mr Lawyer at 9:00 AM</string>
+    <string name="cases">Cases</string>
+    <string name="no_cases_available">No Cases Available</string>
+    <string name="others">Others</string>
+    <string name="faqs">FAQs</string>
+    <string name="blogs">Blogs</string>
+    <string name="history">History</string>
+    <string name="financials">Financials</string>
+    <string name="upcoming_hearing">"Upcoming Hearing "</string>
 
 
 </resources>
