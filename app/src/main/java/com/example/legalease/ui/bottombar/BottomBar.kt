@@ -14,7 +14,6 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.legalease.ui.signIn.SignInScreenViewModel
-import com.example.legalease.ui.viewModels.AuthViewModel
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
@@ -106,6 +105,6 @@ fun BottomBar(
                 )
             }
         }
-
     }
 }
+

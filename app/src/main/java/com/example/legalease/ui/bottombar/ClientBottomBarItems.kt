@@ -8,7 +8,6 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.legalease.ui.navigation.ChatListScreen
 import com.example.legalease.ui.navigation.SearchScreen
-import com.example.legalease.ui.navigation.HomeScreen
 
 sealed class LawyerBottomBarItem (
     val label: String,
@@ -18,7 +17,7 @@ sealed class LawyerBottomBarItem (
     data object HomeScreen: LawyerBottomBarItem(
         label = "Home",
         icon = Icons.Default.Home,
-        route = HomeScreen
+        route = com.example.legalease.ui.navigation.HomeScreen
     )
     data object ProjectScreen: LawyerBottomBarItem(
         label = "Find Projects",
@@ -33,7 +32,7 @@ sealed class LawyerBottomBarItem (
     data object ProfileScreen: LawyerBottomBarItem(
         label = "Profile",
         icon = Icons.Default.Person,
-        route ="clientProfileScreen"
+        route = com.example.legalease.ui.navigation.ProfileScreen
     )
 }
 
