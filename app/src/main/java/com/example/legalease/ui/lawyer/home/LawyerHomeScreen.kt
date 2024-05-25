@@ -4,14 +4,18 @@ import android.annotation.SuppressLint
 import android.icu.util.Calendar.WeekData
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,22 +23,31 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material.icons.automirrored.filled.LibraryBooks
+import androidx.compose.material.icons.automirrored.rounded.ArrowForwardIos
 import androidx.compose.material.icons.filled.AccessTime
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.LibraryBooks
 import androidx.compose.material.icons.filled.MonetizationOn
 import androidx.compose.material.icons.filled.QuestionMark
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.ArrowBackIosNew
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
@@ -50,13 +63,16 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.capitalize
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.compose.LegalEaseTheme
+import com.example.legalease.ui.signIn.SignInScreenViewModel
 import java.time.LocalDate
 import java.util.Locale
 
@@ -64,12 +80,50 @@ import java.util.Locale
 @SuppressLint("StateFlowValueCalledInComposition")
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun LawyerHomeScreen(modifier: Modifier = Modifier) {
+fun LawyerHomeScreen(modifier: Modifier = Modifier, signedInViewModel: SignInScreenViewModel, onSeeAllClick:()->Unit) {
     val homeViewModel: HomeViewModel = viewModel()
     val homeUiState by homeViewModel.uiState.collectAsState()
+    val uiState = signedInViewModel.uiState.collectAsState()
+    val isUserLawyer = uiState.value.isLawyer
+    if (!isUserLawyer) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomEnd
+        ) {
+//        Icon(
+//            imageVector = Icons.Filled.Add,
+//            contentDescription = "Add",
+//            modifier = Modifier
+//                .padding(16.dp)
+//                .background(
+//                    color = MaterialTheme.colorScheme.primary,
+//                    shape = CircleShape
+//                )
+//                .size(80.dp)
+//                .padding(),
+//            tint = MaterialTheme.colorScheme.background
+//        )
+            FloatingActionButton(
+                modifier = Modifier.padding(16.dp),
+
+                onClick = { /*TODO*/ }
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Add,
+                    contentDescription = "Add",
+                    tint = MaterialTheme.colorScheme.background
+                )
+            }
+        }
+    }
+
     Column(
-        modifier = modifier.padding(16.dp)
-    ) {
+        modifier = modifier
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally,
+
+        ) {
         Spacer(modifier = Modifier.height(10.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -87,15 +141,17 @@ fun LawyerHomeScreen(modifier: Modifier = Modifier) {
             )
             Row {
                 Icon(
-                    imageVector = Icons.Default.ArrowBackIosNew,
+                    imageVector = Icons.Rounded.ArrowBackIosNew,
                     contentDescription = "back",
-                    modifier = Modifier.clickable { homeViewModel.moveDatesLeft() }
+                    modifier = Modifier.clickable { homeViewModel.moveDatesLeft() },
+                    tint = MaterialTheme.colorScheme.tertiaryContainer
                 )
                 Spacer(modifier = Modifier.width(10.dp))
                 Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
+                    imageVector = Icons.AutoMirrored.Rounded.ArrowForwardIos,
                     contentDescription = "Forward",
-                    modifier = Modifier.clickable { homeViewModel.moveDatesRight() }
+                    modifier = Modifier.clickable { homeViewModel.moveDatesRight() },
+                    tint = MaterialTheme.colorScheme.tertiaryContainer
                 )
             }
         }
@@ -112,6 +168,16 @@ fun LawyerHomeScreen(modifier: Modifier = Modifier) {
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
+        if (isUserLawyer) {
+            Button(
+                onClick = { /*TODO*/ },
+                shape = MaterialTheme.shapes.medium,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = "Set Appointment", modifier = Modifier.padding(10.dp))
+            }
+            Spacer(modifier = Modifier.height(20.dp))
+        }
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -119,16 +185,18 @@ fun LawyerHomeScreen(modifier: Modifier = Modifier) {
                 .shadow(10.dp, RoundedCornerShape(10.dp)),
             shape = MaterialTheme.shapes.medium,
             colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background),
+            border = BorderStroke(1.dp, color = MaterialTheme.colorScheme.onPrimary)
 
 
-            ) {
+        ) {
             Column(
                 modifier = Modifier.padding(16.dp)
             ) {
                 Text(
                     text = "${homeUiState.selectedDate.dayOfWeek}, ${homeUiState.selectedDate.month} ${homeUiState.selectedDate.dayOfMonth}",
                     fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.tertiaryContainer
+                    color = MaterialTheme.colorScheme.tertiaryContainer,
+                    fontSize = 17.sp
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
@@ -140,45 +208,94 @@ fun LawyerHomeScreen(modifier: Modifier = Modifier) {
             }
         }
         Spacer(modifier = Modifier.height(24.dp))
+        HorizontalDivider(
+            modifier = Modifier.fillMaxWidth(0.9f),
+            color = MaterialTheme.colorScheme.outlineVariant
+        )
+        Spacer(modifier = Modifier.height(20.dp))
         Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
             Text(
-                text = "Ongoing Cases",
+                text = "Cases",
 //                style = MaterialTheme.typography.titleLarge
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 20.sp
+                fontSize = 20.sp,
+                color = MaterialTheme.colorScheme.tertiaryContainer
             )
             Icon(
                 imageVector = Icons.Filled.ChevronRight,
                 contentDescription = "See All",
-                modifier = Modifier.clickable { /*TODO*/ }
+                modifier = Modifier.clickable { onSeeAllClick() },
+                tint = MaterialTheme.colorScheme.tertiaryContainer
             )
 //            Text(text = "See All", modifier = Modifier.clickable { /*TODO*/ })
         }
-        Spacer(modifier = Modifier.height(10.dp))
-        LazyRow {
-            itemsIndexed(homeViewModel.casesItemList) { index, item ->
-                OngoingCasesItem(
-                    caseTitle = item.title,
-                    caseDescription = item.description,
-                    upcomingHearing = item.upcomingHearing,
-                    lawyerName = "Gautam Shorewala",
-                    lawyerProfile = item.profileImage,
+        Spacer(modifier = Modifier.height(15.dp))
+//        Card(
+//            modifier = modifier
+//                .padding(start = 5.dp, end = 10.dp)
+//                .width(360.dp)
+////            .fillMaxWidth(0.9f)
+//                .shadow(4.dp, RoundedCornerShape(10.dp)),
+//
+//            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onPrimary),
+//        ) {
+//
+//        }
+        if(homeViewModel.casesItemList.isEmpty()) {
+            Text(
+                text = "No Cases Available",
+                modifier = Modifier
+                    .fillMaxSize()
+                    .align(Alignment.CenterHorizontally),
+                fontWeight = FontWeight.SemiBold,
+                textAlign = TextAlign.Center,
+            )
+        }
+        else {
+            LazyRow {
+                itemsIndexed(homeViewModel.casesItemList) { index, item ->
+                    OngoingCasesItem(
+                        caseTitle = item.title,
+                        caseDescription = item.description,
+                        upcomingHearing = item.upcomingHearing,
+                        lawyerName = "Gautam Shorewala",
+                        lawyerProfile = item.profileImage,
 //                    modifier = Modifier.padding(10.dp)
-                )
+                    )
+                }
             }
         }
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(text = "Others", style = MaterialTheme.typography.titleLarge)
-        Spacer(modifier = Modifier.height(16.dp))
+
+        Spacer(modifier = Modifier.height(24.dp))
+        HorizontalDivider(
+            modifier = Modifier.fillMaxWidth(0.9f),
+            color = MaterialTheme.colorScheme.outlineVariant
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        Row(modifier = Modifier.fillMaxWidth()) {
+
+            Text(
+                text = "Others",
+//            style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 20.sp,
+                color = MaterialTheme.colorScheme.tertiaryContainer
+            )
+        }
+        Spacer(modifier = Modifier.height(15.dp))
         FlowRow(
             modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                .fillMaxWidth(),
+//                .padding(horizontal = 16.dp),
             maxItemsInEachRow = 4,
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceAround
         ) {
 
-            OtherIcon(icon = Icons.Default.QuestionMark, text = "FAQs", onClick = {})
+            OtherIcon(
+                icon = Icons.Default.QuestionMark,
+                text = "FAQs",
+                onClick = {},
+            )
             OtherIcon(icon = Icons.AutoMirrored.Filled.LibraryBooks, text = "Blogs", onClick = {})
             OtherIcon(icon = Icons.Default.AccessTime, text = "History", onClick = {})
             OtherIcon(icon = Icons.Default.MonetizationOn, text = "Financials", onClick = {})
@@ -195,14 +312,22 @@ fun OtherIcon(modifier: Modifier = Modifier, icon: ImageVector, text: String, on
     ) {
         Card(modifier = Modifier
             .clickable { /*TODO*/ }
-            .clip(CircleShape)) {
+            .clip(CircleShape),
+            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer)
+        ) {
             Icon(
                 imageVector = icon,
                 contentDescription = "icon",
-                modifier = Modifier.padding(10.dp)
+                modifier = Modifier.padding(10.dp),
+                tint = MaterialTheme.colorScheme.background
             )
         }
-        Text(text = text)
+        Spacer(modifier = Modifier.height(7.dp))
+        Text(
+            text = text,
+            fontWeight = FontWeight.Medium,
+            fontSize = 14.sp
+        )
     }
 }
 
@@ -216,7 +341,11 @@ fun OngoingCasesItem(
     lawyerProfile: Int
 ) {
     Card(
-        modifier = modifier.padding(end = 10.dp).width(350.dp),
+        modifier = modifier
+            .padding(start = 5.dp, end = 10.dp)
+            .width(360.dp)
+//            .fillMaxWidth(0.9f)
+            .shadow(4.dp, RoundedCornerShape(10.dp)),
         colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onPrimary),
     ) {
         Row(
@@ -227,14 +356,16 @@ fun OngoingCasesItem(
                 Image(
                     painter = painterResource(id = lawyerProfile),
                     contentDescription = "lawyer profile photo",
-                    modifier = Modifier.clip(CircleShape).size(50.dp)
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .size(50.dp)
                 )
                 Spacer(modifier = Modifier.height(5.dp))
                 Text(
                     text = lawyerName,
                     style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.Normal,
-                    fontSize = 10.sp
+                    fontSize = 12.sp
                 )
             }
             Spacer(modifier = Modifier.width(16.dp))
@@ -244,7 +375,7 @@ fun OngoingCasesItem(
 //                    style = MaterialTheme.typography.titleLarge
                     fontWeight = FontWeight.Medium,
                     fontSize = 20.sp,
-                    color = MaterialTheme.colorScheme.primaryContainer
+                    color = MaterialTheme.colorScheme.tertiaryContainer
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
@@ -307,12 +438,12 @@ fun Date(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun LawyerHomeScreenPreview(modifier: Modifier = Modifier) {
-    LegalEaseTheme {
-        LawyerHomeScreen()
-    }
-
-}
+//@RequiresApi(Build.VERSION_CODES.O)
+//@Preview(showBackground = true, showSystemUi = true)
+//@Composable
+//fun LawyerHomeScreenPreview(modifier: Modifier = Modifier) {
+//    LegalEaseTheme {
+//        LawyerHomeScreen()
+//    }
+//
+//}
