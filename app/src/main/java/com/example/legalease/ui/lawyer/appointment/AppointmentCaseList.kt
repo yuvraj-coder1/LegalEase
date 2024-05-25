@@ -36,21 +36,20 @@ import com.example.ui.theme.Inter
 @Composable
 fun AppointmentCaseListScreen(
     modifier: Modifier = Modifier,
-    lawyerId: String = "",
-    navigateToBookAppointment: (String, String) -> Unit = {_,_->}
+    navigateToBookAppointment: (String, String) -> Unit = { _, _ -> }
 ) {
     val viewModel: AppointmentCaseListViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
-    LazyColumn(modifier = Modifier.padding(16.dp)) {
+    LazyColumn(modifier = modifier.padding(16.dp)) {
         itemsIndexed(uiState.caseList) { index, case ->
             CaseToBookAppointmentItem(
                 caseType = case.caseType,
                 caseDescription = case.description,
                 caseDate = case.createdAt,
+                onBook = { navigateToBookAppointment(case.id, case.clientId) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp)
-                    .clickable { navigateToBookAppointment(case.id, case.clientId) },
             )
         }
     }
@@ -62,7 +61,7 @@ fun CaseToBookAppointmentItem(
     caseType: String,
     caseDescription: String,
     caseDate: String,
-    onBook: () -> Unit = {}
+    onBook: () -> Unit = {},
 ) {
     Card(
         modifier = modifier,
