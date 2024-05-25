@@ -37,4 +37,14 @@
     <string name="profile">Profile</string>
     <string name="log_out">Log Out</string>
     <string name="type_a_prompt">Type a prompt</string>
+    <string name="main_role">Main Role</string>
+    <string name="select_expertises">Select Expertises</string>
+    <string name="about_lawyer">About Lawyer</string>
+    <string name="enter_about_lawyer">Enter about lawyer</string>
+    <string name="lawyer_experience">Lawyer Experience</string>
+    <string name="lawyer_preferred_location">Lawyer Preferred Location</string>
+    <string name="location">Location</string>
+    <string name="enter_fee">Enter fee</string>
+    <string name="enter_fee_in_rupees_per_hr">Enter fee in rupees per hr</string>
+    <string name="submit">Submit</string>
 </resources>
