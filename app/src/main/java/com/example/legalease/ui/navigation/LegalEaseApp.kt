@@ -23,6 +23,7 @@ import com.example.legalease.ui.lawyer.recievedCasesFromClients.CaseDetailOfTheR
 import com.example.legalease.ui.lawyer.recievedCasesFromClients.ReceivedCasesFromClients
 import com.example.legalease.ui.message.ChatListScreen
 import com.example.legalease.ui.message.SingleChatScreen
+import com.example.legalease.ui.pdfViewer.ComposePDFViewer
 import com.example.legalease.ui.signIn.SignInScreen
 import com.example.legalease.ui.signIn.SignInScreenViewModel
 import com.example.legalease.ui.signUp.SignUpScreen
@@ -200,7 +201,16 @@ fun LegalEaseApp(
                             lawyerId
                         )
                     }
-                })
+                },
+                onDocumentClick = {navController.navigate(ComposePdfViewerScreen(it))}
+            )
+        }
+
+        composable<ComposePdfViewerScreen> {
+            showIncomingCases(false)
+            val args = it.toRoute<ComposePdfViewerScreen>()
+            onBottomBarVisibilityChanged(false)
+            ComposePDFViewer(pdfLink = args.pdfLink)
         }
     }
 }
