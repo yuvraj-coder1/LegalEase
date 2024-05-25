@@ -57,5 +57,18 @@
     <string name="active">सक्रिय</string>
     <string name="inactive">निष्क्रिय</string>
     <string name="pending">लंबित</string>
+    <string name="case_type">Case Type</string>
+    <string name="language_preference">Language Preference</string>
+    <string name="description">Description</string>
+    <string name="enter_detailed_description_of_your_case">Enter detailed description of your case</string>
+    <string name="upload_pdf">Upload pdf</string>
+    <string name="case_description">Case Description</string>
+    <string name="appointments">Appointments</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="no_appointments_yet">No appointments yet</string>
+    <string name="no_lawyer_appointed_yet">No Lawyer appointed yet!</string>
+    <string name="affidavit">Affidavit</string>
+    <string name="case_timeline">Case Timeline</string>
+    <string name="event_description_1">Event Description 1</string>
 
 </resources>

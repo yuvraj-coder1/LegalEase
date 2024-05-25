@@ -42,6 +42,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -53,6 +54,7 @@ import coil.imageLoader
 import coil.memory.MemoryCache
 import coil.request.ImageRequest
 import com.example.compose.LegalEaseTheme
+import com.example.legalease.R
 //import com.example.legalease.ui.theme.LegalEaseTheme
 import com.example.legalease.ui.viewModels.AuthViewModel
 import com.google.firebase.Firebase
@@ -76,7 +78,7 @@ fun AddCaseScreen(modifier: Modifier = Modifier, navigateToHome: () -> Unit = {}
             onValueChange = { addCaseViewModel.updateTitle(it) },
             label = {
                 Text(
-                    text = "Case Type"
+                    text = stringResource(R.string.case_type)
                 )
             },
             modifier = Modifier.fillMaxWidth(),
@@ -88,7 +90,7 @@ fun AddCaseScreen(modifier: Modifier = Modifier, navigateToHome: () -> Unit = {}
             onValueChange = { addCaseViewModel.updateLanguagePreference(it) },
             label = {
                 Text(
-                    text = "Language Preference"
+                    text = stringResource(R.string.language_preference)
                 )
             },
             modifier = Modifier.fillMaxWidth(),
@@ -100,12 +102,12 @@ fun AddCaseScreen(modifier: Modifier = Modifier, navigateToHome: () -> Unit = {}
             onValueChange = { addCaseViewModel.updateDescription(it) },
             label = {
                 Text(
-                    text = "Description"
+                    text = stringResource(R.string.description)
                 )
             },
             placeholder = {
                 Text(
-                    text = "Enter detailed description of your case",
+                    text = stringResource(R.string.enter_detailed_description_of_your_case),
                     color = Color.Gray
                 )
             },
@@ -133,14 +135,14 @@ fun AddCaseScreen(modifier: Modifier = Modifier, navigateToHome: () -> Unit = {}
             intent.type = "application/pdf"
             launcher.launch(intent)
         }, modifier = Modifier.fillMaxWidth()) {
-            Text(text = "Upload pdf")
+            Text(text = stringResource(R.string.upload_pdf))
         }
 
         Button(onClick = {
             addCaseViewModel.sendCase()
             navigateToHome()
         }, modifier = Modifier.fillMaxWidth()) {
-            Text(text = "Submit")
+            Text(text = stringResource(id = R.string.submit))
         }
     }
 }
