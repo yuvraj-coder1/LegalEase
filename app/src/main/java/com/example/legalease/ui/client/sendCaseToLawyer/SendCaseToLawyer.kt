@@ -26,12 +26,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.compose.LegalEaseTheme
+import com.example.legalease.model.CaseData
 import com.example.ui.theme.Inter
 
 @Composable
-fun SendCaseToLawyerScreen(modifier: Modifier = Modifier) {
-    val viewModel = SendCaseToLawyerViewModel()
+fun SendCaseToLawyerScreen(modifier: Modifier = Modifier, lawyerId: String = "") {
+    val viewModel: SendCaseToLawyerViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
     LazyColumn(modifier = Modifier.padding(16.dp)) {
         itemsIndexed(uiState.caseList.filter { it.status == "Inactive" }) { index, case ->
@@ -41,7 +43,8 @@ fun SendCaseToLawyerScreen(modifier: Modifier = Modifier) {
                 caseDate = case.createdAt,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp)
+                    .padding(8.dp),
+                onSendCase = { viewModel.updateCase(caseId = case.id, lawyerId = lawyerId) }
             )
         }
     }
@@ -52,7 +55,8 @@ fun CaseToSendToLawyerItem(
     modifier: Modifier = Modifier,
     caseType: String,
     caseDescription: String,
-    caseDate: String
+    caseDate: String,
+    onSendCase: () -> Unit = {}
 ) {
     Card(
         modifier = modifier,
@@ -101,7 +105,7 @@ fun CaseToSendToLawyerItem(
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = { onSendCase() },
                     modifier = Modifier.weight(1f),
                     shape = MaterialTheme.shapes.extraSmall,
                     colors = ButtonDefaults.buttonColors(Color(51, 101, 198))

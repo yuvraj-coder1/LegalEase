@@ -80,42 +80,11 @@ import java.util.Locale
 @SuppressLint("StateFlowValueCalledInComposition")
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun LawyerHomeScreen(modifier: Modifier = Modifier, signedInViewModel: SignInScreenViewModel, onSeeAllClick:()->Unit) {
+fun LawyerHomeScreen(modifier: Modifier = Modifier, signedInViewModel: SignInScreenViewModel, onSeeAllClick:()->Unit,navigateToAddCase:()->Unit) {
     val homeViewModel: HomeViewModel = viewModel()
     val homeUiState by homeViewModel.uiState.collectAsState()
     val uiState = signedInViewModel.uiState.collectAsState()
     val isUserLawyer = uiState.value.isLawyer
-    if (!isUserLawyer) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.BottomEnd
-        ) {
-//        Icon(
-//            imageVector = Icons.Filled.Add,
-//            contentDescription = "Add",
-//            modifier = Modifier
-//                .padding(16.dp)
-//                .background(
-//                    color = MaterialTheme.colorScheme.primary,
-//                    shape = CircleShape
-//                )
-//                .size(80.dp)
-//                .padding(),
-//            tint = MaterialTheme.colorScheme.background
-//        )
-            FloatingActionButton(
-                modifier = Modifier.padding(16.dp),
-
-                onClick = { /*TODO*/ }
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Add,
-                    contentDescription = "Add",
-                    tint = MaterialTheme.colorScheme.background
-                )
-            }
-        }
-    }
 
     Column(
         modifier = modifier

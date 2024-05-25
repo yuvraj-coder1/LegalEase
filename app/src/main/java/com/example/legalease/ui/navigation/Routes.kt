@@ -39,7 +39,7 @@ data object LawyerGetStartedScreen
 data object WelcomeScreen
 
 @Serializable
-data class AddCaseScreen(val lawyerId: String)
+data object AddCaseScreen
 
 @Serializable
 data object ClientProfileScreen
@@ -55,3 +55,6 @@ data class CaseDetailScreen(val caseId: String)
 
 @Serializable
 data class ComposePdfViewerScreen(val pdfLink: String)
+
+@Serializable
+data class SendCaseScreen(val lawyerId: String)
