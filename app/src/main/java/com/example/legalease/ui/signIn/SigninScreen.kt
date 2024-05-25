@@ -97,7 +97,15 @@ fun SignInScreen(
             else if(signInUiState.username.isEmpty() && signInUiState.password.isEmpty())
                 Toast.makeText(context, "Enter your credentials!", Toast.LENGTH_SHORT).show()
             else
-            signInViewModel.signIn()
+            signInViewModel.signIn(
+                onSuccess = {
+                    Toast.makeText(context, "Signed in successfully!", Toast.LENGTH_SHORT).show()
+                    navigateToHome()
+                },
+                onFailure = {
+                    Toast.makeText(context, "Enter correct credentials!", Toast.LENGTH_SHORT).show()
+                }
+            )
         },
         onUsernameChange = { signInViewModel.updateUsername(it) },
         onPasswordChange = { signInViewModel.updatePassword(it) },

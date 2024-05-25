@@ -43,18 +43,20 @@ class SignInScreenViewModel @Inject constructor(
         }
     }
 
-    fun signIn() {
+    fun signIn(onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
         inProcess = true
         auth.signInWithEmailAndPassword(_uiState.value.username, _uiState.value.password)
             .addOnSuccessListener {
                 isSignedIn = true
                 inProcess = false
                 currentUser = auth.currentUser
+                onSuccess()
                 Log.d("TAG", "signIn: signed in successfully")
             }
             .addOnFailureListener {
                 isSignedIn = false
                 inProcess = false
+                onFailure(it)
                 Log.d("TAG", "signIn: failed to sign in")
             }
     }
