@@ -19,6 +19,7 @@ import com.example.legalease.ui.client.searchScreen.SearchScreen
 import com.example.legalease.ui.client.searchScreen.SearchScreenViewModel
 import com.example.legalease.ui.client.searchScreen.SearchedLawyerDetailScreen
 import com.example.legalease.ui.client.sendCaseToLawyer.SendCaseToLawyerScreen
+import com.example.legalease.ui.languageSelection.LanguageSelectionScreen
 import com.example.legalease.ui.lawyer.home.LawyerHomeScreen
 import com.example.legalease.ui.lawyer.lawyerGetStartedScreen.LawyerGetStartedScreen
 import com.example.legalease.ui.lawyer.profile.LawyerProfileScreen
@@ -50,7 +51,7 @@ fun LegalEaseApp(
     showIncomingCases: (Boolean) -> Unit
 ) {
     val scope = rememberCoroutineScope()
-    NavHost(navController = navController, startDestination = WelcomeScreen, modifier = modifier) {
+    NavHost(navController = navController, startDestination = LanguageSelectionScreen, modifier = modifier) {
         composable<SignInScreen> {
             showIncomingCases(false)
             onBottomBarVisibilityChanged(false)
@@ -239,6 +240,12 @@ fun LegalEaseApp(
             showIncomingCases(false)
             onBottomBarVisibilityChanged(false)
             com.example.legalease.ui.client.searchScreen.FilterScreen(viewModel = searchScreenViewModel)
+        }
+        composable<LanguageSelectionScreen> {
+            LanguageSelectionScreen(
+                navController = navController,
+                onClicked = {navController.navigate(WelcomeScreen)}
+            )
         }
     }
 }
