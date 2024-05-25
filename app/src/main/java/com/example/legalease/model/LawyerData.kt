@@ -19,7 +19,7 @@ data class LawyerData(
     val bio: String = "",
     val experience: String = "",
     val lawyerLocation: String = "Bangalore",
-    val verified: Boolean = true
+    val isVerified: String = "true"
 )
 
 
