@@ -143,7 +143,7 @@ class SignUpScreenViewModel @Inject constructor(
                                 lawyerType = uiState.value.lawyerType,
                                 lawyerLocation = uiState.value.lawyerLocation,
                                 experience = uiState.value.lawyerExperience,
-                                verified = false
+                                isVerified = "false"
                             )
                             db.collection(LAWYER_NODE).document(user.uid).set(lawyer)
                         } else {
