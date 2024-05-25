@@ -37,4 +37,15 @@
     <string name="profile">प्रोफ़ाइल</string>
     <string name="log_out">लॉग आउट</string>
     <string name="type_a_prompt">कुछ लिखें</string>
+    <string name="main_role">मुख्य भूमिका</string>
+    <string name="select_expertises">विशेषज्ञता का चयन करें</string>
+    <string name="about_lawyer">वकील के बारे में</string>
+    <string name="enter_about_lawyer">वकील के बारे में लिखें</string>
+    <string name="lawyer_experience">वकील का अनुभव</string>
+    <string name="lawyer_preferred_location">वकील की पसंदीदा स्थान</string>
+    <string name="location">स्थान</string>
+    <string name="enter_fee">शुल्क दर्ज करें</string>
+    <string name="enter_fee_in_rupees_per_hr">प्रति घंटे रुपयों में शुल्क दर्ज करें</string>
+    <string name="submit">सबमिट करें</string>
+
 </resources>

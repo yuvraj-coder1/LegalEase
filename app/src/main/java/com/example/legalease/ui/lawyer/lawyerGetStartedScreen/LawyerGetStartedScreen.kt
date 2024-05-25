@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -27,6 +28,7 @@ import com.example.legalease.ui.signUp.SignUpScreenUiState
 import com.example.legalease.ui.signUp.SignUpScreenViewModel
 //import com.example.legalease.ui.LegalEaseTheme
 import com.example.compose.LegalEaseTheme
+import com.example.legalease.R
 
 @Composable
 fun LawyerGetStartedScreen(
@@ -44,11 +46,11 @@ fun LawyerGetStartedScreen(
         OutlinedTextField(
             value = uiState.lawyerType,
             onValueChange = { viewModel.updateLawyerType(it) },
-            label = { Text("Main Role") },
+            label = { Text(stringResource(R.string.main_role)) },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = "Select Expertises", style = MaterialTheme.typography.titleLarge)
+        Text(text = stringResource(R.string.select_expertises), style = MaterialTheme.typography.titleLarge)
         Spacer(modifier = Modifier.height(16.dp))
         ChipsComponent(
             skills = uiState.expertise,
@@ -60,8 +62,8 @@ fun LawyerGetStartedScreen(
         OutlinedTextField(
             value = uiState.aboutLawyer,
             onValueChange = { viewModel.updateAboutLawyer(it) },
-            label = { Text("About Lawyer") },
-            placeholder = { Text("Enter about lawyer", color = Color.Gray) },
+            label = { Text(stringResource(R.string.about_lawyer)) },
+            placeholder = { Text(stringResource(R.string.enter_about_lawyer), color = Color.Gray) },
             modifier = Modifier.fillMaxWidth(),
             minLines = 7,
             maxLines = 7
@@ -70,16 +72,16 @@ fun LawyerGetStartedScreen(
         OutlinedTextField(
             value = uiState.lawyerExperience,
             onValueChange = { viewModel.updateExperience(it) },
-            label = { Text("Lawyer Experience") },
-            placeholder = { Text("Lawyer Experience", color = Color.Gray) },
+            label = { Text(stringResource(R.string.lawyer_experience)) },
+            placeholder = { Text(stringResource(id = R.string.lawyer_experience), color = Color.Gray) },
             modifier = Modifier.fillMaxWidth(),
         )
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
             value = uiState.lawyerLocation,
             onValueChange = { viewModel.updateLocation(it) },
-            label = { Text("Lawyer Preferred Location") },
-            placeholder = { Text("Location", color = Color.Gray) },
+            label = { Text(stringResource(id = R.string.lawyer_preferred_location)) },
+            placeholder = { Text(stringResource(R.string.location), color = Color.Gray) },
             modifier = Modifier.fillMaxWidth(),
         )
 
@@ -87,8 +89,8 @@ fun LawyerGetStartedScreen(
         OutlinedTextField(
             value = uiState.fee,
             onValueChange = { viewModel.updateFee(it) },
-            label = { Text("Enter fee") },
-            placeholder = { Text("Enter fee in rupees per hr", color = Color.Gray) },
+            label = { Text(stringResource(R.string.enter_fee)) },
+            placeholder = { Text(stringResource(R.string.enter_fee_in_rupees_per_hr), color = Color.Gray) },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(24.dp))
@@ -101,7 +103,7 @@ fun LawyerGetStartedScreen(
                 .fillMaxWidth()
                 .align(alignment = Alignment.End)
         ) {
-            Text(text = "Submit")
+            Text(text = stringResource(R.string.submit))
         }
     }
 }
