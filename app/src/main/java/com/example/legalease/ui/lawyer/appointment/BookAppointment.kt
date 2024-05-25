@@ -9,8 +9,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -38,10 +40,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.ui.theme.Inter
 import java.util.Calendar
 import java.util.Date
 
@@ -56,7 +61,9 @@ fun BookAppointment(
     val bookAppointmentViewModel: BookAppointmentViewModel = hiltViewModel()
     var reasonOfAppointment by rememberSaveable { mutableStateOf("") }
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         val date = MyContent()
@@ -65,20 +72,27 @@ fun BookAppointment(
             value = reasonOfAppointment,
             onValueChange = { reasonOfAppointment = it },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text(text = "Reason of Appointment") },
+            label = { Text(text = "Appointment Details") },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
         )
-        Button(onClick = {
-            bookAppointmentViewModel.addAppointment(
-                reason = reasonOfAppointment,
-                caseId = caseId,
-                date = date,
-                time = time,
-                clientId = clientId
-            )
-            navigateBack()
-        }) {
-            Text(text = "Submit")
+        Spacer(modifier = Modifier.height(10.dp))
+        Button(
+            onClick = {
+                bookAppointmentViewModel.addAppointment(
+                    reason = reasonOfAppointment,
+                    caseId = caseId,
+                    date = date,
+                    time = time,
+                    clientId = clientId
+                )
+                navigateBack()
+            },
+
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(7.dp),
+        ) {
+
+            Text(text = "Submit", fontSize = 16.sp)
         }
     }
 }
@@ -150,7 +164,7 @@ fun MyContent(): String {
 
         // Creating a TextField with an icon
         TextField(
-            value = "Appointment Date:" + " ${mDate.value}",
+            value = "Appointment Date" + " ${mDate.value}",
             onValueChange = { /* Handle text changes if needed */ },
             colors = TextFieldDefaults.textFieldColors(
                 focusedTextColor = Color.Black,
@@ -168,8 +182,7 @@ fun MyContent(): String {
                 disabledTrailingIconColor = Color.Black
             ),
             modifier = Modifier
-                .padding(16.dp)
-                .clip(RoundedCornerShape(percent = 50))
+                .clip(RoundedCornerShape(5.dp))
                 .fillMaxWidth(),
 
 //                .padding(16.dp),
@@ -226,13 +239,27 @@ fun TimePickerDemo(): String {
         true
     )
 
-    Column(modifier = Modifier.padding(16.dp)) {
-        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Button(onClick = { timePickerDialog.show() }) {
-                Text(text = "Pick Time")
-            }
+    Spacer(modifier = Modifier.height(10.dp))
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = time,
+            modifier = Modifier.padding(start = 15.dp),
+            fontWeight = FontWeight.Medium,
+            fontSize = 16.sp,
+            fontFamily = Inter,
+            letterSpacing = (-0.3).sp
+        )
+        Button(
+            onClick = { timePickerDialog.show() },
+            shape = RoundedCornerShape(5.dp)
+
+        ) {
+            Text(text = "Pick Time")
         }
-        Text(text = "Selected Time: $time", modifier = Modifier.padding(top = 16.dp))
     }
     return time
 }
