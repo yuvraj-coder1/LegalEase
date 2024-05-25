@@ -19,22 +19,7 @@ data class LawyerData(
     val bio: String = "",
     val experience: String = "",
     val lawyerLocation: String = "Bangalore",
+    val isVerified: Boolean = false
 )
 
-fun LawyerData.toJsonObject(): JSONObject {
-    return JSONObject().apply {
-        put("id", id)
-        put("name", name)
-        put("email", email)
-        put("password", password)
-        put("officialId", officialId)
-        put("rating", rating)
-        put("ratingCount", ratingCount)
-        put("imageUrl", imageUrl)
-        put("expertise", expertise)
-        put("feesPerHour", feesPerHour)
-        put("lawyerType", lawyerType)
-        put("bio", bio)
-    }
-}
 

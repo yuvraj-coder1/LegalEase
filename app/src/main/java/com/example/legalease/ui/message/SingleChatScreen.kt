@@ -65,10 +65,11 @@ fun SingleChatScreen(
     vm: AuthViewModel,
     chatId: String,
     onBack: () -> Unit,
+    isLawyer: Boolean = false
 ) {
     var reply by rememberSaveable { mutableStateOf("") }
     val currentChat = vm.chats.first { it.chatId == chatId }
-    val chatUser = if (vm.currentLawyer != null) currentChat.client else currentChat.lawyer
+    val chatUser = if (isLawyer) currentChat.client else currentChat.lawyer
     LaunchedEffect(key1 = Unit) {
         vm.populateMessages(chatId)
     }
@@ -89,7 +90,7 @@ fun SingleChatScreen(
         ChatBox(
             modifier = modifier.weight(1f),
             chatMessages = vm.chatMessages,
-            currentUserId = vm.getCurrentUserId(),
+            chatUserId = chatUser.userId,
             onPlay = {
                 vm.currPlayingAudio = it
                 vm.playOrPauseAudio(it)
@@ -97,7 +98,8 @@ fun SingleChatScreen(
             },
             currPlaying = vm.currPlayingAudio,
             progress = vm.currentProgress,
-            currentDuration = vm.currentProgressString
+            currentDuration = vm.currentProgressString,
+            isLawyer = isLawyer
         )
         MessageBox(
             message = reply,
@@ -124,17 +126,19 @@ fun SingleChatScreen(
 fun ChatBox(
     modifier: Modifier = Modifier,
     chatMessages: List<Message>,
-    currentUserId: String,
+    chatUserId: String,
     onPlay: (String) -> Unit = {},
     currPlaying: String = "",
     progress: Float = 0f,
-    currentDuration: String
+    currentDuration: String,
+    isLawyer: Boolean
 ) {
     LazyColumn(modifier = modifier) {
         items(chatMessages) { msg ->
-            val alignment = if (msg.sendBy == currentUserId) Alignment.End else Alignment.Start
+            val alignment =
+                if (msg.sendBy != chatUserId) Alignment.End else Alignment.Start
             val color =
-                if (msg.sendBy == currentUserId) MaterialTheme.colorScheme.tertiaryContainer else MaterialTheme.colorScheme.primaryContainer
+                if (msg.sendBy != chatUserId) MaterialTheme.colorScheme.tertiaryContainer else MaterialTheme.colorScheme.primaryContainer
             if (msg.audioUri != "") {
                 AudioBar(
                     color = color,
