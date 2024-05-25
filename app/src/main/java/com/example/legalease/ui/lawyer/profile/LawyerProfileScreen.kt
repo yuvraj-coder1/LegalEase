@@ -64,20 +64,27 @@ fun LawyerProfileScreen(
             .verticalScroll(rememberScrollState())
     ) {
         Spacer(modifier = Modifier.height(16.dp))
-        Box {
-            Image(
-                painter = painterResource(id = lawyerProfilePhoto),
-                contentDescription = "lawyer profile photo",
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(CircleShape)
-            )
-            Icon(imageVector = Icons.Default.Edit, contentDescription = "edit profile Picture",modifier = Modifier
-                .align(
-                    Alignment.TopEnd
+        Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
+            Box {
+                Image(
+                    painter = painterResource(id = lawyerProfilePhoto),
+                    contentDescription = "lawyer profile photo",
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clip(CircleShape)
                 )
-                .clickable { /*TODO*/ }
-                .padding(start = 8.dp))
+                Icon(imageVector = Icons.Default.Edit,
+                    contentDescription = "edit profile Picture",
+                    modifier = Modifier
+                        .align(
+                            Alignment.TopEnd
+                        )
+                        .clickable { /*TODO*/ }
+                        .padding(start = 8.dp))
+            }
+            Button(onClick = { /*TODO*/ }) {
+                Text(text = "Log Out")
+            }
         }
         Spacer(modifier = Modifier.height(16.dp))
         Text(
@@ -113,9 +120,11 @@ fun LawyerProfileScreen(
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.headlineSmall
             )
-            Icon(imageVector = Icons.Default.Edit, contentDescription = "edit profile Picture",modifier = Modifier
-                .clickable { /*TODO*/ }
-                .padding(start = 8.dp))
+            Icon(imageVector = Icons.Default.Edit,
+                contentDescription = "edit profile Picture",
+                modifier = Modifier
+                    .clickable { /*TODO*/ }
+                    .padding(start = 8.dp))
         }
         Spacer(modifier = Modifier.height(8.dp))
         Text(
@@ -147,7 +156,7 @@ fun LawyerProfileScreen(
             )
         }
         Column {
-            lawyerProfileScreenViewModel.reviews.forEachIndexed {index,it->
+            lawyerProfileScreenViewModel.reviews.forEachIndexed { index, it ->
                 Review(
                     userName = it.userName,
                     date = it.date,
@@ -174,7 +183,7 @@ fun Review(
     userPhoto: Int,
     likes: Int,
     dislikes: Int,
-    reviewNumber:Int,
+    reviewNumber: Int,
     onLikeClick: () -> Unit = {},
     onDislikeClick: () -> Unit = {},
 ) {
