@@ -35,7 +35,7 @@ fun Tag(
     cardColor: Color,
     tagShape: Int = 100,
     textPadding: Dp = 0.dp,
-    onClick: (Int) -> Unit = {},
+    onChipClick: (Int) -> Unit = {},
     index: Int,
     isThisIndexSelected: Boolean = false,
     selectedColor: Color
@@ -44,7 +44,7 @@ fun Tag(
         modifier = modifier
             .padding(horizontal = 8.dp, vertical = 5.dp)
             .clip(RoundedCornerShape(tagShape.dp))
-            .clickable { onClick(index) },
+            .clickable { onChipClick(index) },
         colors = if (isThisIndexSelected) CardDefaults.cardColors(selectedColor) else CardDefaults.cardColors(
             containerColor = cardColor
         )
@@ -75,6 +75,7 @@ fun ChipsComponent(
     onChipClick: (Int) -> Unit = {},
     isThisIndexSelected: List<Boolean> = List(skills.size) { false },
     selectedColor: Color = MaterialTheme.colorScheme.primary,
+    tagShape: Int = 100,
 ) {
     if (skills.isNotEmpty())
         FlowRow(
@@ -86,8 +87,9 @@ fun ChipsComponent(
                     cardColor = cardColor,
                     index = index,
                     isThisIndexSelected = isThisIndexSelected[index],
-                    onClick = onChipClick,
-                    selectedColor = selectedColor
+                    onChipClick = onChipClick,
+                    selectedColor = selectedColor,
+                    tagShape = tagShape
                 )
             }
         }

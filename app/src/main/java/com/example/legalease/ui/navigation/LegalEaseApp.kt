@@ -14,7 +14,9 @@ import com.example.legalease.ui.chatbot.presentation.ChatBotScreen
 import com.example.legalease.ui.client.addCaseScreen.AddCaseScreen
 import com.example.legalease.ui.client.cases.CasesScreen
 import com.example.legalease.ui.client.profile.ClientProfile
+import com.example.legalease.ui.client.searchScreen.FilterScreen
 import com.example.legalease.ui.client.searchScreen.SearchScreen
+import com.example.legalease.ui.client.searchScreen.SearchScreenViewModel
 import com.example.legalease.ui.client.searchScreen.SearchedLawyerDetailScreen
 import com.example.legalease.ui.client.sendCaseToLawyer.SendCaseToLawyerScreen
 import com.example.legalease.ui.lawyer.home.LawyerHomeScreen
@@ -41,6 +43,7 @@ fun LegalEaseApp(
     navController: NavHostController,
     signInScreenViewModel: SignInScreenViewModel,
     signUpScreenViewModel: SignUpScreenViewModel,
+    searchScreenViewModel: SearchScreenViewModel,
     authViewModel: AuthViewModel,
     onBottomBarVisibilityChanged: (Boolean) -> Unit,
     showChatbotIcon: (Boolean) -> Unit,
@@ -113,7 +116,12 @@ fun LegalEaseApp(
                         it.id
                     )
                 )
-            })
+            },
+                onFilterClicked = {
+                    navController.navigate(FilterScreen)
+                },
+                searchScreenViewModel = searchScreenViewModel
+                )
         }
         composable<ProfileScreen> {
             showIncomingCases(false)
@@ -223,6 +231,11 @@ fun LegalEaseApp(
         }
         composable<SpeechToTextScreen>{
             SpeechToTextScreen()
+        }
+        composable<FilterScreen> {
+            showIncomingCases(false)
+            onBottomBarVisibilityChanged(false)
+            com.example.legalease.ui.client.searchScreen.FilterScreen(viewModel = searchScreenViewModel)
         }
     }
 }

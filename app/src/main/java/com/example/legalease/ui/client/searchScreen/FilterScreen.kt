@@ -1,7 +1,10 @@
 package com.example.legalease.ui.client.searchScreen
 
 import android.media.Rating
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,6 +21,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -36,16 +40,18 @@ import com.example.legalease.ui.components.ChipsComponent
 import com.example.legalease.ui.components.RectangularChipsComponent
 //import com.example.legalease.ui.theme.
 import com.example.compose.LegalEaseTheme
+import com.example.legalease.ui.components.Tag
 
-val tagList: List<String> = listOf("Personal", "Criminal", "Supreme Court", "Real estate", "Legal")
-
+val tagList: List<String> = listOf("Personal", "Criminal", "Supreme Court", "Real estate", "Legal","Business")
+val ratingList: List<String> = listOf("1.0+", "2.0+", "3.0+", "4.0+")
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun FilterScreen(modifier: Modifier = Modifier) {
-    var location by rememberSaveable {
-        mutableStateOf("")
-    }
-    val ratingList: List<String> = listOf("1.0+", "2.0+", "3.0+", "4.0+")
-    var sliderPosition by rememberSaveable { mutableFloatStateOf(0f) }
+fun FilterScreen(
+    modifier: Modifier = Modifier,
+    viewModel: SearchScreenViewModel,
+) {
+    val uiState by viewModel.uiState.collectAsState()
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -57,7 +63,12 @@ fun FilterScreen(modifier: Modifier = Modifier) {
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(16.dp))
-        ChipsComponent(skills = tagList)
+        ChipsComponent(
+            skills = tagList,
+            isThisIndexSelected = uiState.isIndexSelected,
+            selectedColor = Color(207, 118, 54),
+            onChipClick = {viewModel.updateIsIndexSelected(it)}
+        )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "Location",
@@ -70,8 +81,8 @@ fun FilterScreen(modifier: Modifier = Modifier) {
                 .fillMaxWidth()
         )
         OutlinedTextField(
-            value = location,
-            onValueChange = { location = it },
+            value = uiState.location,
+            onValueChange = { viewModel.updateLocation(it) },
             modifier = Modifier.fillMaxWidth(),
             label = { Text("Location") },
             enabled = true,
@@ -91,18 +102,16 @@ fun FilterScreen(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = "Years")
         Column {
-            if (sliderPosition.toInt() == 15)
-                Text(text = "${sliderPosition.toInt().toString()}+")
+            if (uiState.experienceFilter.toInt() == 15)
+                Text(text = "${uiState.experienceFilter.toInt().toString()}+")
             else
-                Text(text = sliderPosition.toInt().toString())
+                Text(text = uiState.experienceFilter.toInt().toString())
             Slider(
-                value = sliderPosition,
-                onValueChange = { sliderPosition = it },
+                value = uiState.experienceFilter,
+                onValueChange = { viewModel.updateExperience(it) },
                 valueRange = 0f..15f,
                 steps = 150,
-
-                )
-
+            )
         }
         Spacer(modifier = Modifier.height(16.dp))
         Text(
@@ -111,7 +120,13 @@ fun FilterScreen(modifier: Modifier = Modifier) {
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(16.dp))
-        RectangularChipsComponent(skills = ratingList, tagShape = 2, textPadding = 8.dp)
+        ChipsComponent(
+            skills = ratingList,
+            isThisIndexSelected = uiState.isRatingSelected,
+            selectedColor = Color(207, 118, 54),
+            onChipClick = {viewModel.updateIsRatingSelected(it)},
+            tagShape = 2,
+        )
         Spacer(modifier = Modifier.height(24.dp))
         Button(
             onClick = { /*TODO*/ },
@@ -129,10 +144,10 @@ fun FilterScreen(modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun FilterScreenPreview(modifier: Modifier = Modifier) {
-    LegalEaseTheme {
-        FilterScreen()
-    }
-}
+//@Preview(showBackground = true, showSystemUi = true)
+//@Composable
+//fun FilterScreenPreview(modifier: Modifier = Modifier) {
+//    LegalEaseTheme {
+//        FilterScreen()
+//    }
+//}

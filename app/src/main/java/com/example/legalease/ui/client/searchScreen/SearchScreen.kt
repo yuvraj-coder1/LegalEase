@@ -61,10 +61,15 @@ import com.example.legalease.model.LawyerData
 import com.example.legalease.ui.navigation.SearchScreen
 //import com.example.legalease.ui.theme.LegalEaseTheme
 import com.example.compose.LegalEaseTheme
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchScreen(modifier: Modifier = Modifier, onLawyerClicked: (LawyerData) -> Unit = {}) {
-    val searchScreenViewModel: SearchScreenViewModel = hiltViewModel()
+fun SearchScreen(
+    modifier: Modifier = Modifier,
+    onLawyerClicked: (LawyerData) -> Unit = {},
+    searchScreenViewModel: SearchScreenViewModel = hiltViewModel(),
+    onFilterClicked: () -> Unit = {},
+) {
     val searchScreenUiState by searchScreenViewModel.uiState.collectAsState()
     val lawyerList by searchScreenViewModel.lawyerList.collectAsState()
     Column(
@@ -117,7 +122,7 @@ fun SearchScreen(modifier: Modifier = Modifier, onLawyerClicked: (LawyerData) ->
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
 
-            Button(onClick = { /*TODO*/ }, elevation = ButtonDefaults.buttonElevation(5.dp)) {
+            Button(onClick = onFilterClicked, elevation = ButtonDefaults.buttonElevation(5.dp)) {
                 Icon(imageVector = Icons.Default.FilterAlt, contentDescription = "Filter")
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(text = "Filter")
@@ -133,7 +138,12 @@ fun SearchScreen(modifier: Modifier = Modifier, onLawyerClicked: (LawyerData) ->
         }
         if (lawyerList.isNotEmpty()) {
             LazyColumn {
-                items(lawyerList) {
+                items(lawyerList.filter {
+                    it.rating >= (searchScreenUiState.ratingFilter.subSequence(0,1).toString().toDouble())
+                            && searchScreenUiState.expertiseFilter.all { ind -> ind in it.expertise }
+                            && searchScreenUiState.experienceFilter.toInt().toString()>=it.experience
+                }
+                ) {
                     LawyerItemFromList(
                         lawyerName = it.name,
                         lawyerType = it.lawyerType,
