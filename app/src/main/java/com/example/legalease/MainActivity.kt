@@ -32,6 +32,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.compose.LegalEaseTheme
 import com.example.legalease.ui.bottombar.BottomBar
 import com.example.legalease.ui.client.searchScreen.SearchScreenViewModel
+import com.example.legalease.ui.lawyer.lawyerSearchScreen.LawyerSearchScreenViewModel
 import com.example.legalease.ui.navigation.AddCaseScreen
 import com.example.legalease.ui.navigation.ChatBotScreen
 import com.example.legalease.ui.navigation.HomeScreen
@@ -108,6 +109,7 @@ class MainActivity : ComponentActivity() {
                     val signInViewModel: SignInScreenViewModel by viewModels()
                     val signUpViewModel: SignUpScreenViewModel by viewModels()
                     val searchScreenViewModel: SearchScreenViewModel by viewModels()
+                    val lawyerSearchScreenViewModel: LawyerSearchScreenViewModel by viewModels()
                     val authViewModel: AuthViewModel by viewModels()
                     LegalEaseApp(
                         modifier = Modifier.padding(innerPadding),
@@ -115,6 +117,7 @@ class MainActivity : ComponentActivity() {
                         signInScreenViewModel = signInViewModel,
                         signUpScreenViewModel = signUpViewModel,
                         searchScreenViewModel = searchScreenViewModel,
+                        lawyerSearchScreenViewModel = lawyerSearchScreenViewModel,
                         authViewModel = authViewModel,
                         onBottomBarVisibilityChanged = { buttonsVisible = it },
                         showChatbotIcon = { showChatbot = it },

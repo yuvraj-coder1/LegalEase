@@ -13,36 +13,42 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class LawyerSearchScreenViewModel@Inject constructor(
+class LawyerSearchScreenViewModel @Inject constructor(
     private val db: FirebaseFirestore,
     private val auth: FirebaseAuth
-): ViewModel() {
+) : ViewModel() {
     private val _uiState = MutableStateFlow(LawyerSearchScreenUiState())
     val uiState: StateFlow<LawyerSearchScreenUiState> = _uiState.asStateFlow()
     fun updateSearchQuery(query: String) {
         _uiState.value = _uiState.value.copy(searchQuery = query)
     }
+
     private val _caseList = MutableStateFlow<List<CaseData>>(emptyList())
     val caseList: StateFlow<List<CaseData>> = _caseList.asStateFlow()
 
     fun getCasesFromClients() {
         var cases: List<CaseData>
-        db.collection(CASE_NODE).whereEqualTo("clientId", auth.currentUser?.uid)
+        db.collection(CASE_NODE)
             .whereEqualTo("status", "inactive").get()
             .addOnSuccessListener {
                 cases = it.toObjects(CaseData::class.java)
                 _caseList.value = cases
+                Log.d("TAG", "getCasesFromClients: ${caseList.value}")
             }
     }
+
     fun updateActive(active: Boolean) {
         _uiState.value = _uiState.value.copy(active = active)
     }
 
     fun updateLocation(location: String) {
-        _uiState.value = _uiState.value.copy(location = location)
-        Log.d("TAG", "updateLocation: ${uiState.value.location}")
+        _uiState.update {
+            it.copy(location = location)
+        }
+
     }
 }
