@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.legalease.ui.navigation.ChatListScreen
+import com.example.legalease.ui.navigation.LawyerSearchScreen
 import com.example.legalease.ui.navigation.SearchScreen
 
 sealed class LawyerBottomBarItem (
@@ -22,7 +23,7 @@ sealed class LawyerBottomBarItem (
     data object ProjectScreen: LawyerBottomBarItem(
         label = "Find Projects",
         icon = Icons.Default.Search,
-        route = SearchScreen
+        route = LawyerSearchScreen
     )
     data object MessageListScreen : LawyerBottomBarItem(
         label = "Messages",

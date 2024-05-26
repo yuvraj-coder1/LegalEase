@@ -79,3 +79,9 @@ data object AppointmentCaseSelectionScreen
 
 @Serializable
 data class BookAppointmentScreen(val caseId: String,val clientId:String)
+
+@Serializable
+data class SingleCaseDetailScreen(val caseId: String)
+
+@Serializable
+data object LawyerSearchScreen

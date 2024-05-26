@@ -24,6 +24,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,6 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.legalease.R
 import com.example.legalease.ui.components.RectangularChipsComponent
@@ -45,17 +49,14 @@ import com.example.ui.theme.Inter
 @Composable
 fun CasesDetailScreen(
     modifier: Modifier = Modifier,
-    caseTitle: String,
-    caseDescription: String,
-    lawyerName: String,
-    lawyerLevel: String,
-    caseNumber: String,
-    caseStatus: String,
-    clientName: String,
-    isLawyerAssigned: Boolean = false,
-    upcomingHearing: String?,
-    expertise: List<String>
+    caseId: String,
+    onDocumentClick: (String) -> Unit = {}
 ) {
+    val vm: CaseDetailScreenViewModel = hiltViewModel()
+    val caseDetails by vm.caseDetail.collectAsState()
+    LaunchedEffect(Unit) {
+        vm.getCaseDetail(caseId)
+    }
     Column(
         modifier = modifier
             .padding(16.dp)
@@ -68,12 +69,12 @@ fun CasesDetailScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = caseTitle,
+                text = caseDetails.caseType,
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.titleLarge
             )
 
-            if (caseStatus == "Active")
+            if (caseDetails.status == "active")
                 Row(
                     modifier = Modifier.padding(start = 16.dp),
                     verticalAlignment = Alignment.CenterVertically
@@ -85,7 +86,7 @@ fun CasesDetailScreen(
                         modifier = Modifier.size(16.dp)
                     )
                     Spacer(modifier = Modifier.width(6.dp))
-                    Text(text = caseStatus, color = Color(52, 168, 83), fontSize = 16.sp)
+                    Text(text = caseDetails.status, color = Color(52, 168, 83), fontSize = 16.sp)
                 }
         }
         Spacer(modifier = Modifier.height(32.dp))
@@ -95,9 +96,8 @@ fun CasesDetailScreen(
             style = MaterialTheme.typography.titleLarge
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = caseDescription)
+        Text(text = caseDetails.description)
         Spacer(modifier = Modifier.height(16.dp))
-        RectangularChipsComponent(skills = expertise, tagShape = 1)
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = stringResource(R.string.appointments),
@@ -110,7 +110,7 @@ fun CasesDetailScreen(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
-            if (upcomingHearing != null) {
+            if (caseDetails.upcomingHearing != null) {
                 Text(
                     text = stringResource(R.string.upcoming),
                     fontFamily = Inter,
@@ -133,7 +133,7 @@ fun CasesDetailScreen(
             style = MaterialTheme.typography.titleLarge
         )
         Spacer(modifier = Modifier.height(16.dp))
-        if(isLawyerAssigned) {
+        if (caseDetails.lawyerId != null) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 elevation = CardDefaults.cardElevation(4.dp)
@@ -146,9 +146,9 @@ fun CasesDetailScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Column() {
-                        Text(text = lawyerName, fontWeight = FontWeight.SemiBold)
+                        Text(text = "test", fontWeight = FontWeight.SemiBold)
                         Spacer(modifier = Modifier.padding(4.dp))
-                        Text(text = lawyerLevel)
+                        Text(text = "High Court Lawyer")
                         Spacer(modifier = Modifier.padding(4.dp))
                     }
                     AsyncImage(
@@ -161,8 +161,7 @@ fun CasesDetailScreen(
                     )
                 }
             }
-        }
-        else {
+        } else {
             Text(
                 text = stringResource(R.string.no_lawyer_appointed_yet),
                 textAlign = TextAlign.Center,
@@ -177,30 +176,17 @@ fun CasesDetailScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
         Column(modifier = Modifier.fillMaxWidth()) {
-            DocumentItem(
-                documentName = stringResource(R.string.affidavit),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-            )
-            DocumentItem(
-                documentName = stringResource(R.string.affidavit),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-            )
-            DocumentItem(
-                documentName = stringResource(R.string.affidavit),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-            )
-            DocumentItem(
-                documentName = stringResource(R.string.affidavit),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-            )
+            if (caseDetails.documentLinks.isNotEmpty()) {
+                caseDetails.documentLinks.forEach {
+                    DocumentItem(
+                        documentName = it.substring(0, 10),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        onClick = { onDocumentClick(it) }
+                    )
+                }
+            }
         }
         Spacer(modifier = Modifier.height(16.dp))
         Text(
@@ -283,19 +269,6 @@ fun CaseTimeLineItem(
 @Composable
 fun CasesDetailScreenPreview() {
     CasesDetailScreen(
-        caseTitle = "Cases Title",
-        caseDescription = "Lorem ipsum dolor sit amet, consectetuer adipiscing" +
-                " elit. Aenean commodo ligula eget dolor. Aenean massa. " +
-                "Cum sociis natoque penatibus et magnis dis parturient" +
-                " montes, nascetur",
-        modifier = Modifier.padding(16.dp),
-        lawyerName = "Gautam Shorewala",
-        lawyerLevel = "Sr. Advocate",
-        caseNumber = "12345",
-        caseStatus = "Active",
-        clientName = "JohnDoe",
-        expertise = listOf("Criminal", "Civil"),
-        isLawyerAssigned = false,
-        upcomingHearing = null
+        caseId = ""
     )
 }

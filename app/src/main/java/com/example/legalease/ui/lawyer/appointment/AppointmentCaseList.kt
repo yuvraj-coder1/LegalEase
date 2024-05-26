@@ -38,7 +38,8 @@ import com.example.ui.theme.Inter
 @Composable
 fun AppointmentCaseListScreen(
     modifier: Modifier = Modifier,
-    navigateToBookAppointment: (String, String) -> Unit = { _, _ -> }
+    navigateToBookAppointment: (String, String) -> Unit = { _, _ -> },
+    navigateToCaseDetails: (String) -> Unit = {}
 ) {
     val viewModel: AppointmentCaseListViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
@@ -48,6 +49,7 @@ fun AppointmentCaseListScreen(
                 caseType = case.caseType,
                 caseDescription = case.description,
                 caseDate = case.createdAt,
+                viewCase = { navigateToCaseDetails(case.id) },
                 onBook = { navigateToBookAppointment(case.id, case.clientId) },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -64,6 +66,7 @@ fun CaseToBookAppointmentItem(
     caseDescription: String,
     caseDate: String,
     onBook: () -> Unit = {},
+    viewCase: () -> Unit = {}
 ) {
     Card(
         modifier = modifier,
@@ -99,7 +102,7 @@ fun CaseToBookAppointmentItem(
             Spacer(modifier = Modifier.height(16.dp))
             Row {
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = { viewCase() },
                     modifier = Modifier.weight(1f),
                     shape = MaterialTheme.shapes.extraSmall,
                     colors = ButtonDefaults.buttonColors(Color.White),

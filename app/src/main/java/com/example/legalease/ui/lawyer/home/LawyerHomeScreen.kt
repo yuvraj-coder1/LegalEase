@@ -72,7 +72,8 @@ fun LawyerHomeScreen(
     signedInViewModel: SignInScreenViewModel,
     onSeeAllClick: () -> Unit,
     navigateToAddAppointment: () -> Unit,
-    onDocumentClick: () -> Unit
+    onDocumentClick: () -> Unit,
+    navigateToCaseDetails: (String) -> Unit
 ) {
     val homeViewModel: HomeViewModel = hiltViewModel()
     val homeUiState by homeViewModel.uiState.collectAsState()
@@ -237,7 +238,9 @@ fun LawyerHomeScreen(
                         upcomingHearing = item.upcomingHearing ?: "",
                         lawyerName = "",
                         lawyerProfile = 0,
-//                    modifier = Modifier.padding(10.dp)
+                        modifier = Modifier.clickable {
+                            navigateToCaseDetails(item.id)
+                        }
                     )
                 }
             }
