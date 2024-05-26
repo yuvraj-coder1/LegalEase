@@ -75,6 +75,24 @@ fun LanguageSelectionScreen(
                 color = Color.White
             )
         }
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        Button(
+            onClick = {
+                LocaleManager.setLocale(context, "kn")
+                onClicked()
+            },
+            modifier = Modifier
+                .height(40.dp)
+                .fillMaxWidth()
+                .padding(start = 30.dp, end = 30.dp)
+        ) {
+            Text(
+                text = stringResource(id = R.string.kannada),
+                color = Color.White
+            )
+        }
         Spacer(modifier = Modifier.weight(1f))
     }
 }
