@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -27,7 +28,9 @@ import com.example.legalease.ui.lawyer.appointment.BookAppointment
 import com.example.legalease.ui.lawyer.blocked.BlockedLawyerScreen
 import com.example.legalease.ui.lawyer.home.LawyerHomeScreen
 import com.example.legalease.ui.lawyer.lawyerGetStartedScreen.LawyerGetStartedScreen
+import com.example.legalease.ui.lawyer.lawyerSearchScreen.LawyerFilterScreen
 import com.example.legalease.ui.lawyer.lawyerSearchScreen.LawyerSearchScreen
+import com.example.legalease.ui.lawyer.lawyerSearchScreen.LawyerSearchScreenViewModel
 import com.example.legalease.ui.lawyer.profile.LawyerProfileScreen
 import com.example.legalease.ui.lawyer.recievedCasesFromClients.CaseDetailOfTheReceivedCase
 import com.example.legalease.ui.lawyer.recievedCasesFromClients.ReceivedCasesFromClients
@@ -51,6 +54,7 @@ fun LegalEaseApp(
     signInScreenViewModel: SignInScreenViewModel,
     signUpScreenViewModel: SignUpScreenViewModel,
     searchScreenViewModel: SearchScreenViewModel,
+    lawyerSearchScreenViewModel: LawyerSearchScreenViewModel,
     authViewModel: AuthViewModel,
     onBottomBarVisibilityChanged: (Boolean) -> Unit,
     showChatbotIcon: (Boolean) -> Unit,
@@ -330,7 +334,12 @@ fun LegalEaseApp(
         composable<LawyerSearchScreen> {
             onBottomBarVisibilityChanged(true)
             showIncomingCases(false)
-            LawyerSearchScreen()
+            LawyerSearchScreen(onFilterClicked = {navController.navigate(LawyerFilterScreen)})
+        }
+        composable<LawyerFilterScreen> {
+            onBottomBarVisibilityChanged(false)
+            showIncomingCases(false)
+            LawyerFilterScreen(viewModel = lawyerSearchScreenViewModel, onNavigate = {navController.navigateUp()})
         }
     }
 }

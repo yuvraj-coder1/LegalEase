@@ -1,5 +1,6 @@
 package com.example.legalease.ui.lawyer.lawyerSearchScreen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.dp
 fun LawyerFilterScreen(
     modifier: Modifier = Modifier,
     viewModel: LawyerSearchScreenViewModel,
+    onNavigate: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -44,7 +46,8 @@ fun LawyerFilterScreen(
         )
         OutlinedTextField(
             value = uiState.location,
-            onValueChange = { viewModel.updateLocation(it) },
+            onValueChange = { viewModel.updateLocation(it)
+                            },
             modifier = Modifier.fillMaxWidth(),
             label = { Text("Location") },
             enabled = true,
@@ -52,7 +55,8 @@ fun LawyerFilterScreen(
         )
         Spacer(modifier = Modifier.height(24.dp))
         Button(
-            onClick = { /*TODO*/ },
+            onClick = { viewModel.getCasesFromClients()
+                      onNavigate()},
             modifier = Modifier
                 .fillMaxWidth(),
             shape = MaterialTheme.shapes.medium,

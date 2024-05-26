@@ -1,5 +1,7 @@
 package com.example.legalease.ui.lawyer.lawyerSearchScreen
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,20 +10,16 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.StarHalf
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Sort
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.StarOutline
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -32,13 +30,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -49,7 +47,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.legalease.R
 import com.example.legalease.model.CaseData
-import com.example.legalease.model.LawyerData
 import com.example.legalease.ui.client.searchScreen.noRippleClickable
 import com.example.ui.theme.Inter
 
@@ -57,12 +54,15 @@ import com.example.ui.theme.Inter
 @Composable
 fun LawyerSearchScreen(
     modifier: Modifier = Modifier,
-    viewModel: LawyerSearchScreenViewModel = hiltViewModel(),
     onFilterClicked: () -> Unit = {},
     onCaseClicked: (CaseData) -> Unit = {}
 ) {
+    val viewModel: LawyerSearchScreenViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
     val caseList by viewModel.caseList.collectAsState()
+//    LaunchedEffect(uiState.location) {
+//        viewModel.getCasesFromClients()
+//    }
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -133,10 +133,15 @@ fun LawyerSearchScreen(
         Spacer(modifier = Modifier.height(10.dp))
         if (caseList.isNotEmpty()) {
             LazyColumn {
-                items(caseList.filter { if (it.location != "") uiState.location == it.location else true }) {
+                items(items = caseList.filter {
+                    Log.d(TAG, "LawyerSearchScreen: ${uiState.location} && ${it.location}")
+
+                        uiState.location == it.location
+
+                }) {
                     CaseItemFromList(
                         caseType = it.caseType,
-                        clientName = it.clientName,
+                        caseDescription = it.description,
                         clientImage = null.toString(),
                         modifier = Modifier
                             .padding(10.dp)
@@ -166,7 +171,7 @@ fun LawyerSearchScreen(
 fun CaseItemFromList(
     modifier: Modifier = Modifier,
     caseType: String,
-    clientName: String,
+    caseDescription: String,
     clientImage: String,
 ) {
     Card(
@@ -190,7 +195,7 @@ fun CaseItemFromList(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = clientName,
+                    text = caseDescription,
                     fontFamily = Inter,
                     fontWeight = FontWeight.Medium,
                     fontSize = 16.sp,

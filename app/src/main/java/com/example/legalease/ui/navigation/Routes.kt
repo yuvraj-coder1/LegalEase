@@ -85,3 +85,6 @@ data class SingleCaseDetailScreen(val caseId: String)
 
 @Serializable
 data object LawyerSearchScreen
+
+@Serializable
+data object LawyerFilterScreen
