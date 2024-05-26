@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.legalease.ui.chatbot.presentation.ChatBotScreen
 import com.example.legalease.ui.client.addCaseScreen.AddCaseScreen
+import com.example.legalease.ui.client.caseDetail.CasesDetailScreen
 import com.example.legalease.ui.client.caseDetail.DocumentListScreen
 import com.example.legalease.ui.client.cases.CasesScreen
 import com.example.legalease.ui.client.profile.ClientProfile
@@ -26,6 +27,7 @@ import com.example.legalease.ui.lawyer.appointment.BookAppointment
 import com.example.legalease.ui.lawyer.blocked.BlockedLawyerScreen
 import com.example.legalease.ui.lawyer.home.LawyerHomeScreen
 import com.example.legalease.ui.lawyer.lawyerGetStartedScreen.LawyerGetStartedScreen
+import com.example.legalease.ui.lawyer.lawyerSearchScreen.LawyerSearchScreen
 import com.example.legalease.ui.lawyer.profile.LawyerProfileScreen
 import com.example.legalease.ui.lawyer.recievedCasesFromClients.CaseDetailOfTheReceivedCase
 import com.example.legalease.ui.lawyer.recievedCasesFromClients.ReceivedCasesFromClients
@@ -144,7 +146,7 @@ fun LegalEaseApp(
             showIncomingCases(false)
             onBottomBarVisibilityChanged(true)
             LawyerProfileScreen(logOut = {
-                signInScreenViewModel.isSignedIn=false
+                signInScreenViewModel.isSignedIn = false
                 authViewModel.signOut()
                 navController.navigate(LanguageSelectionScreen) {
                     popUpTo(LanguageSelectionScreen) {
@@ -163,7 +165,8 @@ fun LegalEaseApp(
                 signedInViewModel = signInScreenViewModel,
                 onSeeAllClick = { navController.navigate(CaseListScreen) },
                 navigateToAddAppointment = { navController.navigate(AppointmentCaseSelectionScreen) },
-                onDocumentClick = { navController.navigate(DocumentListScreen) }
+                onDocumentClick = { navController.navigate(DocumentListScreen) },
+                navigateToCaseDetails = { navController.navigate(SingleCaseDetailScreen(it)) }
             )
         }
         composable<SearchedLayerScreen> {
@@ -207,7 +210,7 @@ fun LegalEaseApp(
             showIncomingCases(false)
             onBottomBarVisibilityChanged(true)
             ClientProfile(viewModel = authViewModel, logOut = {
-                signInScreenViewModel.isSignedIn=false
+                signInScreenViewModel.isSignedIn = false
                 authViewModel.signOut()
                 navController.navigate(LanguageSelectionScreen) {
                     popUpTo(LanguageSelectionScreen) {
@@ -297,7 +300,11 @@ fun LegalEaseApp(
             showIncomingCases(false)
             AppointmentCaseListScreen(navigateToBookAppointment = { caseId, clientId ->
                 navController.navigate(BookAppointmentScreen(caseId, clientId))
-            })
+            },
+                navigateToCaseDetails = {
+                    navController.navigate(SingleCaseDetailScreen(it))
+                }
+            )
         }
         composable<BookAppointmentScreen> {
             onBottomBarVisibilityChanged(false)
@@ -308,6 +315,22 @@ fun LegalEaseApp(
                 clientId = args.clientId,
 
                 navigateBack = { navController.navigateUp() })
+        }
+
+        composable<SingleCaseDetailScreen> {
+            onBottomBarVisibilityChanged(false)
+            showIncomingCases(false)
+            val args = it.toRoute<SingleCaseDetailScreen>()
+            CasesDetailScreen(
+                caseId = args.caseId,
+                onDocumentClick = { navController.navigate(ComposePdfViewerScreen(it)) },
+
+                )
+        }
+        composable<LawyerSearchScreen> {
+            onBottomBarVisibilityChanged(true)
+            showIncomingCases(false)
+            LawyerSearchScreen()
         }
     }
 }
