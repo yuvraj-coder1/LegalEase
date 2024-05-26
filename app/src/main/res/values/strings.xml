@@ -1,7 +1,8 @@
 <resources>
-    <string name="app_name">LegalEase</string>
+    <string name="app_name" translatable="false">LegalEase</string>
     <string name="english">English</string>
     <string name="hindi">हिंदी</string>
+    <string name="kannada">ಕನ್ನಡ</string>
     <string name="easily_look_for_lawyers">Easily look for lawyers</string>
     <string name="easily_look_for_cases">Easily look for cases</string>
     <string name="get_started">Get Started</string>
